@@ -1,7 +1,8 @@
 * {
-  font-family: "Oswald", sans-serif;
+  font-family: "Almarai", sans-serif !important;
   direction: rtl;
 }
+
 /* Scrollbar Track */
 ::-webkit-scrollbar {
   width: 3px;
@@ -20,4 +21,32 @@
 ::-webkit-scrollbar-track {
   background-color: #f1f1f1;
   /* لون المسار */
+}
+
+.css-15b8vjn-MuiPaper-root-MuiDrawer-paper,
+.css-12i7wg6-MuiPaper-root-MuiDrawer-paper {
+  right: 0;
+}
+
+.css-1uc3byb-MuiButtonBase-root-MuiIconButton-root,
+.css-p55zm9-MuiButtonBase-root-MuiIconButton-root {
+  margin-right: -12px !important;
+  margin-left: 40px !important;
+}
+
+.css-1iz4iln {
+  left: 0;
+}
+
+.css-1l8x3m7-MuiPaper-root-MuiAppBar-root,
+.css-1191obr-MuiPaper-root-MuiAppBar-root {
+  right: auto;
+  left: 0;
+  margin-right: 240px;
+}
+
+.css-ntsj15-MuiListItemIcon-root,
+.css-wa5fuu-MuiListItemIcon-root {
+  margin-left: 24px;
+  margin-right: 0 !important;
 }

@@ -51,7 +51,7 @@ export default function App() {
 
         <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
           <DrawerHeader />
-          <Typography paragraph>Lorem ipsum dolor sit amet,</Typography>
+          <Typography paragraph>لوحة تحكم</Typography>
         </Box>
       </Box>
     </ThemeProvider>

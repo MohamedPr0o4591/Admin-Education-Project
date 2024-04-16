@@ -12,6 +12,10 @@ import InboxIcon from "@mui/icons-material/MoveToInbox";
 import MailIcon from "@mui/icons-material/Mail";
 import { styled, useTheme } from "@mui/material/styles";
 import MuiDrawer from "@mui/material/Drawer";
+import { Avatar, Stack } from "@mui/material";
+import { list1, list2, list3, list4 } from "./List";
+import { useNavigate } from "react-router";
+import { grey } from "@mui/material/colors";
 
 const Drawer = styled(MuiDrawer, {
   shouldForwardProp: (prop) => prop !== "open",
@@ -65,6 +69,8 @@ const drawerWidth = 240;
 function SideBar(props) {
   const theme = useTheme();
 
+  const navigate = useNavigate();
+
   return (
     <Drawer variant="permanent" open={props.open}>
       <DrawerHeader>
@@ -76,10 +82,52 @@ function SideBar(props) {
           )}
         </IconButton>
       </DrawerHeader>
+
+      <Stack gap={2} justifyContent={"center"} alignItems={"center"} my={2}>
+        <Avatar
+          alt="Mohamed Mokhtar"
+          src="../../../src/assets/mohamed.jpg"
+          sx={{
+            width: props.open ? "95px" : "44px",
+            height: props.open ? "95px" : "44px",
+            transition: "all .228s ease",
+          }}
+        />
+
+        <span
+          style={{
+            color: theme.palette.primary.main,
+            fontSize: props.open ? 1 + "rem" : 0.8 + "rem",
+            transition: "all .228s ease",
+          }}
+        >
+          مشرف
+        </span>
+
+        <strong
+          style={{
+            fontSize: props.open ? 1 + "rem" : 0 + "rem",
+            transition: "all .228s ease",
+          }}
+        >
+          Mohamed Mokhtar
+        </strong>
+      </Stack>
       <Divider />
       <List>
-        {["Inbox", "Starred", "Send email", "Drafts"].map((text, index) => (
-          <ListItem key={text} disablePadding sx={{ display: "block" }}>
+        {list1.map((item, index) => (
+          <ListItem
+            key={index}
+            disablePadding
+            sx={{
+              display: "block",
+              backgroundColor:
+                location.pathname === item.path
+                  ? grey[theme.palette.mode === "dark" ? 900 : 300]
+                  : "",
+            }}
+            onClick={(_) => navigate(item.path)}
+          >
             <ListItemButton
               sx={{
                 minHeight: 48,
@@ -94,10 +142,10 @@ function SideBar(props) {
                   justifyContent: "center",
                 }}
               >
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                {item.icon}
               </ListItemIcon>
               <ListItemText
-                primary={text}
+                primary={item.title}
                 sx={{ opacity: props.open ? 1 : 0 }}
               />
             </ListItemButton>
@@ -106,8 +154,19 @@ function SideBar(props) {
       </List>
       <Divider />
       <List>
-        {["All mail", "Trash", "Spam"].map((text, index) => (
-          <ListItem key={text} disablePadding sx={{ display: "block" }}>
+        {list2.map((item, index) => (
+          <ListItem
+            key={index}
+            disablePadding
+            sx={{
+              display: "block",
+              backgroundColor:
+                location.pathname === item.path
+                  ? grey[theme.palette.mode === "dark" ? 900 : 300]
+                  : "",
+            }}
+            onClick={(_) => navigate(item.path)}
+          >
             <ListItemButton
               sx={{
                 minHeight: 48,
@@ -122,10 +181,88 @@ function SideBar(props) {
                   justifyContent: "center",
                 }}
               >
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                {item.icon}
               </ListItemIcon>
               <ListItemText
-                primary={text}
+                primary={item.title}
+                sx={{ opacity: props.open ? 1 : 0 }}
+              />
+            </ListItemButton>
+          </ListItem>
+        ))}
+      </List>
+      <Divider />
+      <List>
+        {list3.map((item, index) => (
+          <ListItem
+            key={index}
+            disablePadding
+            sx={{
+              display: "block",
+              backgroundColor:
+                location.pathname === item.path
+                  ? grey[theme.palette.mode === "dark" ? 900 : 300]
+                  : "",
+            }}
+            onClick={(_) => navigate(item.path)}
+          >
+            <ListItemButton
+              sx={{
+                minHeight: 48,
+                justifyContent: props.open ? "initial" : "center",
+                px: 2.5,
+              }}
+            >
+              <ListItemIcon
+                sx={{
+                  minWidth: 0,
+                  mr: props.open ? 3 : "auto",
+                  justifyContent: "center",
+                }}
+              >
+                {item.icon}
+              </ListItemIcon>
+              <ListItemText
+                primary={item.title}
+                sx={{ opacity: props.open ? 1 : 0 }}
+              />
+            </ListItemButton>
+          </ListItem>
+        ))}
+      </List>
+      <Divider />
+      <List>
+        {list4.map((item, index) => (
+          <ListItem
+            key={index}
+            disablePadding
+            sx={{
+              display: "block",
+              backgroundColor:
+                location.pathname === item.path
+                  ? grey[theme.palette.mode === "dark" ? 900 : 300]
+                  : "",
+            }}
+            onClick={(_) => navigate(item.path)}
+          >
+            <ListItemButton
+              sx={{
+                minHeight: 48,
+                justifyContent: props.open ? "initial" : "center",
+                px: 2.5,
+              }}
+            >
+              <ListItemIcon
+                sx={{
+                  minWidth: 0,
+                  mr: props.open ? 3 : "auto",
+                  justifyContent: "center",
+                }}
+              >
+                {item.icon}
+              </ListItemIcon>
+              <ListItemText
+                primary={item.title}
                 sx={{ opacity: props.open ? 1 : 0 }}
               />
             </ListItemButton>
