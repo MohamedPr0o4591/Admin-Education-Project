@@ -109,12 +109,12 @@ function TopBar(props) {
           gap={1}
           className="w-100"
         >
-          <Search>
+          <Search sx={{ pointerEvents: "none", opacity: 0.4 }}>
             <SearchIconWrapper>
               <SearchIcon />
             </SearchIconWrapper>
             <StyledInputBase
-              placeholder="Search…"
+              placeholder="إبحث ..."
               inputProps={{ "aria-label": "search" }}
             />
           </Search>

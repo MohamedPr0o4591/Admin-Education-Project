@@ -11,7 +11,7 @@
 
 /* Scrollbar Thumb (الجزء القابل للسحب) */
 ::-webkit-scrollbar-thumb {
-  background-color: #355a75;
+  background-color: #20313d;
   /* لون الخلفية */
   border-radius: 6px;
   /* شكل الزوايا */
@@ -26,6 +26,12 @@
 .css-15b8vjn-MuiPaper-root-MuiDrawer-paper,
 .css-12i7wg6-MuiPaper-root-MuiDrawer-paper {
   right: 0;
+  border-left: 1px solid rgba(255, 255, 255, 0.12);
+  border-right: none !important;
+}
+
+.css-12i7wg6-MuiPaper-root-MuiDrawer-paper {
+  border-left: 1px solid rgba(0, 0, 0, 0.12);
 }
 
 .css-1uc3byb-MuiButtonBase-root-MuiIconButton-root,
@@ -49,4 +55,17 @@
 .css-wa5fuu-MuiListItemIcon-root {
   margin-left: 24px;
   margin-right: 0 !important;
+}
+
+.css-ikuada-MuiDataGrid-root .MuiDataGrid-withBorderColor,
+.css-78c6dr-MuiToolbar-root-MuiTablePagination-toolbar,
+.css-78c6dr-MuiToolbar-root-MuiTablePagination-toolbar
+  .MuiTablePagination-actions,
+.css-levciy-MuiTablePagination-displayedRows,
+.css-wop1k0-MuiDataGrid-footerContainer {
+  direction: ltr;
+}
+
+.css-levciy-MuiTablePagination-displayedRows {
+  margin: 0;
 }

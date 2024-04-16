@@ -42,7 +42,7 @@ export const list3 = [
     path: "/create-homework",
   },
   {
-    title: "الواجبات منزلية",
+    title: "الواجبات المنزلية",
     icon: <HomeWorkOutlined />,
     path: "/homeworks",
   },
