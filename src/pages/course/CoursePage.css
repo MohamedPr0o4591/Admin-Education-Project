@@ -8,28 +8,15 @@
   border: none;
   outline: none;
   border-radius: 0.2rem;
-  background: #242424;
   border-bottom: 3px solid #4a4a4a;
-  color: #fff;
 }
 
 .course-page textarea {
   resize: none;
 }
 
-.course-page .file-uploader {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 50px;
-  border-radius: 2rem;
-  margin-top: 1rem;
-  cursor: pointer;
-}
-
 .course-page .paper-box {
   position: relative;
-  border: 1px solid #efef;
   border-radius: 0.4rem;
   padding: 10px;
 }
@@ -37,18 +24,13 @@
 .course-page .paper-box .title {
   position: absolute;
   top: -15px;
-  background: #1e1e1e;
   padding: 0 6px;
   right: 10px;
-  z-index: 10;
 }
-
 
 .course-page .paper-box .level {
   position: absolute;
   top: -15px;
-  background: #1e1e1e;
   padding: 0 6px;
   left: 10px;
-  z-index: 10;
 }

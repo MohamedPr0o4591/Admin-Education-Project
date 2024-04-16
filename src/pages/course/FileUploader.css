@@ -1,0 +1,9 @@
+.file-uploader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 50px;
+  border-radius: 2rem;
+  margin-top: 1rem;
+  cursor: pointer;
+}

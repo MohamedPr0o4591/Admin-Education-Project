@@ -3,8 +3,9 @@ import { getDesignTokens } from "./theme";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { Route, Routes } from "react-router";
 import HomePage from "./pages/home/HomePage";
-import StudentManagementPage from "./pages/students management/StudentManagementPage";
+import StudentManagementPage from "./pages/students/StudentManagementPage";
 import CoursePage from "./pages/course/CoursePage";
+import CreateHWPage from "./pages/home work/CreateHWPage";
 
 export default function App() {
   const [mode, setMode] = React.useState(
@@ -23,6 +24,7 @@ export default function App() {
           />
 
           <Route path="course" element={<CoursePage />} />
+          <Route path="create-homework" element={<CreateHWPage />} />
         </Route>
       </Routes>
     </ThemeProvider>

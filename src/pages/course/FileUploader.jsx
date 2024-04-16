@@ -1,6 +1,7 @@
 import { Stack, useTheme } from "@mui/material";
 import React, { useCallback } from "react";
 import { useDropzone } from "react-dropzone";
+import "./FileUploader.css";
 
 const FileUploader = () => {
   const maxSize = 600 * 1024 * 1024; // 600 ميجابايت

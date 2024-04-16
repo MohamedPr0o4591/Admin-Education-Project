@@ -70,6 +70,11 @@ function CoursePage() {
                 placeholder="عنوان الفصل"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
+                style={{
+                  background:
+                    theme.palette.mode === "dark" ? "#242424" : "#f1faf1",
+                  color: theme.palette.text.primary,
+                }}
               />
               <input
                 className="flex-grow-1"
@@ -77,6 +82,11 @@ function CoursePage() {
                 placeholder="عنوان الدرس"
                 value={lessonTitle}
                 onChange={(e) => setLessonTitle(e.target.value)}
+                style={{
+                  background:
+                    theme.palette.mode === "dark" ? "#242424" : "#f1faf1",
+                  color: theme.palette.text.primary,
+                }}
               />
             </Stack>
 
@@ -86,6 +96,11 @@ function CoursePage() {
               value={lessonDesc}
               onChange={(e) => setLessonDesc(e.target.value)}
               rows={"4"}
+              style={{
+                background:
+                  theme.palette.mode === "dark" ? "#242424" : "#f1faf1",
+                color: theme.palette.text.primary,
+              }}
             />
 
             <Stack>
@@ -123,13 +138,39 @@ function CoursePage() {
           <Container className="d-flex justify-content-center align-items-center">
             <Paper sx={{ height: 75 + "vh", width: "70%", px: 2, py: 5 }}>
               <Stack gap={2} height={"100%"}>
-                <Box className="paper-box h-100 ">
-                  <span className="title">{title}</span>
-                  <span className="level">{alignment}</span>
+                <Box
+                  className="paper-box h-100 "
+                  sx={{
+                    border: `1px solid ${theme.palette.primary.dark}`,
+                  }}
+                >
+                  <span
+                    className="title"
+                    style={{
+                      background:
+                        theme.palette.mode === "dark" ? "#242424" : "#ffff",
+                    }}
+                  >
+                    {title}
+                  </span>
+                  <span
+                    style={{
+                      background:
+                        theme.palette.mode === "dark" ? "#242424" : "#ffff",
+                    }}
+                    className="level"
+                  >
+                    {alignment}
+                  </span>
                   <p className="lessonTitle fs-4 fw-bold mt-3">{lessonTitle}</p>
 
                   <div className="content d-flex justify-content-center">
-                    <OndemandVideoRounded sx={{ fontSize: 20 + "vw" }} />
+                    <OndemandVideoRounded
+                      sx={{
+                        fontSize: 20 + "vw",
+                        color: theme.palette.primary.main,
+                      }}
+                    />
                   </div>
                   <span className="lessonDesc">{lessonDesc}</span>
                 </Box>

@@ -1,0 +1,32 @@
+.create-homework-page .col-1 {
+  border-left: 1px groove #efef;
+}
+
+.create-homework-page input,
+.create-homework-page textarea {
+  padding: 10px 20px;
+  border: none;
+  outline: none;
+  border-radius: 0.2rem;
+  border-bottom: 3px solid #4a4a4a;
+}
+
+.create-homework-page textarea {
+  resize: none;
+}
+
+.create-homework-page select {
+  outline: none;
+  border: none;
+  border-radius: 0.2rem;
+  border-bottom: 3px solid #4a4a4a;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+.create-homework-page .finished-question {
+  cursor: pointer;
+}
+.create-homework-page .finished-question:hover {
+  border-bottom: 1px solid #efef;
+}
