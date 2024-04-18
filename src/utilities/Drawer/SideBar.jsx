@@ -8,12 +8,10 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import MailIcon from "@mui/icons-material/Mail";
 import { styled, useTheme } from "@mui/material/styles";
 import MuiDrawer from "@mui/material/Drawer";
 import { Avatar, Stack } from "@mui/material";
-import { list1, list2, list3, list4 } from "./List";
+import { list1, list2, list3 } from "./List";
 import { useNavigate } from "react-router";
 import { grey } from "@mui/material/colors";
 
@@ -194,45 +192,6 @@ function SideBar(props) {
       <Divider />
       <List>
         {list3.map((item, index) => (
-          <ListItem
-            key={index}
-            disablePadding
-            sx={{
-              display: "block",
-              backgroundColor:
-                location.pathname === item.path
-                  ? grey[theme.palette.mode === "dark" ? 900 : 300]
-                  : "",
-            }}
-            onClick={(_) => navigate(item.path)}
-          >
-            <ListItemButton
-              sx={{
-                minHeight: 48,
-                justifyContent: props.open ? "initial" : "center",
-                px: 2.5,
-              }}
-            >
-              <ListItemIcon
-                sx={{
-                  minWidth: 0,
-                  mr: props.open ? 3 : "auto",
-                  justifyContent: "center",
-                }}
-              >
-                {item.icon}
-              </ListItemIcon>
-              <ListItemText
-                primary={item.title}
-                sx={{ opacity: props.open ? 1 : 0 }}
-              />
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
-      <Divider />
-      <List>
-        {list4.map((item, index) => (
           <ListItem
             key={index}
             disablePadding

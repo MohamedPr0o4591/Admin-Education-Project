@@ -5,7 +5,7 @@ import { Route, Routes } from "react-router";
 import HomePage from "./pages/home/HomePage";
 import StudentManagementPage from "./pages/students/StudentManagementPage";
 import CoursePage from "./pages/course/CoursePage";
-import CreateHWPage from "./pages/home work/CreateHWPage";
+import CreatingPage from "./pages/creating/CreatingPage";
 
 export default function App() {
   const [mode, setMode] = React.useState(
@@ -24,7 +24,7 @@ export default function App() {
           />
 
           <Route path="course" element={<CoursePage />} />
-          <Route path="create-homework" element={<CreateHWPage />} />
+          <Route path="create" element={<CreatingPage />} />
         </Route>
       </Routes>
     </ThemeProvider>

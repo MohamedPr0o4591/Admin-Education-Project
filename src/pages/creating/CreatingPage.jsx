@@ -1,5 +1,5 @@
 import React from "react";
-import "./CreateHWPage.css";
+import "./CreatingPage.css";
 import HeaderLine from "../../components/headerLine/HeaderLine";
 import { Col, Container, Row } from "react-bootstrap";
 import { Box, Button, IconButton, Paper, Stack, useTheme } from "@mui/material";
@@ -14,7 +14,8 @@ import {
 } from "@mui/icons-material";
 import FileUploader from "../course/FileUploader";
 
-function CreateHWPage() {
+function CreatingPage() {
+  const [CreateType, setCreateType] = React.useState("HW");
   const [alignment, setAlignment] = React.useState("");
   const [groupNumber, setGroupNumber] = React.useState("");
   const [questionType, setQuestionType] = React.useState("");
@@ -38,6 +39,8 @@ function CreateHWPage() {
   const [correctAns2, setCorrectAns2] = React.useState("true");
 
   const [finished, setFinished] = React.useState(false);
+
+  const [examTime, setExamTime] = React.useState("60");
 
   const [arrQuestions, setArrQuestions] = React.useState([]);
 
@@ -105,8 +108,30 @@ function CreateHWPage() {
 
   return (
     <div className="create-homework-page">
-      <HeaderLine title="إنشاء واجب منزلى" />
+      <Box display={"flex"} justifyContent={"center"}>
+        <ToggleButtonGroup
+          size="medium"
+          exclusive
+          value={CreateType}
+          onChange={(_) => setCreateType(event.target.value)}
+          aria-label="Small sizes"
+          sx={{
+            border: "1px solid #2f2f2f",
+          }}
+        >
+          <ToggleButton value="HW" key="HW">
+            إنشاء واجب منزلى
+          </ToggleButton>
 
+          <ToggleButton value="EXAM" key="EXAM">
+            إنشاء امتحان
+          </ToggleButton>
+        </ToggleButtonGroup>
+      </Box>
+
+      <HeaderLine
+        title={`${CreateType === "HW" ? "إنشاء واجب منزلى" : "إنشاء امتحان"}`}
+      />
       <Row>
         <Col sm={12} lg={6} className="col-1">
           <Stack gap={2}>
@@ -236,6 +261,26 @@ function CreateHWPage() {
                       <option value="ar">لغة الصفحة : العربية</option>
                       <option value="en">لغة الصفحة : الإنجليزية</option>
                     </select>
+
+                    {CreateType === "EXAM" ? (
+                      <select
+                        className="flex-grow-1"
+                        value={examTime}
+                        onChange={(e) => setExamTime(e.target.value)}
+                        style={{
+                          color: theme.palette.text.primary,
+                          background:
+                            theme.palette.mode === "dark"
+                              ? "#242424"
+                              : "#f1faf1",
+                        }}
+                      >
+                        <option value="30">مدة الامتحان : نصف ساعة</option>
+                        <option value="60">مدة الامتحان : ساعة واحدة</option>
+                        <option value="90">مدة الامتحان : ساعة ونصف</option>
+                        <option value="120">مدة الامتحان : ساعتان</option>
+                      </select>
+                    ) : null}
                   </Stack>
 
                   <textarea
@@ -562,7 +607,25 @@ function CreateHWPage() {
             >
               <Stack gap={1}>
                 <h4>{alignment}</h4>
-                <span>{groupNumber}</span>
+                <Stack direction={"row"} gap={2}>
+                  <span>{groupNumber}</span>
+
+                  <Box flexGrow={1} />
+
+                  {CreateType === "EXAM" ? (
+                    <span>
+                      {`مدة الامتحان: ${
+                        examTime === "30"
+                          ? "نصف ساعة"
+                          : examTime === "60"
+                          ? "ساعة واحدة"
+                          : examTime === "90"
+                          ? "ساعة ونصف"
+                          : "ساعتان"
+                      }`}
+                    </span>
+                  ) : null}
+                </Stack>
 
                 <strong className="mt-3 fs-5">{materialName}</strong>
                 <span className="border-bottom pb-2">{materialDesc}</span>
@@ -753,4 +816,4 @@ function CreateHWPage() {
   );
 }
 
-export default CreateHWPage;
+export default CreatingPage;

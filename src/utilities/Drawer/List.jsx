@@ -37,22 +37,14 @@ export const list2 = [
 
 export const list3 = [
   {
-    title: "إنشاء واجب منزلي",
+    title: "إنشاء واجب / امتحان",
     icon: <AddHomeWorkOutlined />,
-    path: "/create-homework",
+    path: "/create",
   },
   {
     title: "الواجبات المنزلية",
     icon: <HomeWorkOutlined />,
     path: "/homeworks",
-  },
-];
-
-export const list4 = [
-  {
-    title: "إنشاء امتحان",
-    icon: <AddTaskOutlined />,
-    path: "add-exam",
   },
   {
     title: "إدارة الإمتحانات",
