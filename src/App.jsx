@@ -6,6 +6,7 @@ import HomePage from "./pages/home/HomePage";
 import StudentManagementPage from "./pages/students/StudentManagementPage";
 import CoursePage from "./pages/course/CoursePage";
 import CreatingPage from "./pages/creating/CreatingPage";
+import CourseContentPage from "./pages/course content/CourseContentPage";
 
 export default function App() {
   const [mode, setMode] = React.useState(
@@ -24,6 +25,7 @@ export default function App() {
           />
 
           <Route path="course" element={<CoursePage />} />
+          <Route path="course-content" element={<CourseContentPage />} />
           <Route path="create" element={<CreatingPage />} />
         </Route>
       </Routes>
