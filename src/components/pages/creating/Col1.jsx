@@ -347,6 +347,22 @@ export default function Col1(props) {
                       ))}
                     </TextField>
 
+                    {/* درجة السؤال */}
+
+                    <input
+                      type="number"
+                      placeholder="ادخل درجة السؤال"
+                      value={props.questionMark}
+                      onChange={(e) => props.setQuestionMark(e.target.value)}
+                      style={{
+                        background:
+                          props.theme.palette.mode === "dark"
+                            ? "#242424"
+                            : "#f1faf1",
+                        color: props.theme.palette.text.primary,
+                      }}
+                    />
+
                     <Button
                       variant="contained"
                       color="primary"
@@ -427,6 +443,22 @@ export default function Col1(props) {
                       <option value={"true"}>صحيح</option>
                       <option value={"false"}>خطأ</option>
                     </select>
+
+                    {/* درجة السؤال */}
+
+                    <input
+                      type="number"
+                      placeholder="ادخل درجة السؤال"
+                      value={props.questionMark}
+                      onChange={(e) => props.setQuestionMark(e.target.value)}
+                      style={{
+                        background:
+                          props.theme.palette.mode === "dark"
+                            ? "#242424"
+                            : "#f1faf1",
+                        color: props.theme.palette.text.primary,
+                      }}
+                    />
 
                     <Button
                       variant="contained"

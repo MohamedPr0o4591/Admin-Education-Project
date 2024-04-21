@@ -84,7 +84,7 @@ function SideBar(props) {
       <Stack gap={2} justifyContent={"center"} alignItems={"center"} my={2}>
         <Avatar
           alt="Mohamed Mokhtar"
-          src="../../../src/assets/mohamed.jpg"
+          src="https://png.pngtree.com/thumb_back/fw800/background/20230523/pngtree-beautiful-and-majestic-natural-scenery-image_2760432.jpg"
           sx={{
             width: props.open ? "95px" : "44px",
             height: props.open ? "95px" : "44px",

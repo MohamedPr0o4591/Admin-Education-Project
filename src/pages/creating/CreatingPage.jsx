@@ -35,6 +35,7 @@ function CreatingPage() {
   const [ans3, setAns3] = React.useState("");
   const [ans4, setAns4] = React.useState("");
   const [correctAns1, setCorrectAns1] = React.useState(ans1);
+  const [questionMark, setQuestionMark] = React.useState("");
 
   const [question2, setQuestion2] = React.useState("");
   const [correctAns2, setCorrectAns2] = React.useState("true");
@@ -64,6 +65,7 @@ function CreatingPage() {
     setCorrectAns1(ans1);
     setQuestion2("");
     setCorrectAns2("true");
+    setQuestionMark("");
   };
 
   const handleAddQuestion = (_) => {
@@ -76,11 +78,13 @@ function CreatingPage() {
         ans3,
         ans4,
         correct: correctAns1,
+        questionMark,
       };
     } else if (questionForm === "اختر الاجابة الصحيحة") {
       object = {
         question: question2,
         correct: correctAns2,
+        questionMark,
       };
     }
 
@@ -157,6 +161,8 @@ function CreatingPage() {
           setAns4={setAns4}
           examTime={examTime}
           setExamTime={setExamTime}
+          questionMark={questionMark}
+          setQuestionMark={setQuestionMark}
         />
 
         {/* Col2 Start */}

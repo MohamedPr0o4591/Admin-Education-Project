@@ -1,3 +1,7 @@
+.header-line {
+  pointer-events: none;
+}
+
 .header-line .overline {
   width: 95px;
   height: 3px;

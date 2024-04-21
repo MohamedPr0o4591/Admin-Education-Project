@@ -24,9 +24,11 @@
 }
 
 .css-15b8vjn-MuiPaper-root-MuiDrawer-paper,
-.css-12i7wg6-MuiPaper-root-MuiDrawer-paper {
+.css-12i7wg6-MuiPaper-root-MuiDrawer-paper,
+.css-bpnhhg .MuiDrawer-paper,
+.css-1pv7n5u .MuiDrawer-paper {
   right: 0;
-  border-left: 1px solid rgba(255, 255, 255, 0.12);
+  border-left: 1px solid rgb(92 187 249 / 0.2);
   border-right: none !important;
 }
 
@@ -35,7 +37,8 @@
 }
 
 .css-1uc3byb-MuiButtonBase-root-MuiIconButton-root,
-.css-p55zm9-MuiButtonBase-root-MuiIconButton-root {
+.css-p55zm9-MuiButtonBase-root-MuiIconButton-root,
+.css-ld94xd {
   margin-right: -12px !important;
   margin-left: 40px !important;
 }
@@ -45,14 +48,19 @@
 }
 
 .css-1l8x3m7-MuiPaper-root-MuiAppBar-root,
-.css-1191obr-MuiPaper-root-MuiAppBar-root {
+.css-1191obr-MuiPaper-root-MuiAppBar-root,
+.css-10r4mbn,
+.css-vwd6ro {
   right: auto;
   left: 0;
   margin-right: 240px;
+  margin-left: 0 !important;
 }
 
 .css-ntsj15-MuiListItemIcon-root,
-.css-wa5fuu-MuiListItemIcon-root {
+.css-wa5fuu-MuiListItemIcon-root,
+.css-193yotl,
+.css-3wucx {
   margin-left: 24px;
   margin-right: 0 !important;
 }
@@ -62,10 +70,15 @@
 .css-78c6dr-MuiToolbar-root-MuiTablePagination-toolbar
   .MuiTablePagination-actions,
 .css-levciy-MuiTablePagination-displayedRows,
-.css-wop1k0-MuiDataGrid-footerContainer {
+.css-wop1k0-MuiDataGrid-footerContainer,
+.css-8nphli .MuiTablePagination-actions,
+.css-1chpzqh,
+.css-9ffb5l,
+.css-8nphli {
   direction: ltr;
 }
 
-.css-levciy-MuiTablePagination-displayedRows {
+.css-levciy-MuiTablePagination-displayedRows,
+.css-1chpzqh {
   margin: 0;
 }

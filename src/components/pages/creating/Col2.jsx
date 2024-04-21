@@ -59,11 +59,21 @@ export default function Col2(props) {
                             direction={"row"}
                             gap={2}
                             alignItems={"center"}
+                            justifyContent={"space-between"}
                           >
                             <span style={{ color: theme.palette.primary.main }}>
                               سؤال رقم: {index + 1}
                             </span>
-                            <Box flexGrow={1} />
+
+                            <span>
+                              ({" "}
+                              <span
+                                style={{ color: theme.palette.warning.main }}
+                              >
+                                {question.questionMark}
+                              </span>{" "}
+                              درجة )
+                            </span>
 
                             <IconButton
                               color="inherit"
@@ -157,11 +167,21 @@ export default function Col2(props) {
                             direction={"row"}
                             gap={2}
                             alignItems={"center"}
+                            justifyContent={"space-between"}
                           >
                             <span style={{ color: theme.palette.primary.main }}>
                               سؤال رقم: {index + 1}
                             </span>
-                            <Box flexGrow={1} />
+
+                            <span>
+                              ({" "}
+                              <span
+                                style={{ color: theme.palette.warning.main }}
+                              >
+                                {question.questionMark}
+                              </span>{" "}
+                              درجة )
+                            </span>
 
                             <IconButton
                               color="inherit"

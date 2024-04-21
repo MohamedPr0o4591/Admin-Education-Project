@@ -44,11 +44,11 @@ export const list3 = [
   {
     title: "الواجبات المنزلية",
     icon: <HomeWorkOutlined />,
-    path: "/homeworks",
+    path: "/homework-management",
   },
   {
     title: "إدارة الإمتحانات",
     icon: <AssignmentLateOutlined />,
-    path: "manage-exams",
+    path: "/exam-management",
   },
 ];

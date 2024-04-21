@@ -45,7 +45,7 @@ const FileUploader = () => {
   return (
     <div {...getRootProps()}>
       <div
-        className="file-uploader mb-3"
+        className="file-uploader mb-3 opacity-50"
         style={{ border: `2px dashed ${theme.palette.text.primary}` }}
       >
         <input {...getInputProps()} />
