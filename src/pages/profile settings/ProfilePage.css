@@ -1,0 +1,13 @@
+.profile-page label {
+  padding: 10px 20px;
+  border: 2px dashed;
+  cursor: pointer;
+}
+
+.profile-page input {
+  padding: 10px 20px;
+  border: none;
+  outline: none;
+  border-radius: 0.2rem;
+  border-bottom: 3px solid #4a4a4a;
+}

@@ -1,0 +1,76 @@
+.login-page {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  width: 100vw;
+  background: #2f2f2f;
+}
+
+.login-page h2 {
+  color: #efefef;
+  margin-bottom: 2rem;
+  user-select: none;
+}
+
+.login-page form {
+  display: flex;
+  flex-direction: column;
+  width: 400px;
+  height: 400px;
+  background-color: #2f2f2f;
+  padding: 20px 50px;
+  border-radius: 10px;
+  box-shadow: 0 0.1rem 0.4rem rgba(255, 255, 255, 0.2);
+}
+
+.login-page form .input-box {
+  position: relative;
+  margin-top: 2rem;
+}
+
+.login-page form .input-box input {
+  position: relative;
+  width: 100%;
+  outline: none;
+  border-color: #efef;
+  color: #efefef;
+  border-radius: 5px;
+  padding: 10px 20px;
+  direction: ltr;
+  transition: all 0.228s ease;
+  background: transparent;
+}
+
+.login-page form .input-box input ~ span {
+  position: absolute;
+  top: 50%;
+  color: #efefef;
+  left: 10px;
+  transform: translateY(-50%);
+  font-size: 1rem;
+  transition: all 0.228s ease;
+  pointer-events: none;
+}
+
+.login-page form .input-box input:focus ~ span,
+.login-page form .input-box input:valid ~ span {
+  font-size: 0.85rem;
+  left: 5px;
+  top: 0;
+  color: #efefef;
+  padding: 0 5px;
+  background: #2f2f2f;
+}
+
+.login-page form input[type="submit"] {
+  border: none;
+  outline: none;
+  color: #2f2f2f;
+  background: #efefef;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 5px;
+  margin-top: 2rem;
+}

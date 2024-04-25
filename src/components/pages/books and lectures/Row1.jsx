@@ -8,7 +8,7 @@ export default function Row1(props) {
         className="w-100 mb-3"
         size="medium"
         exclusive
-        value={props.CreateType}
+        value={props.createType}
         onChange={(_) => props.setCreateType(event.target.value)}
         aria-label="Medium sizes"
         sx={{
@@ -16,12 +16,12 @@ export default function Row1(props) {
         }}
         color="primary"
       >
-        <ToggleButton value="HW" key="HW" className="flex-grow-1">
-          إنشاء واجب منزلى
+        <ToggleButton value="add" key="add" className="flex-grow-1">
+          اضافة مذكرة / كتاب جديد
         </ToggleButton>
 
-        <ToggleButton value="EXAM" key="EXAM" className="flex-grow-1">
-          إنشاء امتحان
+        <ToggleButton value="show" key="show" className="flex-grow-1">
+          عرض جميع الكتب
         </ToggleButton>
       </ToggleButtonGroup>
     </Box>

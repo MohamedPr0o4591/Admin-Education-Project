@@ -1,0 +1,47 @@
+.lectures-page .col-1 {
+  border-left: 1px groove #efef;
+}
+
+.lectures-page .finished-question {
+  cursor: pointer;
+}
+.lectures-page .finished-question:hover {
+  border-bottom: 1px solid #efef;
+}
+
+.lectures-page input,
+.lectures-page textarea {
+  padding: 10px 20px;
+  border: none;
+  outline: none;
+  border-radius: 0.2rem;
+  border-bottom: 3px solid #4a4a4a;
+}
+
+.lectures-page .upload-cover {
+  padding: 10px 20px;
+  border-radius: 5px;
+  pointer-events: auto;
+  user-select: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  direction: ltr;
+}
+
+.lectures-page img {
+  border-radius: 0.6rem;
+}
+
+.lectures-page .paper-box {
+  position: relative;
+  border-radius: 0.4rem;
+  padding: 10px;
+}
+
+.lectures-page .paper-box .level {
+  position: absolute;
+  top: -14px;
+  left: 15px;
+  padding: 0 6px;
+}

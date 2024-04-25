@@ -2,6 +2,7 @@ import {
   AddHomeWorkOutlined,
   AddTaskOutlined,
   AssignmentLateOutlined,
+  AutoStories,
   HomeOutlined,
   HomeWorkOutlined,
   ManageAccountsOutlined,
@@ -13,25 +14,31 @@ export const list1 = [
   {
     title: "الصفحة الرئيسية",
     icon: <HomeOutlined />,
-    path: "/",
+    path: "/admin/",
   },
   {
     title: "إدارة الطلاب",
     icon: <ManageAccountsOutlined />,
-    path: "/students-management",
+    path: "/admin/students-management",
   },
 ];
 
 export const list2 = [
   {
+    title: "الكتب والمذكرات",
+    icon: <AutoStories />,
+    path: "/admin/books-lectures",
+  },
+  {
     title: "شرح المنهج",
     icon: <MenuBookOutlined />,
-    path: "/course",
+    path: "/admin/course",
   },
+
   {
     title: "فهرس المشروحات",
     icon: <ReceiptOutlined />,
-    path: "/course-content",
+    path: "/admin/course-content",
   },
 ];
 
@@ -39,16 +46,16 @@ export const list3 = [
   {
     title: "إنشاء واجب / امتحان",
     icon: <AddHomeWorkOutlined />,
-    path: "/create",
+    path: "/admin/create",
   },
   {
     title: "الواجبات المنزلية",
     icon: <HomeWorkOutlined />,
-    path: "/homework-management",
+    path: "/admin/homework-management",
   },
   {
     title: "إدارة الإمتحانات",
     icon: <AssignmentLateOutlined />,
-    path: "/exam-management",
+    path: "/admin/exam-management",
   },
 ];

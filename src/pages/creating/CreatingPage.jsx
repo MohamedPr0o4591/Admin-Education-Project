@@ -3,14 +3,6 @@ import "./CreatingPage.css";
 import HeaderLine from "../../components/headerLine/HeaderLine";
 import { Col, Container, Row } from "react-bootstrap";
 import { Box, Button, IconButton, Paper, Stack, useTheme } from "@mui/material";
-import {
-  Cancel,
-  CheckCircle,
-  CheckCircleOutline,
-  DeleteRounded,
-  HighlightOff,
-} from "@mui/icons-material";
-import FileUploader from "../course/FileUploader";
 import Row1 from "../../components/pages/creating/Row1";
 import Col1 from "../../components/pages/creating/Col1";
 import Col2 from "../../components/pages/creating/Col2";
@@ -18,9 +10,11 @@ import Col2 from "../../components/pages/creating/Col2";
 function CreatingPage() {
   const [CreateType, setCreateType] = React.useState("HW");
   const [alignment, setAlignment] = React.useState("");
-  const [groupNumber, setGroupNumber] = React.useState("");
+  const [groupNumber, setGroupNumber] = React.useState([]);
   const [questionType, setQuestionType] = React.useState("");
   const [questionForm, setQuestionForm] = React.useState("");
+
+  const [files, setFiles] = React.useState([]);
 
   const [materialName, setMaterialName] = React.useState("");
   const [materialDesc, setMaterialDesc] = React.useState("");
@@ -47,6 +41,10 @@ function CreatingPage() {
   const [arrQuestions, setArrQuestions] = React.useState([]);
 
   const theme = useTheme();
+
+  const handleFormatChange = (event, newFormats) => {
+    setGroupNumber(newFormats);
+  };
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
@@ -113,14 +111,16 @@ function CreatingPage() {
 
   return (
     <div className="create-homework-page">
-      <Row1 CreateType={CreateType} setCreateType={setCreateType} />
-
       <HeaderLine
         title={`${CreateType === "HW" ? "إنشاء واجب منزلى" : "إنشاء امتحان"}`}
       />
+
+      <Row1 CreateType={CreateType} setCreateType={setCreateType} />
+
       <Row>
         {/* Col1 Start */}
         <Col1
+          handleFormatChange={handleFormatChange}
           theme={theme}
           alignment={alignment}
           setAlignment={setAlignment}
@@ -163,6 +163,8 @@ function CreatingPage() {
           setExamTime={setExamTime}
           questionMark={questionMark}
           setQuestionMark={setQuestionMark}
+          files={files}
+          setFiles={setFiles}
         />
 
         {/* Col2 Start */}

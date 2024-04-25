@@ -4,7 +4,7 @@ import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
 import TopBar from "../../utilities/TopBar/TopBar";
 import SideBar from "../../utilities/Drawer/SideBar";
-import { Outlet } from "react-router";
+import { Outlet, useNavigate } from "react-router";
 
 const DrawerHeader = styled("div")(({ theme }) => ({
   display: "flex",
@@ -16,6 +16,14 @@ const DrawerHeader = styled("div")(({ theme }) => ({
 }));
 
 function HomePage(props) {
+  const navigate = useNavigate();
+
+  React.useEffect(() => {
+    if (localStorage.login) {
+      navigate("/admin");
+    } else navigate("/login");
+  }, []);
+
   const [open, setOpen] = React.useState(false);
 
   const handleDrawerOpen = () => {
@@ -33,6 +41,7 @@ function HomePage(props) {
         open={open}
         handleDrawerOpen={handleDrawerOpen}
         setMode={props.setMode}
+        mode={props.mode}
       />
 
       <SideBar open={open} handleDrawerClose={handleDrawerClose} />

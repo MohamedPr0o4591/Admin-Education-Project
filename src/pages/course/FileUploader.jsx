@@ -3,10 +3,8 @@ import React, { useCallback } from "react";
 import { useDropzone } from "react-dropzone";
 import "./FileUploader.css";
 
-const FileUploader = () => {
+const FileUploader = (props) => {
   const maxSize = 600 * 1024 * 1024; // 600 ميجابايت
-
-  const [files, setFiles] = React.useState([]);
   const [errorMessage, setErrorMessage] = React.useState("");
 
   const onDrop = useCallback(
@@ -16,24 +14,31 @@ const FileUploader = () => {
         setErrorMessage(
           "حجم الفيديو أكبر من 600 ميجابايت. يرجى اختيار فيديو بحجم أقل من 600 ميجابايت."
         );
-        setFiles([]);
+        props.setFiles([]);
       } else {
         setErrorMessage("");
-        setFiles(acceptedFiles);
+        const newFilePaths = acceptedFiles.map((file) =>
+          URL.createObjectURL(file)
+        );
+
+        props.setFiles([...props.files, ...newFilePaths]);
       }
     },
-    [maxSize]
+    [props.files, maxSize]
   );
 
   const handleRemoveFile = (indexToRemove) => {
-    const updatedFiles = files.filter((_, index) => index !== indexToRemove);
-    setFiles(updatedFiles);
+    const updatedFilePaths = props.files.filter(
+      (_, index) => index !== indexToRemove
+    );
+
+    props.setFiles(updatedFilePaths);
   };
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
     maxSize,
-    accept: "image/*, video/*",
+    accept: "image/*, video/*, pdf/*",
   });
 
   const bytesToMB = (bytes) => {
@@ -56,12 +61,13 @@ const FileUploader = () => {
         )}
       </div>
 
-      {files
-        ? files.map((file, index) => (
+      {props.files
+        ? props.files.map((filePath, index) => (
             <div key={index}>
-              <Stack gap={1} sx={{ color: theme.palette.warning.dark }}>
-                <span>اسم الملف : {file.name}</span>
-                <span> حجم الملف : {bytesToMB(file.size)} ميجابايت</span>
+              <Stack gap={1} sx={{ color: theme.palette.success.main }}>
+                <i className="user-select-none">
+                  <u>تم حديد الملف</u>
+                </i>
               </Stack>
             </div>
           ))

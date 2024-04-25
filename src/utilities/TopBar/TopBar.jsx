@@ -9,10 +9,18 @@ import InputBase from "@mui/material/InputBase";
 import SearchIcon from "@mui/icons-material/Search";
 import {
   DarkModeOutlined,
+  DarkModeRounded,
   LightModeOutlined,
+  LogoutOutlined,
+  LogoutRounded,
   NotificationsOutlined,
+  NotificationsRounded,
   Person2Outlined,
+  Person2Rounded,
 } from "@mui/icons-material";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import { useNavigate } from "react-router";
 
 const drawerWidth = 240;
 
@@ -87,8 +95,19 @@ function TopBar(props) {
     } else localStorage.theme = "dark";
   };
 
+  const navigate = useNavigate();
+
+  const handleLogout = (_) => {
+    localStorage.removeItem("login");
+    navigate("/login");
+  };
+
   return (
-    <AppBar position="fixed" open={props.open}>
+    <AppBar
+      position="fixed"
+      open={props.open}
+      sx={{ backgroundColor: theme.palette.background.mainDefault }}
+    >
       <Toolbar>
         <IconButton
           color="inherit"
@@ -121,20 +140,40 @@ function TopBar(props) {
 
           <Box flexGrow={1} />
 
-          <IconButton color="inherit" onClick={changeMode}>
+          <IconButton color="inherit" onClick={changeMode} title="تبديل الوضع">
             {theme.palette.mode === "dark" ? (
               <LightModeOutlined />
             ) : (
-              <DarkModeOutlined />
+              <DarkModeRounded />
             )}
           </IconButton>
 
-          <IconButton color="inherit">
-            <NotificationsOutlined />
+          <IconButton color="inherit" title="الاشعارات">
+            {theme.palette.mode === "dark" ? (
+              <NotificationsOutlined />
+            ) : (
+              <NotificationsRounded />
+            )}
           </IconButton>
 
-          <IconButton color="inherit">
-            <Person2Outlined />
+          <IconButton
+            color="inherit"
+            title="الملف الشخصي"
+            onClick={() => navigate("/admin/profile")}
+          >
+            {theme.palette.mode === "dark" ? (
+              <Person2Outlined />
+            ) : (
+              <Person2Rounded />
+            )}
+          </IconButton>
+
+          <IconButton color="inherit" title="تسجيل خروج" onClick={handleLogout}>
+            {theme.palette.mode === "dark" ? (
+              <LogoutOutlined />
+            ) : (
+              <LogoutRounded />
+            )}
           </IconButton>
         </Stack>
       </Toolbar>

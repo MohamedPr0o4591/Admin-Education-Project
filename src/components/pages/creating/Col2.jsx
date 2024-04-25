@@ -27,8 +27,6 @@ export default function Col2(props) {
           <Stack gap={1}>
             <h4>{props.alignment}</h4>
             <Stack direction={"row"} gap={2}>
-              <span>{props.groupNumber}</span>
-
               <Box flexGrow={1} />
 
               {props.CreateType === "EXAM" ? (

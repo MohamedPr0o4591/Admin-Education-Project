@@ -8,6 +8,11 @@ import CoursePage from "./pages/course/CoursePage";
 import CreatingPage from "./pages/creating/CreatingPage";
 import CourseContentPage from "./pages/course content/CourseContentPage";
 import HomeWorkMPage from "./pages/homework management/HomeWorkMPage";
+import LecturesPage from "./pages/books and lectures/LecturesPage";
+import ExamManagement from "./pages/exam management/ExamManagement";
+import ProfilePage from "./pages/profile settings/ProfilePage";
+import LoginPage from "./pages/auth/LoginPage";
+import HomePageContent from "./pages/home/content/HomePageContent";
 
 export default function App() {
   const [mode, setMode] = React.useState(
@@ -19,17 +24,24 @@ export default function App() {
   return (
     <ThemeProvider theme={theme}>
       <Routes>
-        <Route path="/" element={<HomePage setMode={setMode} />}>
+        <Route
+          path="/admin"
+          element={<HomePage mode={mode} setMode={setMode} />}
+        >
+          <Route index element={<HomePageContent />} />
           <Route
             path="students-management"
             element={<StudentManagementPage />}
           />
-
           <Route path="course" element={<CoursePage />} />
           <Route path="course-content" element={<CourseContentPage />} />
           <Route path="create" element={<CreatingPage />} />
           <Route path="homework-management" element={<HomeWorkMPage />} />
+          <Route path="books-lectures" element={<LecturesPage />} />
+          <Route path="exam-management" element={<ExamManagement />} />
+          <Route path="profile" element={<ProfilePage />} />
         </Route>
+        <Route path="/login" element={<LoginPage />} />
       </Routes>
     </ThemeProvider>
   );

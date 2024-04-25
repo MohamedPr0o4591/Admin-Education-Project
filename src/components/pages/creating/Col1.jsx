@@ -72,9 +72,8 @@ export default function Col1(props) {
           <ToggleButtonGroup
             color="primary"
             value={props.groupNumber}
-            exclusive
-            onChange={(_) => props.setGroupNumber(event.target.value)}
-            aria-label="Platform"
+            onChange={props.handleFormatChange}
+            aria-label="text formatting"
             sx={{
               border: "1px solid rgba(255, 255, 255, 0.12);",
             }}
@@ -504,12 +503,12 @@ export default function Col1(props) {
             </span>
 
             <Box>
-              <FileUploader />
+              <FileUploader files={props.files} setFiles={props.setFiles} />
             </Box>
           </Stack>
         ) : null}
 
-        <Stack direction={"row"} gap={2}>
+        <Stack direction={"row"} gap={2} alignItems={"center"}>
           <span
             className="finished-question"
             onClick={(_) =>

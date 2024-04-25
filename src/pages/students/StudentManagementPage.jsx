@@ -1,9 +1,9 @@
-import React from "react";
+import React, { useRef } from "react";
 import HeaderLine from "../../components/headerLine/HeaderLine";
 import Box from "@mui/material/Box";
 import { DataGrid } from "@mui/x-data-grid";
 import { rows } from "./Data";
-import { Button, useTheme } from "@mui/material";
+import { Button, Typography, useTheme } from "@mui/material";
 
 function StudentManagementPage() {
   const theme = useTheme();
@@ -12,7 +12,7 @@ function StudentManagementPage() {
     {
       field: "id",
       headerName: "ID",
-      width: 90,
+      width: 80,
       headerAlign: "center",
       align: "center",
     },
@@ -25,7 +25,14 @@ function StudentManagementPage() {
     },
     {
       field: "phoneNumber",
-      headerName: "رقم الهاتف",
+      headerName: "رقم الطالب",
+      flex: 1,
+      headerAlign: "center",
+      align: "center",
+    },
+    {
+      field: "parentPhoneNumber",
+      headerName: "رقم ولي الأمر",
       flex: 1,
       headerAlign: "center",
       align: "center",
@@ -55,6 +62,13 @@ function StudentManagementPage() {
           </Box>
         );
       },
+    },
+    {
+      field: "address",
+      headerName: "عنوان الطالب",
+      flex: 1,
+      headerAlign: "center",
+      align: "center",
     },
     {
       field: "groupNumber",

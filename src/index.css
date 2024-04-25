@@ -3,6 +3,10 @@
   direction: rtl;
 }
 
+input {
+  padding: 10px 20px;
+}
+
 /* Scrollbar Track */
 ::-webkit-scrollbar {
   width: 3px;
@@ -49,6 +53,8 @@
 
 .css-1l8x3m7-MuiPaper-root-MuiAppBar-root,
 .css-1191obr-MuiPaper-root-MuiAppBar-root,
+.css-rh22g1-MuiPaper-root-MuiAppBar-root,
+.css-13yzmh5-MuiPaper-root-MuiAppBar-root,
 .css-10r4mbn,
 .css-vwd6ro {
   right: auto;
