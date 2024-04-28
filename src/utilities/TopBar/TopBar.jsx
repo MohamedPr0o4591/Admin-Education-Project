@@ -6,9 +6,7 @@ import { styled, alpha } from "@mui/material/styles";
 import IconButton from "@mui/material/IconButton";
 import { Box, Stack, useTheme } from "@mui/material";
 import InputBase from "@mui/material/InputBase";
-import SearchIcon from "@mui/icons-material/Search";
 import {
-  DarkModeOutlined,
   DarkModeRounded,
   LightModeOutlined,
   LogoutOutlined,
@@ -18,8 +16,6 @@ import {
   Person2Outlined,
   Person2Rounded,
 } from "@mui/icons-material";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
 import { useNavigate } from "react-router";
 
 const drawerWidth = 240;
@@ -128,16 +124,6 @@ function TopBar(props) {
           gap={1}
           className="w-100"
         >
-          <Search sx={{ pointerEvents: "none", opacity: 0.4 }}>
-            <SearchIconWrapper>
-              <SearchIcon />
-            </SearchIconWrapper>
-            <StyledInputBase
-              placeholder="إبحث ..."
-              inputProps={{ "aria-label": "search" }}
-            />
-          </Search>
-
           <Box flexGrow={1} />
 
           <IconButton color="inherit" onClick={changeMode} title="تبديل الوضع">

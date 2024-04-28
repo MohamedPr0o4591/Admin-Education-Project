@@ -19,9 +19,9 @@ function HomePage(props) {
   const navigate = useNavigate();
 
   React.useEffect(() => {
-    if (localStorage.login) {
-      navigate("/admin");
-    } else navigate("/login");
+    if (!localStorage.login) {
+      navigate("/login");
+    }
   }, []);
 
   const [open, setOpen] = React.useState(false);

@@ -181,7 +181,9 @@ export default function Col1(props) {
 
               <textarea
                 className="flex-grow-1"
-                placeholder="وصف الواجب"
+                placeholder={`وصف ${
+                  props.CreateType === "EXAM" ? "الامتحان" : "الواجب"
+                }`}
                 value={props.materialDesc}
                 onChange={(e) => props.setMaterialDesc(e.target.value)}
                 rows={"4"}
