@@ -52,7 +52,7 @@ function StudentManagementPage() {
                 : params.row.educationLevel.includes("الثانى")
                 ? theme.palette.warning.main
                 : theme.palette.success.main,
-              p: "7px 10px",
+              p: "7px 2px",
               borderRadius: 0.6 + "rem",
               color: theme.palette.background.default,
               pointerEvents: "none",
@@ -146,10 +146,10 @@ function StudentManagementPage() {
   ];
 
   return (
-    <div className="students-management-page">
+    <div className="students-management-page ">
       <HeaderLine title="إدارة الطلاب" />
 
-      <Box sx={{ height: 75 + "vh", width: "100%" }}>
+      <Box sx={{ height: 75 + "vh", minWidth: "1200px" }}>
         <DataGrid
           rows={rows}
           columns={columns}
@@ -161,7 +161,6 @@ function StudentManagementPage() {
             },
           }}
           pageSizeOptions={[5]}
-          disableRowSelectionOnClick
         />
       </Box>
     </div>

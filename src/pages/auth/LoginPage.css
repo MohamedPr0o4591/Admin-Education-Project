@@ -17,10 +17,10 @@
 .login-page form {
   display: flex;
   flex-direction: column;
-  width: 400px;
-  height: 400px;
+  width: 520px;
+  height: auto;
   background-color: #2f2f2f;
-  padding: 20px 50px;
+  padding: 40px 50px;
   border-radius: 10px;
   box-shadow: 0 0.1rem 0.4rem rgba(255, 255, 255, 0.2);
 }

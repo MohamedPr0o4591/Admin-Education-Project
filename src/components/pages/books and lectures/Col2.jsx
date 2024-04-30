@@ -26,7 +26,16 @@ export default function Col2(props) {
 
   return (
     <Col sm={12} lg={6} className="d-flex justify-content-center">
-      <Paper sx={{ height: 75 + "vh", width: "70%", px: 2, py: 5 }}>
+      <Paper
+        sx={{
+          height: 75 + "vh",
+          width: 100 + "%",
+          minWidth: 420 + "px",
+          maxWidth: 530 + "px",
+          px: 2,
+          py: 5,
+        }}
+      >
         <Stack
           height={100 + "%"}
           sx={{ border: `1px solid ${theme.palette.primary.dark}` }}

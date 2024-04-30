@@ -7,7 +7,16 @@ export default function Col2(props) {
   return (
     <Col sm={12} lg={6}>
       <Container className="d-flex justify-content-center align-items-center">
-        <Paper sx={{ height: 75 + "vh", width: "70%", px: 2, py: 5 }}>
+        <Paper
+          sx={{
+            height: 75 + "vh",
+            width: 100 + "%",
+            minWidth: 420 + "px",
+            maxWidth: 530 + "px",
+            px: 2,
+            py: 5,
+          }}
+        >
           <Stack gap={2} height={"100%"}>
             <Box
               className="paper-box h-100 "
@@ -33,7 +42,9 @@ export default function Col2(props) {
               >
                 {props.alignment}
               </span>
-              <p className="lessonTitle fs-4 fw-bold mt-3">{props.lessonTitle}</p>
+              <p className="lessonTitle fs-4 fw-bold mt-3">
+                {props.lessonTitle}
+              </p>
 
               <div className="content d-flex justify-content-center">
                 <OndemandVideoRounded

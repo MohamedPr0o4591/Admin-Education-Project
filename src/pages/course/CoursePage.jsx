@@ -13,6 +13,7 @@ function CoursePage() {
   const [title, setTitle] = React.useState("");
   const [lessonTitle, setLessonTitle] = React.useState("");
   const [lessonDesc, setLessonDesc] = React.useState("");
+  const [videoLink, setVideoLink] = React.useState("");
 
   const handleChange = (event, newAlignment) => {
     setAlignment(newAlignment);
@@ -32,6 +33,8 @@ function CoursePage() {
           setLessonTitle={setLessonTitle}
           lessonDesc={lessonDesc}
           setLessonDesc={setLessonDesc}
+          videoLink={videoLink}
+          setVideoLink={setVideoLink}
         />
 
         {/* Col 2 */}

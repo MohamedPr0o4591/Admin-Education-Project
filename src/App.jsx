@@ -13,6 +13,8 @@ import ExamManagement from "./pages/exam management/ExamManagement";
 import ProfilePage from "./pages/profile settings/ProfilePage";
 import LoginPage from "./pages/auth/LoginPage";
 import HomePageContent from "./pages/home/content/HomePageContent";
+import { Box } from "@mui/material";
+import RewardsPage from "./pages/answer and earn/RewardsPage";
 
 export default function App() {
   const [mode, setMode] = React.useState(
@@ -23,26 +25,29 @@ export default function App() {
 
   return (
     <ThemeProvider theme={theme}>
-      <Routes>
-        <Route
-          path="/admin"
-          element={<HomePage mode={mode} setMode={setMode} />}
-        >
-          <Route index element={<HomePageContent />} />
+      <Box minWidth={1200 + "px"}>
+        <Routes>
           <Route
-            path="students-management"
-            element={<StudentManagementPage />}
-          />
-          <Route path="course" element={<CoursePage />} />
-          <Route path="course-content" element={<CourseContentPage />} />
-          <Route path="create" element={<CreatingPage />} />
-          <Route path="homework-management" element={<HomeWorkMPage />} />
-          <Route path="books-lectures" element={<LecturesPage />} />
-          <Route path="exam-management" element={<ExamManagement />} />
-          <Route path="profile" element={<ProfilePage />} />
-        </Route>
-        <Route path="/login" element={<LoginPage />} />
-      </Routes>
+            path="/admin"
+            element={<HomePage mode={mode} setMode={setMode} />}
+          >
+            <Route index element={<HomePageContent />} />
+            <Route
+              path="students-management"
+              element={<StudentManagementPage />}
+            />
+            <Route path="course" element={<CoursePage />} />
+            <Route path="course-content" element={<CourseContentPage />} />
+            <Route path="create" element={<CreatingPage />} />
+            <Route path="homework-management" element={<HomeWorkMPage />} />
+            <Route path="books-lectures" element={<LecturesPage />} />
+            <Route path="exam-management" element={<ExamManagement />} />
+            <Route path="profile" element={<ProfilePage />} />
+            <Route path="bonus" element={<RewardsPage />} />
+          </Route>
+          <Route path="/login" element={<LoginPage />} />
+        </Routes>
+      </Box>
     </ThemeProvider>
   );
 }

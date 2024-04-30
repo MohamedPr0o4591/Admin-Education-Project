@@ -8,6 +8,7 @@ import {
   ManageAccountsOutlined,
   MenuBookOutlined,
   ReceiptOutlined,
+  SchoolRounded,
 } from "@mui/icons-material";
 
 export const list1 = [
@@ -57,5 +58,13 @@ export const list3 = [
     title: "إدارة الإمتحانات",
     icon: <AssignmentLateOutlined />,
     path: "/admin/exam-management",
+  },
+];
+
+export const list4 = [
+  {
+    title: "جاوب وإكسب",
+    icon: <SchoolRounded />,
+    path: "/admin/bonus",
   },
 ];

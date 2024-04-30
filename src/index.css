@@ -1,6 +1,8 @@
 * {
   font-family: "Almarai", sans-serif !important;
   direction: rtl;
+  margin: 0;
+  box-sizing: border-box;
 }
 
 input {

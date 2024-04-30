@@ -38,7 +38,12 @@ function Col1(props) {
           </ToggleButtonGroup>
         </Stack>
 
-        <Stack direction={"row"} gap={2} alignItems={"center"}>
+        <Stack
+          direction={"row"}
+          gap={2}
+          alignItems={"center"}
+          flexWrap={"wrap"}
+        >
           <input
             className="flex-grow-1"
             type="text"
@@ -75,15 +80,23 @@ function Col1(props) {
           }}
         />
 
-        <Stack>
+        <Stack gap={2}>
           <span style={{ color: theme.palette.primary.dark }}>
-            ارفاق فيديو شرح او صورة
-          </span>
-          <span style={{ color: theme.palette.error.dark }}>
-            تنبيه: الفيديو المرفق يجب ان لا يتجاوز 600 ميجا بايت !!
+            ضع رابط فيديو الشرح:
           </span>
 
-          <FileUploader />
+          <input
+            className="flex-grow-1"
+            type="text"
+            placeholder="رابط الفيديو"
+            value={props.videoLink}
+            onChange={(e) => props.setVideoLink(e.target.value)}
+            style={{
+              background: theme.palette.mode === "dark" ? "#242424" : "#f1faf1",
+              color: theme.palette.text.primary,
+              direction: "ltr",
+            }}
+          />
         </Stack>
 
         <Stack>

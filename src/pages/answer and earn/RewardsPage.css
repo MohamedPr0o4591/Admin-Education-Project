@@ -1,0 +1,33 @@
+.bonus-page .col-1 {
+  border-left: 1px groove #efef;
+}
+
+.bonus-page select {
+  outline: none;
+  border: none;
+  border-radius: 0.2rem;
+  border-bottom: 3px solid #4a4a4a;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+.bonus-page .finished-question {
+  cursor: pointer;
+}
+.bonus-page .finished-question:hover {
+  border-bottom: 1px solid #efef;
+}
+
+.bonus-page form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.bonus-page input {
+  padding: 10px 20px;
+  border: none;
+  outline: none;
+  border-radius: 0.2rem;
+  border-bottom: 3px solid #4a4a4a;
+}

@@ -18,7 +18,9 @@ export default function Col2(props) {
           className="overflow-auto"
           sx={{
             height: 75 + "vh",
-            width: "70%",
+            width: 100 + "%",
+            minWidth: 420 + "px",
+            maxWidth: 530 + "px",
             px: 2,
             py: 5,
             textAlign: props.language === "ar" ? "right" : "left",
