@@ -3,6 +3,7 @@ import HeaderLine from "../../components/headerLine/HeaderLine";
 import { Row } from "react-bootstrap";
 import Col1 from "../../components/pages/answer & earn/Col1";
 import "./RewardsPage.css";
+import Col2 from "../../components/pages/answer & earn/Col2";
 
 const RewardsPage = () => {
   const [alignment, setAlignment] = React.useState("");
@@ -16,6 +17,7 @@ const RewardsPage = () => {
   const [correctAns1, setCorrectAns1] = React.useState(ans1);
   const [questionMark, setQuestionMark] = React.useState("");
   const [correctAns2, setCorrectAns2] = React.useState("true");
+  const [language, setLanguage] = React.useState("ar");
 
   const [question1, setQuestion1] = React.useState("");
   const [question2, setQuestion2] = React.useState("");
@@ -78,6 +80,13 @@ const RewardsPage = () => {
     setQuestionForm("");
   };
 
+  const handleDeleteQuestion = (i) => {
+    let arr = JSON.parse(localStorage.question);
+    arr.splice(i, 1);
+    localStorage.setItem("question", JSON.stringify(arr));
+    setArrQuestions(arr);
+  };
+
   return (
     <div className="bonus-page">
       <HeaderLine title="المكافآت" />
@@ -114,6 +123,14 @@ const RewardsPage = () => {
           setQuestion1={setQuestion1}
           question2={question2}
           setQuestion2={setQuestion2}
+          language={language}
+          setLanguage={setLanguage}
+        />
+
+        <Col2
+          handleDeleteQuestion={handleDeleteQuestion}
+          alignment={alignment}
+          arrQuestions={arrQuestions}
         />
       </Row>
     </div>

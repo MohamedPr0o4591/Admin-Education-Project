@@ -15,6 +15,7 @@ import LoginPage from "./pages/auth/LoginPage";
 import HomePageContent from "./pages/home/content/HomePageContent";
 import { Box } from "@mui/material";
 import RewardsPage from "./pages/answer and earn/RewardsPage";
+import PreparationPage from "./pages/preparation of classes/PreparationPage";
 
 export default function App() {
   const [mode, setMode] = React.useState(
@@ -44,6 +45,7 @@ export default function App() {
             <Route path="exam-management" element={<ExamManagement />} />
             <Route path="profile" element={<ProfilePage />} />
             <Route path="bonus" element={<RewardsPage />} />
+            <Route path="preparation-classes" element={<PreparationPage />} />
           </Route>
           <Route path="/login" element={<LoginPage />} />
         </Routes>

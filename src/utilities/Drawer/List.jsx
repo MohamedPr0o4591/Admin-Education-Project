@@ -9,6 +9,7 @@ import {
   MenuBookOutlined,
   ReceiptOutlined,
   SchoolRounded,
+  Settings,
 } from "@mui/icons-material";
 
 export const list1 = [
@@ -66,5 +67,10 @@ export const list4 = [
     title: "جاوب وإكسب",
     icon: <SchoolRounded />,
     path: "/admin/bonus",
+  },
+  {
+    title: "إعداد الصفوف",
+    icon: <Settings />,
+    path: "/admin/preparation-classes",
   },
 ];
