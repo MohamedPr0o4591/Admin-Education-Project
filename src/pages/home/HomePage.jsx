@@ -34,7 +34,7 @@ function HomePage(props) {
   };
 
   return (
-    <Box sx={{ display: "flex" }}>
+    <Box sx={{ display: "flex", minWidth: 1200 + "px" }}>
       <CssBaseline />
 
       <TopBar

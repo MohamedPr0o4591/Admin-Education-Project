@@ -1,0 +1,229 @@
+.single-page {
+  position: relative;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.single-page nav {
+  width: 100%;
+  position: fixed;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 1;
+}
+
+.single-page nav a {
+  text-decoration: none;
+  color: #efef;
+  font-size: 1.2rem;
+  font-weight: 500;
+}
+
+.single-page nav a:hover {
+  border-bottom: 3px solid #efef;
+  padding-bottom: 10px;
+}
+
+.single-page h4 {
+  text-shadow: 0 0.1rem 0.6rem rgba(255, 170, 70, 0.7);
+  user-select: none;
+  color: rgb(255, 170, 79);
+  font-weight: 900;
+}
+
+.single-page .home-section {
+  height: 100vh;
+  padding: 50px;
+}
+
+.single-page .home-section .content-box {
+  position: relative;
+  max-width: calc(100vw - 768px);
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  user-select: none;
+  z-index: 1;
+}
+
+.single-page .home-section .content-box p {
+  font-size: 2.4rem;
+  font-weight: 600;
+}
+
+.single-page .home-section .content-box span.desc {
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: #4a4a4a;
+  line-height: 1.5;
+}
+
+.list-social a {
+  padding: 10px 20px;
+  display: block;
+  border-radius: 0.4rem;
+  text-decoration: none;
+  color: #efefef;
+  font-weight: 500;
+  font-size: 1.2rem;
+  user-select: none;
+  transition: all 0.3s ease;
+}
+
+.list-social a#facebook {
+  /* background for facebook */
+  background: #1877f2;
+  border: 1px solid #1877f2;
+}
+
+.list-social a#whatsapp {
+  /* background for whatsapp */
+  background: #25d366;
+  border: 1px solid #25d366;
+}
+
+.list-social a#facebook:hover {
+  background: transparent;
+  color: #1877f2;
+  border: 1px solid #1877f2;
+  box-shadow: 0 0.1rem 0.6rem #1877f2;
+}
+
+.list-social a#whatsapp:hover {
+  background: transparent;
+  color: #25d366;
+  border: 1px solid #25d366;
+  box-shadow: 0 0.1rem 0.6rem #25d366;
+}
+
+.single-page .profession-container {
+  position: absolute;
+  width: 768px;
+  height: 100vh;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+  overflow: hidden;
+}
+
+.single-page .profession-container .profession-box {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  animation: professionRotate 13s ease-out infinite;
+  align-items: center;
+}
+
+.single-page .profession-container .profession-box .profession {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  transform: rotate(calc(360deg / 4 * var(--i)));
+  transform-origin: -170px;
+  right: 0;
+  user-select: none;
+  background: #ffffff;
+}
+
+@keyframes professionRotate {
+  0%,
+  20% {
+    transform: rotate(0deg);
+  }
+  25%,
+  45% {
+    transform: rotate(90deg);
+  }
+  50%,
+  70% {
+    transform: rotate(180deg);
+  }
+  75%,
+  95% {
+    transform: rotate(270deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.single-page .profession-container .profession-box .profession > p {
+  font-size: 2.4rem;
+  font-weight: 600;
+  color: #ffaa4f;
+  margin: 0;
+}
+
+.single-page .profession-container .profession-box .profession:nth-child(3) {
+  margin-top: 4rem;
+  margin-right: 5rem;
+}
+.single-page .profession-container .profession-box .profession:nth-child(4) {
+  margin-top: -4rem;
+  margin-right: 4rem;
+}
+
+.single-page .profession-container .profession-box .circle {
+  width: 570px;
+  height: 570px;
+  border: 3px solid #ffaa4f;
+  border-radius: 50%;
+}
+
+.single-page .profession-container .overlay {
+  position: absolute;
+  width: 0;
+  padding: 0;
+  top: 0;
+  left: 0;
+  border-top: calc(100vh / 2) solid #ffaa4f;
+  border-right: 384px solid transparent;
+  border-bottom: calc(100vh / 2) solid #ffaa4f;
+  border-left: 384px solid #ffaa4f;
+  /* border-radius: 50%; */
+}
+
+.single-page img {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 75%;
+}
+
+@media (min-width: 350px) and (max-width: 1200px) {
+  .single-page {
+    overflow: hidden;
+    height: 100vh;
+  }
+
+  .single-page .profession-container .overlay,
+  .single-page img,
+  .single-page .profession-container,
+  .single-page nav {
+    display: none;
+  }
+
+  .single-page .home-section .content-box {
+    max-width: 100%;
+  }
+  .single-page .inner-page {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #ffaa4f;
+    transform: skewX(45deg);
+  }
+}

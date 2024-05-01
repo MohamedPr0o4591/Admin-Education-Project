@@ -16,6 +16,7 @@ import HomePageContent from "./pages/home/content/HomePageContent";
 import { Box } from "@mui/material";
 import RewardsPage from "./pages/answer and earn/RewardsPage";
 import PreparationPage from "./pages/preparation of classes/PreparationPage";
+import SinglePage from "./pages/dashboard single page/SinglePage";
 
 export default function App() {
   const [mode, setMode] = React.useState(
@@ -26,8 +27,9 @@ export default function App() {
 
   return (
     <ThemeProvider theme={theme}>
-      <Box minWidth={1200 + "px"}>
+      <Box sx={{ width: 100 + "vw", height: 100 + "vh", overflow: "auto" }}>
         <Routes>
+          <Route path="/" element={<SinglePage />} />
           <Route
             path="/admin"
             element={<HomePage mode={mode} setMode={setMode} />}

@@ -37,7 +37,7 @@ const Col1 = (props) => {
   ];
 
   return (
-    <Col sm={12} lg={6} className="col-1 d-flex gap-3 flex-column">
+    <Col xs={12} lg={6} className="col-1 d-flex gap-3 flex-column">
       <Stack gap={1}>
         <span style={{ color: theme.palette.primary.dark }}>
           اولا حدد المستوى التعليمي

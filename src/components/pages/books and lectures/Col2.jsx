@@ -25,7 +25,7 @@ export default function Col2(props) {
   };
 
   return (
-    <Col sm={12} lg={6} className="d-flex justify-content-center">
+    <Col xs={12} lg={6} className="d-flex justify-content-center">
       <Paper
         sx={{
           height: 75 + "vh",

@@ -4,6 +4,8 @@ import { Container } from "react-bootstrap";
 import {
   Box,
   Button,
+  IconButton,
+  Modal,
   Paper,
   Stack,
   ToggleButton,
@@ -11,9 +13,24 @@ import {
   useTheme,
 } from "@mui/material";
 import "./PreparationPage.css";
-import { InfoRounded } from "@mui/icons-material";
+import { CloseRounded, InfoRounded } from "@mui/icons-material";
+
+const style = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 520,
+  bgcolor: "background.paper",
+  border: "2px solid rgba(0 ,0 ,0 ,.2)",
+  boxShadow: "0 0 0.4rem rgb(103 138 201 / 70%)",
+  p: "0.4rem 0.8rem",
+  borderRadius: "0.4rem",
+};
 
 const PreparationPage = () => {
+  const [open, setOpen] = React.useState(false);
+
   const [alignment, setAlignment] = React.useState("");
   const theme = useTheme();
 
@@ -72,26 +89,7 @@ const PreparationPage = () => {
             <h3 className="text-decoration-underline">الصفوف الدراسية</h3>
 
             <ul className="list-unstyled d-flex gap-2 mt-5 p-0 flex-wrap">
-              <li>
-                <Box
-                  className="class-box"
-                  title="حذف"
-                  sx={{
-                    background:
-                      theme.palette.mode === "dark" ? "#2d3437" : "#ccdce1",
-                    color: theme.palette.text.primary,
-                    ":hover": {
-                      background: theme.palette.error.main,
-                      boxShadow: `0 0 0.65rem ${theme.palette.error.main}`,
-                      transform: "scale(1.02)",
-                    },
-                  }}
-                >
-                  الصف الاول الثانوى
-                </Box>
-              </li>
-
-              <li>
+              <li onClick={(_) => setOpen(true)}>
                 <Box
                   className="class-box"
                   title="حذف"
@@ -166,66 +164,41 @@ const PreparationPage = () => {
                   مجموعة 1
                 </Box>
               </li>
-
-              <li>
-                <Box
-                  className="class-box"
-                  title="حذف"
-                  sx={{
-                    background:
-                      theme.palette.mode === "dark" ? "#2d3437" : "#ccdce1",
-                    color: theme.palette.text.primary,
-                    ":hover": {
-                      background: theme.palette.error.main,
-                      boxShadow: `0 0 0.65rem ${theme.palette.error.main}`,
-                      transform: "scale(1.02)",
-                    },
-                  }}
-                >
-                  مجموعة 2
-                </Box>
-              </li>
-
-              <li>
-                <Box
-                  className="class-box"
-                  title="حذف"
-                  sx={{
-                    background:
-                      theme.palette.mode === "dark" ? "#2d3437" : "#ccdce1",
-                    color: theme.palette.text.primary,
-                    ":hover": {
-                      background: theme.palette.error.main,
-                      boxShadow: `0 0 0.65rem ${theme.palette.error.main}`,
-                      transform: "scale(1.02)",
-                    },
-                  }}
-                >
-                  مجموعة 3
-                </Box>
-              </li>
-
-              <li>
-                <Box
-                  className="class-box"
-                  title="حذف"
-                  sx={{
-                    background:
-                      theme.palette.mode === "dark" ? "#2d3437" : "#ccdce1",
-                    color: theme.palette.text.primary,
-                    ":hover": {
-                      background: theme.palette.error.main,
-                      boxShadow: `0 0 0.65rem ${theme.palette.error.main}`,
-                      transform: "scale(1.02)",
-                    },
-                  }}
-                >
-                  مجموعة 4
-                </Box>
-              </li>
             </ul>
           </Paper>
         </Stack>
+
+        <Modal
+          open={open}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+        >
+          <Box sx={style}>
+            <Stack direction={"row"} gap={2} alignItems={"center"}>
+              <Box flexGrow={1} />
+
+              <IconButton color="inherit" onClick={(_) => setOpen(false)}>
+                <CloseRounded />
+              </IconButton>
+            </Stack>
+
+            <p>
+              هل متأكد من حذف{" "}
+              <i style={{ color: theme.palette.primary.main }}>
+                الصف الاول الثانوى
+              </i>
+              ؟
+            </p>
+
+            <Stack direction={"row"} gap={2} mt={2}>
+              <Box flexGrow={1} />
+
+              <Button variant="contained" color="error">
+                حذف
+              </Button>
+            </Stack>
+          </Box>
+        </Modal>
       </Container>
     </div>
   );

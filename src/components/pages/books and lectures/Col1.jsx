@@ -14,7 +14,7 @@ export default function Col1(props) {
   const theme = useTheme();
 
   return (
-    <Col sm={12} lg={6} className="col-1">
+    <Col xs={12} lg={6} className="col-1">
       <Stack gap={1}>
         <span style={{ color: theme.palette.primary.dark }}>
           اولا حدد المستوى التعليمي

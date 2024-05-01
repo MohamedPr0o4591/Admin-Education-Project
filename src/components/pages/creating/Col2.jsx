@@ -12,7 +12,7 @@ import { Col, Container } from "react-bootstrap";
 export default function Col2(props) {
   const theme = useTheme();
   return (
-    <Col sm={12} lg={6}>
+    <Col xs={12} lg={6}>
       <Container className="d-flex justify-content-center align-items-center">
         <Paper
           className="overflow-auto"

@@ -35,7 +35,7 @@ export default function Col1(props) {
   ];
 
   return (
-    <Col sm={12} lg={6} className="col-1">
+    <Col xs={12} lg={6} className="col-1">
       <Stack gap={2}>
         <Stack gap={1}>
           <span style={{ color: props.theme.palette.primary.dark }}>
