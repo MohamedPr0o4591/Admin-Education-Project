@@ -10,6 +10,7 @@ import {
   SwitchAccountRounded,
   WhatsApp,
 } from "@mui/icons-material";
+import image from "../../assets/photo.png";
 
 const SinglePage = () => {
   return (
@@ -116,7 +117,7 @@ const SinglePage = () => {
           </div>
           <div className="overlay" />
 
-          <img src="../../../public/photo.png" alt="Mohamed Mokhtar" />
+          <img src={image} alt="Mohamed Mokhtar" />
         </div>
       </section>
     </div>
