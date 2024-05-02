@@ -50,8 +50,11 @@
 }
 
 .single-page .home-section .content-box p {
-  font-size: 2.4rem;
-  font-weight: 600;
+  font-size: 1.8rem;
+  font-weight: bolder;
+  text-shadow: 0 0.4rem 0.6rem rgba(255, 170, 70, 0.7);
+  color: rgb(0, 0, 0);
+  user-select: none;
 }
 
 .single-page .home-section .content-box span.desc {
@@ -112,7 +115,6 @@
 .single-page .profession-container .profession-box {
   width: 100%;
   height: 100%;
-  overflow: hidden;
   position: absolute;
   top: 0;
   left: 0;
@@ -195,22 +197,28 @@
 }
 
 .single-page img {
+  transition: all 0.3s ease-out;
   position: absolute;
   left: 0;
   bottom: 0;
-  width: 75%;
+  width: 65%;
+  max-height: 90%;
+  user-select: none;
+  pointer-events: none;
+  object-fit: cover;
+  object-position: top;
 }
 
-@media (min-width: 350px) and (max-width: 1200px) {
+@media (min-width: 320px) and (max-width: 1200px) {
   .single-page {
     overflow: hidden;
     height: 100vh;
   }
 
   .single-page .profession-container .overlay,
-  .single-page img,
+  .single-page .profession-container img,
   .single-page .profession-container,
-  .single-page nav {
+  .single-page nav .content-box {
     display: none;
   }
 
@@ -225,5 +233,14 @@
     height: 100%;
     background: #ffaa4f;
     transform: skewX(45deg);
+  }
+}
+
+@media (min-width: 1500px) {
+  .single-page .home-section .content-box {
+    max-width: 44rem;
+  }
+  .single-page img {
+    width: 75%;
   }
 }

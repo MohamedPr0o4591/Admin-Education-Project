@@ -1,6 +1,6 @@
 import React from "react";
 import "./SinglePage.css";
-import { Box, Button, Stack } from "@mui/material";
+import { Avatar, Box, Button, Stack } from "@mui/material";
 import { Link } from "react-router-dom";
 import {
   AndroidRounded,
@@ -36,7 +36,7 @@ const SinglePage = () => {
 
       <section className="home-section">
         <Box className="content-box">
-          <h3 className="fw-bold">السلام عليكم ورحمة الله وبركاته</h3>
+          <h5 className="fw-bold">السلام عليكم ورحمة الله وبركاته</h5>
           <p>أ / محمد مختار مصطفى</p>
           <span className="desc">
             مدرس أول فى اللغة العربية للمدرسة الثانوية بمحافظة ... مركز ... يعلن
