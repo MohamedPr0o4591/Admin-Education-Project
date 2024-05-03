@@ -1,6 +1,6 @@
 .single-page {
   position: relative;
-  height: 100vh;
+  height: auto;
   overflow: hidden;
 }
 
@@ -212,7 +212,7 @@
 @media (min-width: 320px) and (max-width: 1200px) {
   .single-page {
     overflow: hidden;
-    height: 100vh;
+    height: auto;
   }
 
   .single-page .profession-container .overlay,
@@ -220,6 +220,11 @@
   .single-page .profession-container,
   .single-page nav .content-box {
     display: none;
+  }
+
+  .single-page .home-section {
+    margin: 20px 0;
+    height: auto;
   }
 
   .single-page .home-section .content-box {

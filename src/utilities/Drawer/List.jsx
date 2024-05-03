@@ -7,6 +7,7 @@ import {
   HomeWorkOutlined,
   ManageAccountsOutlined,
   MenuBookOutlined,
+  QuizRounded,
   ReceiptOutlined,
   SchoolRounded,
   Settings,
@@ -42,18 +43,18 @@ export const list2 = [
     icon: <ReceiptOutlined />,
     path: "/admin/course-content",
   },
-];
-
-export const list3 = [
-  {
-    title: "إنشاء واجب / امتحان",
-    icon: <AddHomeWorkOutlined />,
-    path: "/admin/create",
-  },
   {
     title: "الواجبات المنزلية",
     icon: <HomeWorkOutlined />,
     path: "/admin/homework-management",
+  },
+];
+
+export const list3 = [
+  {
+    title: "إنشاء  امتحان",
+    icon: <QuizRounded />,
+    path: "/admin/create",
   },
   {
     title: "إدارة الإمتحانات",

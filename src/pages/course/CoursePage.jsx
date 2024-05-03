@@ -14,6 +14,8 @@ function CoursePage() {
   const [lessonTitle, setLessonTitle] = React.useState("");
   const [lessonDesc, setLessonDesc] = React.useState("");
   const [videoLink, setVideoLink] = React.useState("");
+  const [hWFile, setHWFile] = React.useState("");
+  const [lessonFile, setLessonFile] = React.useState("");
 
   const handleChange = (event, newAlignment) => {
     setAlignment(newAlignment);
@@ -27,21 +29,24 @@ function CoursePage() {
         <Col1
           alignment={alignment}
           handleChange={handleChange}
-          title={title}
-          setTitle={setTitle}
           lessonTitle={lessonTitle}
           setLessonTitle={setLessonTitle}
           lessonDesc={lessonDesc}
           setLessonDesc={setLessonDesc}
           videoLink={videoLink}
           setVideoLink={setVideoLink}
+          hWFile={hWFile}
+          setHWFile={setHWFile}
+          lessonFile={lessonFile}
+          setLessonFile={setLessonFile}
+          setTitle={setTitle}
         />
 
         {/* Col 2 */}
 
         <Col2
-          theme={theme}
           title={title}
+          theme={theme}
           alignment={alignment}
           lessonDesc={lessonDesc}
           lessonTitle={lessonTitle}

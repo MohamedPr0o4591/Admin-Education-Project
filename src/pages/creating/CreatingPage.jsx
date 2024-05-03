@@ -8,7 +8,7 @@ import Col1 from "../../components/pages/creating/Col1";
 import Col2 from "../../components/pages/creating/Col2";
 
 function CreatingPage() {
-  const [CreateType, setCreateType] = React.useState("HW");
+  const [CreateType, setCreateType] = React.useState("EXAM");
   const [alignment, setAlignment] = React.useState("");
   const [groupNumber, setGroupNumber] = React.useState([]);
   const [questionType, setQuestionType] = React.useState("");
@@ -114,8 +114,6 @@ function CreatingPage() {
       <HeaderLine
         title={`${CreateType === "HW" ? "إنشاء واجب منزلى" : "إنشاء امتحان"}`}
       />
-
-      <Row1 CreateType={CreateType} setCreateType={setCreateType} />
 
       <Row>
         {/* Col1 Start */}

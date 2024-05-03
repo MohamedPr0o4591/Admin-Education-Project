@@ -2,18 +2,44 @@ import React from "react";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import { Col } from "react-bootstrap";
-import { Box, Button, Stack, useTheme } from "@mui/material";
+import {
+  Box,
+  Button,
+  IconButton,
+  MenuItem,
+  Stack,
+  TextField,
+  useTheme,
+} from "@mui/material";
 import FileUploader from "./../../../pages/course/FileUploader";
+import HeaderLine from "../../headerLine/HeaderLine";
+import { AddRounded } from "@mui/icons-material";
 
 function Col1(props) {
   const theme = useTheme();
+
+  const answers = [
+    {
+      value: "الوحدة الاولى",
+    },
+    {
+      value: "الوحدة الثانية",
+    },
+    {
+      value: "الوحدة الثالثة",
+    },
+    {
+      value: "الوحدة الرابعة",
+    },
+  ];
 
   return (
     <Col xs={12} lg={6} className="col-1">
       <Stack gap={2}>
         <Stack gap={1}>
           <span style={{ color: theme.palette.primary.dark }}>
-            اولا حدد المستوى التعليمي
+            <strong className="text-danger fs-4">*</strong>اولا حدد المستوى
+            التعليمي
           </span>
 
           <ToggleButtonGroup
@@ -41,32 +67,45 @@ function Col1(props) {
         <Stack
           direction={"row"}
           gap={2}
-          alignItems={"center"}
           flexWrap={"wrap"}
+          alignItems={"center"}
         >
-          <input
-            className="flex-grow-1"
-            type="text"
-            placeholder="عنوان الفصل"
-            value={props.title}
+          <span style={{ color: theme.palette.primary.dark }}>
+            <strong className="text-danger fs-4">*</strong> اختر عنوان الفصل
+          </span>
+
+          <TextField
+            id="standard-select-currency"
+            select
+            defaultValue=""
+            label="عنوان الفصل"
+            variant="filled"
+            className="flex-grow-1 "
             onChange={(e) => props.setTitle(e.target.value)}
-            style={{
-              background: theme.palette.mode === "dark" ? "#242424" : "#f1faf1",
-              color: theme.palette.text.primary,
-            }}
-          />
-          <input
-            className="flex-grow-1"
-            type="text"
-            placeholder="عنوان الدرس"
-            value={props.lessonTitle}
-            onChange={(e) => props.setLessonTitle(e.target.value)}
-            style={{
-              background: theme.palette.mode === "dark" ? "#242424" : "#f1faf1",
-              color: theme.palette.text.primary,
-            }}
-          />
+          >
+            {answers.map((option) => (
+              <MenuItem key={option.value} value={option.value}>
+                {option.value}
+              </MenuItem>
+            ))}
+          </TextField>
+
+          <IconButton color="success">
+            <AddRounded />
+          </IconButton>
         </Stack>
+
+        <input
+          className="flex-grow-1"
+          type="text"
+          placeholder="عنوان الدرس"
+          value={props.lessonTitle}
+          onChange={(e) => props.setLessonTitle(e.target.value)}
+          style={{
+            background: theme.palette.mode === "dark" ? "#242424" : "#f1faf1",
+            color: theme.palette.text.primary,
+          }}
+        />
 
         <textarea
           className="flex-grow-1"
@@ -82,7 +121,7 @@ function Col1(props) {
 
         <Stack gap={2}>
           <span style={{ color: theme.palette.primary.dark }}>
-            ضع رابط فيديو الشرح:
+            <strong className="text-danger fs-4">*</strong> ضع رابط فيديو الشرح:
           </span>
 
           <input
@@ -104,7 +143,21 @@ function Col1(props) {
             رفع مرفق لملف الشرح اذا تواجد مثل مذكرة الشرح PDF (اختياري)
           </span>
 
-          <FileUploader />
+          <FileUploader
+            files={props.lessonFile}
+            setFiles={props.setLessonFile}
+          />
+        </Stack>
+
+        <HeaderLine title="الواجب المنزلى" />
+
+        <Stack>
+          <span style={{ color: theme.palette.primary.dark }}>
+            رفع ملف PDF / صورة لواجب منزلى اذا تواجد عن الدرس المذكور في الشرح
+            (اختيارى)
+          </span>
+
+          <FileUploader files={props.hWFile} setFiles={props.setHWFile} />
         </Stack>
 
         <Stack direction={"row"} gap={2} mt={2}>
