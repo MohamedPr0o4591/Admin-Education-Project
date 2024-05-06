@@ -27,7 +27,10 @@ export default function App() {
 
   return (
     <ThemeProvider theme={theme}>
-      <Box sx={{ width: 100 + "vw", height: 100 + "vh", overflow: "auto" }}>
+      <Box
+        sx={{ width: 100 + "vw", height: 100 + "vh", overflow: "auto" }}
+        className="App"
+      >
         <Routes>
           <Route path="/" element={<SinglePage />} />
           <Route

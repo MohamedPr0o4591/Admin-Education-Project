@@ -9,6 +9,10 @@ input {
   padding: 10px 20px;
 }
 
+.App {
+  position: relative;
+}
+
 /* Scrollbar Track */
 ::-webkit-scrollbar {
   width: 5px;

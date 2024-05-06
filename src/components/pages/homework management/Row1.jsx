@@ -22,11 +22,11 @@ function Row1(props) {
           border: "1px solid #2f2f2f",
         }}
       >
-        <ToggleButton className="flex-grow-1" value="pending">
+        <ToggleButton className="flex-grow-1" value="pending-hw">
           واجبات قيد التصحيح
         </ToggleButton>
-        <ToggleButton className="flex-grow-1" value="completed">
-          نتائج الطلاب
+        <ToggleButton className="flex-grow-1" value="pending-exam">
+          امتحانات قيد التصحيح
         </ToggleButton>
       </ToggleButtonGroup>
     </Stack>

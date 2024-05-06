@@ -30,8 +30,6 @@ export const rows2 = [
     id: 1,
     studentName: "محمد مختار",
     level: "الصف الثانى الثانوى",
-    homework: "PDF",
-    points: 200,
-    result: "200 / 350",
+    exam: "PDF",
   },
 ];

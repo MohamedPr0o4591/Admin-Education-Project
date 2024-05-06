@@ -1,59 +1,65 @@
 import React from "react";
 import "./LecturesPage.css";
 import HeaderLine from "../../components/headerLine/HeaderLine";
-import { Row } from "react-bootstrap";
+import { Container, Row } from "react-bootstrap";
 import Col1 from "../../components/pages/books and lectures/Col1";
-import Col2 from "../../components/pages/books and lectures/Col2";
 import Row1 from "../../components/pages/books and lectures/Row1";
 import { DataGrid } from "@mui/x-data-grid";
 import { Box, Button, useTheme } from "@mui/material";
-import { rows } from "../../components/pages/books and lectures/Data";
+import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import { useDispatch, useSelector } from "react-redux";
+import { getAllBooks } from "../../Redux/actions/Actions.jsx";
 
 export default function LecturesPage() {
-  const [alignment, setAlignment] = React.useState("");
-  const [finished, setFinished] = React.useState(false);
-  const [files, setFiles] = React.useState([]);
+  const [rows, setRows] = React.useState([]);
+  const [classDetails, setClassDetails] = React.useState([]);
+  const [loading, setLoading] = React.useState(false);
+  const [files, setFiles] = React.useState();
 
   const [bookDesc, setBookDesc] = React.useState("");
   const [bookTitle, setBookTitle] = React.useState("");
 
-  const [ImgReader, setImgReader] = React.useState("");
+  const [imgFile, setImgFile] = React.useState();
 
-  const [createType, setCreateType] = React.useState("add");
+  const [createType, setCreateType] = React.useState((prev) =>
+    prev !== "" ? "add" : prev
+  );
+
+  const dispatch = useDispatch();
+  const dataBooks = useSelector((state) => state.BOOKS.books);
 
   React.useEffect(() => {
-    localStorage.removeItem("books");
+    dispatch(getAllBooks());
   }, []);
 
-  const handleChange = (event, newAlignment) => {
-    setAlignment(newAlignment);
-  };
+  React.useEffect(() => {
+    let allBooks = dataBooks.map((item, index) => ({
+      id: index + 1,
+      bookTitle: item.title,
+      bookDesc: item.description,
+      level: item.class.name,
+      date: item.createdAt.split("T")[0],
+      delete: item.id,
+      cover: `${import.meta.env.VITE_API}${item.cover}`,
+      pdf: `${import.meta.env.VITE_API}${item.file}`,
+    }));
 
-  const handleSave = (_) => {
-    let arr;
-    const object = {
-      title: bookTitle,
-      desc: bookDesc,
-      cover: ImgReader,
-      pdf: files,
-      level: alignment,
-    };
-
-    if (localStorage.books) {
-      arr = JSON.parse(localStorage.books);
-      arr.push(object);
-    } else {
-      arr = [object];
-    }
-
-    localStorage.books = JSON.stringify(arr);
-    setBookTitle("");
-    setBookDesc("");
-    setImgReader("");
-    setFiles([]);
-  };
+    setRows(allBooks);
+  }, [dataBooks]);
 
   const theme = useTheme();
+
+  const handleDeleteBook = async (id) => {
+    try {
+      await axios.delete(`${import.meta.env.VITE_API}book/${id}`);
+      toast.success("تم حذف الكتاب بنجاح");
+
+      dispatch(getAllBooks());
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   const columns = [
     {
@@ -86,7 +92,16 @@ export default function LecturesPage() {
       renderCell: (params) => {
         return (
           <Button color="secondary" variant="contained">
-            عرض الصورة
+            <a
+              style={{
+                color: theme.palette.background.default,
+              }}
+              className="text-decoration-none"
+              href={params.row.cover}
+              target="_blank"
+            >
+              عرض الصورة
+            </a>
           </Button>
         );
       },
@@ -100,7 +115,16 @@ export default function LecturesPage() {
       renderCell: (params) => {
         return (
           <Button color="secondary" variant="contained">
-            عرض المحتوى
+            <a
+              style={{
+                color: theme.palette.background.default,
+              }}
+              className="text-decoration-none"
+              href={params.row.pdf}
+              target="_blank"
+            >
+              عرض المحتوى
+            </a>
           </Button>
         );
       },
@@ -115,11 +139,14 @@ export default function LecturesPage() {
         return (
           <span
             style={{
-              background: params.row.level.includes("الاول")
-                ? theme.palette.primary.main
-                : params.row.level.includes("الثانى")
-                ? theme.palette.warning.main
-                : theme.palette.success.main,
+              background:
+                params.row.level.includes("الاول") ||
+                params.row.level.includes("الأول")
+                  ? theme.palette.primary.main
+                  : params.row.level.includes("الثانى") ||
+                    params.row.level.includes("الثاني")
+                  ? theme.palette.warning.main
+                  : theme.palette.success.main,
               color: theme.palette.background.default,
               padding: "7px 10px",
               borderRadius: 0.6 + "rem",
@@ -146,7 +173,11 @@ export default function LecturesPage() {
       align: "center",
       renderCell: (params) => {
         return (
-          <Button color="error" variant="contained">
+          <Button
+            color="error"
+            variant="contained"
+            onClick={(_) => handleDeleteBook(params.row.delete)}
+          >
             حذف
           </Button>
         );
@@ -154,8 +185,78 @@ export default function LecturesPage() {
     },
   ];
 
+  const renderCleaner = () => {
+    setClassDetails([]);
+    setCreateType("add");
+    setBookDesc("");
+    setBookTitle("");
+    setImgFile();
+    setFiles();
+  };
+
+  const handleSendData = async () => {
+    let flag;
+
+    if (
+      classDetails.name !== "" &&
+      imgFile !== undefined &&
+      files !== undefined &&
+      bookDesc !== "" &&
+      bookTitle !== ""
+    ) {
+      flag = true;
+    } else flag = false;
+
+    if (flag) {
+      setLoading(true);
+
+      try {
+        const formData = new FormData();
+        formData.append("title", bookTitle);
+        formData.append("description", bookDesc);
+        formData.append("classId", classDetails.id);
+
+        formData.append("cover", imgFile);
+
+        files.forEach((file, index) => {
+          formData.append(`pdf`, file);
+        });
+
+        await axios.post(`${import.meta.env.VITE_API}book`, formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
+
+        toast.success(`تم اضافة الكتاب بنجاح`);
+      } catch (err) {
+        toast.error(`حدث خطأ ما`);
+      }
+    } else {
+      alert("يحب ملء البيانات كاملة");
+    }
+
+    setLoading(false);
+    renderCleaner();
+    setCreateType("show");
+    dispatch(getAllBooks());
+  };
+
   return (
     <div className="lectures-page">
+      <ToastContainer position="top-right" />
+      {loading ? (
+        <div className="loading">
+          <div
+            class="spinner-border"
+            role="status"
+            style={{ width: 144 + "px", height: 144 + "px" }}
+          >
+            <span class="visually-hidden">Loading...</span>
+          </div>
+        </div>
+      ) : null}
+
       <HeaderLine
         title={
           createType === "add" ? "اضافة كتاب / مذكرة" : "عرض الكتب / المذكرات"
@@ -167,29 +268,21 @@ export default function LecturesPage() {
       {/* col 1 */}
 
       {createType === "add" ? (
-        <Row>
+        <Container>
           <Col1
-            alignment={alignment}
-            handleChange={handleChange}
-            finished={finished}
-            setFinished={setFinished}
+            setClassDetails={setClassDetails}
+            classDetails={classDetails}
             bookDesc={bookDesc}
             setBookDesc={setBookDesc}
             bookTitle={bookTitle}
             setBookTitle={setBookTitle}
-            handleSave={handleSave}
-            ImgReader={ImgReader}
-            setImgReader={setImgReader}
             files={files}
             setFiles={setFiles}
+            handleSendData={handleSendData}
+            setImgFile={setImgFile}
+            imgFile={imgFile}
           />
-
-          <Col2
-            alignment={alignment}
-            bookDesc={bookDesc}
-            bookTitle={bookTitle}
-          />
-        </Row>
+        </Container>
       ) : (
         <Box sx={{ height: 75 + "vh", width: "100%", mt: 2 }}>
           <DataGrid
@@ -198,7 +291,7 @@ export default function LecturesPage() {
             initialState={{
               pagination: {
                 paginationModel: {
-                  pageSize: 5,
+                  pageSize: 10,
                 },
               },
             }}
@@ -207,8 +300,6 @@ export default function LecturesPage() {
           />
         </Box>
       )}
-
-      {/* col 2 */}
     </div>
   );
 }

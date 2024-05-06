@@ -65,23 +65,6 @@ export default function ExamManagement() {
       align: "center",
     },
     {
-      field: "studentsActive",
-      headerName: "الطلاب النشطة",
-      renderCell: (params) => {
-        return (
-          <IconButton
-            sx={{ color: theme.palette.primary.main }}
-            onClick={handleVisibility}
-          >
-            <Visibility />
-          </IconButton>
-        );
-      },
-      width: 140,
-      headerAlign: "center",
-      align: "center",
-    },
-    {
       field: "statusExam",
       headerName: "حالة الامتحان",
       width: 150,
@@ -119,89 +102,7 @@ export default function ExamManagement() {
     },
   ];
 
-  const column3 = [
-    {
-      field: "id",
-      headerName: "ID",
-      width: 90,
-      headerAlign: "center",
-      align: "center",
-    },
-    {
-      field: "studentName",
-      headerName: "اسم الطالب",
-      flex: 1,
-      headerAlign: "center",
-      align: "center",
-    },
-    {
-      field: "level",
-      headerName: "المستوى التعليمي",
-      flex: 1,
-      headerAlign: "center",
-      align: "center",
-      renderCell: (params) => {
-        return (
-          <span
-            style={{
-              background: params.row.level.includes("الاول")
-                ? theme.palette.primary.main
-                : params.row.level.includes("الثانى")
-                ? theme.palette.warning.main
-                : theme.palette.success.main,
-              color: theme.palette.background.default,
-              padding: "7px 10px",
-              borderRadius: 0.6 + "rem",
-              pointerEvents: "none",
-            }}
-          >
-            {params.row.level}
-          </span>
-        );
-      },
-    },
-    {
-      field: "groupNumber",
-      headerName: "رقم المجموعة",
-      flex: 1,
-      headerAlign: "center",
-      align: "center",
-    },
-    {
-      field: "points",
-      headerName: "النقاط",
-      flex: 1,
-      headerAlign: "center",
-      align: "center",
-    },
-    {
-      field: "result",
-      headerName: "نتيجة الطالب",
-      flex: 1,
-      headerAlign: "center",
-      align: "center",
-    },
-    {
-      field: "review",
-      headerName: "مراجعة الامتحان",
-      renderCell: (params) => {
-        return (
-          <IconButton sx={{ color: theme.palette.primary.main }}>
-            <Visibility />
-          </IconButton>
-        );
-      },
-      width: 130,
-      headerAlign: "center",
-      align: "center",
-    },
-  ];
-
   const [alignment, setAlignment] = React.useState("management");
-
-  const handleVisibility = (_) => {
-    setAlignment("visibility");
-  };
 
   return (
     <div className="ExamManagement-page">

@@ -9,37 +9,86 @@ import {
 import React from "react";
 import { Col } from "react-bootstrap";
 import FileUploader from "../../../pages/course/FileUploader";
+import axios from "axios";
 
 export default function Col1(props) {
   const theme = useTheme();
 
+  const [classes, setClasses] = React.useState([]);
+
+  const handleUploadImg = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const img = new Image();
+      img.src = URL.createObjectURL(file);
+      img.onload = () => {
+        props.setImgFile(file);
+      };
+    }
+  };
+
+  React.useEffect(() => {
+    return async () => {
+      try {
+        const res = await axios.get(`${import.meta.env.VITE_API}class`);
+
+        setClasses(res.data.classes);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+  }, []);
+
   return (
-    <Col xs={12} lg={6} className="col-1">
+    <Box>
       <Stack gap={1}>
         <span style={{ color: theme.palette.primary.dark }}>
           اولا حدد المستوى التعليمي
         </span>
 
-        <ToggleButtonGroup
-          color="primary"
-          value={props.alignment}
-          exclusive
-          onChange={props.handleChange}
-          aria-label="Platform"
-          sx={{
-            border: "1px solid rgba(255, 255, 255, 0.12);",
-          }}
+        <Stack
+          direction={"row"}
+          gap={1}
+          alignItems={"center"}
+          flexWrap={"wrap"}
         >
-          <ToggleButton className="flex-grow-1" value="الصف الاول الثانوى">
-            الصف الاول الثانوى
-          </ToggleButton>
-          <ToggleButton className="flex-grow-1" value="الصف الثانى الثانوى">
-            الصف الثانى الثانوى
-          </ToggleButton>
-          <ToggleButton className="flex-grow-1" value="الصف الثالث الثانوى">
-            الصف الثالث الثانوى
-          </ToggleButton>
-        </ToggleButtonGroup>
+          {classes.length > 0
+            ? classes.map((item, index) => {
+                return (
+                  <Box
+                    className="box-classes"
+                    sx={{
+                      background:
+                        props.classDetails.name === item.name
+                          ? "#f1f1f1"
+                          : theme.palette.mode === "dark"
+                          ? "#242424"
+                          : "#f1faf1",
+
+                      color:
+                        props.classDetails.name === item.name
+                          ? "#4a4a4a"
+                          : theme.palette.text.primary,
+
+                      transform:
+                        props.classDetails.name === item.name
+                          ? "skew(7deg)"
+                          : "skew(0deg)",
+                    }}
+                    key={index}
+                    onClick={(_) => {
+                      props.setClassDetails({
+                        name: item.name,
+                        id: item.id,
+                      });
+                    }}
+                  >
+                    {item.name}
+                  </Box>
+                );
+              })
+            : null}
+        </Stack>
       </Stack>
 
       <Stack direction={"row"} gap={2} alignItems={"center"} mt={2}>
@@ -84,25 +133,7 @@ export default function Col1(props) {
             type="file"
             className="d-none"
             id="upload-cover"
-            onChange={(e) => {
-              // تأكد من أن الصورة تم اختيارها وأن حجمها 300x300 بيكسل
-              const file = e.target.files[0];
-              if (file) {
-                const img = new Image();
-                img.src = URL.createObjectURL(file);
-                img.onload = () => {
-                  if (img.width === 300 && img.height === 300) {
-                    const reader = new FileReader();
-                    reader.readAsDataURL(file);
-                    reader.onload = () => {
-                      props.setImgReader(reader.result);
-                    };
-                  } else {
-                    alert("يجب أن يكون حجم الصورة 300 × 300 بيكسل.");
-                  }
-                };
-              }
-            }}
+            onChange={handleUploadImg}
             accept="image/*" // تحديد أنه يمكن قبول ملفات الصور فقط
           />
 
@@ -119,6 +150,12 @@ export default function Col1(props) {
             300 × 300
           </label>
         </Stack>
+
+        {props.imgFile !== undefined ? (
+          <span style={{ color: theme.palette.success.main }}>
+            تم تحديد صورة مصغرة
+          </span>
+        ) : null}
       </Box>
 
       <Box mt={3}>
@@ -137,39 +174,11 @@ export default function Col1(props) {
           variant="contained"
           sx={{ p: "10px 20px" }}
           className="flex-grow-1"
-          onClick={props.handleSave}
+          onClick={props.handleSendData}
         >
           حفظ
         </Button>
       </Stack>
-
-      <Stack direction={"row"} gap={2} alignItems={"center"} mt={3}>
-        <span
-          className="finished-question"
-          onClick={(_) =>
-            props.setFinished((prev) => (prev === false ? true : false))
-          }
-        >
-          هل انتهيت ؟؟
-        </span>
-        <Box flexGrow={1} />
-
-        {props.finished ? (
-          <Stack direction={"row"} gap={2}>
-            <Button variant="contained" color="success">
-              نعم انتهيت
-            </Button>
-
-            <Button
-              variant="contained"
-              color="error"
-              onClick={(_) => props.setFinished(false)}
-            >
-              لا, لم انتهي
-            </Button>
-          </Stack>
-        ) : null}
-      </Stack>
-    </Col>
+    </Box>
   );
 }

@@ -37,7 +37,7 @@ export default function HomeWorkMPage() {
 
   const [studentArr, setStudentArr] = React.useState(initialState);
 
-  const [alignment, setAlignment] = React.useState("pending");
+  const [alignment, setAlignment] = React.useState("pending-hw");
 
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
@@ -168,18 +168,31 @@ export default function HomeWorkMPage() {
       },
     },
     {
-      field: "points",
-      headerName: "عدد النقاط",
+      field: "exam",
+      headerName: "الامتحان",
       headerAlign: "center",
       align: "center",
       flex: 1,
     },
     {
-      field: "result",
-      headerName: "نتيجة الطالب",
+      field: "addPoints",
+      headerName: "اضافة نقاط",
       headerAlign: "center",
       align: "center",
       flex: 1,
+      renderCell: (params) => {
+        return (
+          <Button
+            color="secondary"
+            variant="contained"
+            onClick={(_) =>
+              handleAddPoints(params.row.studentName, params.row.level)
+            }
+          >
+            أضف النقاط
+          </Button>
+        );
+      },
     },
   ];
 
@@ -190,7 +203,7 @@ export default function HomeWorkMPage() {
       <Row1 alignment={alignment} setAlignment={setAlignment} />
 
       <Box sx={{ height: 75 + "vh", width: "100%", mt: 2 }}>
-        {alignment === "pending" ? (
+        {alignment === "pending-hw" ? (
           <DataGrid
             rows={rows1}
             columns={columns1}

@@ -1,13 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import HeaderLine from "../../components/headerLine/HeaderLine";
 import { Box, IconButton, Stack } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
-import { rows } from "./Data";
 import { Button, useTheme } from "@mui/material";
 import { DeleteRounded, EditRounded } from "@mui/icons-material";
 
 function CourseContentPage() {
   const theme = useTheme();
+  const [rows, setRows] = useState([]);
 
   const columns = [
     {
@@ -92,6 +92,22 @@ function CourseContentPage() {
       },
     },
   ];
+
+  React.useEffect(() => {
+    let allLessons = (_) => {
+      return {
+        id: 1,
+        educationLevel: "الصف الثانى الثانوي",
+        chapterTitle: "الفصل الاول",
+        lessonTitle: "الدرس الاول",
+        lessonDesc:
+          "وصف الدرس وصف الدرس وصف الدرس وصف الدرس وصف الدرس وصف الدرس وصف الدرس ",
+        lessonDate: "12-12-2022",
+      };
+    };
+
+    setRows(allLessons);
+  }, []);
 
   return (
     <div className="course-content-page">

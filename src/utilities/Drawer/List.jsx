@@ -44,7 +44,7 @@ export const list2 = [
     path: "/admin/course-content",
   },
   {
-    title: "الواجبات المنزلية",
+    title: "إدارة المهام (PDF)",
     icon: <HomeWorkOutlined />,
     path: "/admin/homework-management",
   },

@@ -3,7 +3,8 @@ import HeaderLine from "../../components/headerLine/HeaderLine";
 import Box from "@mui/material/Box";
 import { DataGrid } from "@mui/x-data-grid";
 import { rows } from "./Data";
-import { Button, Typography, useTheme } from "@mui/material";
+import { Button, IconButton, Typography, useTheme } from "@mui/material";
+import { Visibility } from "@mui/icons-material";
 
 function StudentManagementPage() {
   const theme = useTheme();
@@ -140,6 +141,20 @@ function StudentManagementPage() {
           >
             الغاء التفعيل
           </Button>
+        );
+      },
+    },
+    {
+      field: "activities",
+      headerName: "النشاطات",
+      flex: 1,
+      headerAlign: "center",
+      align: "center",
+      renderCell: (params) => {
+        return (
+          <IconButton color="primary">
+            <Visibility />
+          </IconButton>
         );
       },
     },

@@ -9,36 +9,14 @@ const FileUploader = (props) => {
 
   const onDrop = useCallback(
     (acceptedFiles) => {
-      const oversizedFiles = acceptedFiles.some((file) => file.size > maxSize);
-      if (oversizedFiles) {
-        setErrorMessage(
-          "حجم الفيديو أكبر من 600 ميجابايت. يرجى اختيار فيديو بحجم أقل من 600 ميجابايت."
-        );
-        props.setFiles([]);
-      } else {
-        setErrorMessage("");
-        const newFilePaths = acceptedFiles.map((file) =>
-          URL.createObjectURL(file)
-        );
-
-        props.setFiles([...props.files, ...newFilePaths]);
-      }
+      props.setFiles(acceptedFiles);
     },
-    [props.files, maxSize]
+    [props.setFiles]
   );
-
-  const handleRemoveFile = (indexToRemove) => {
-    const updatedFilePaths = props.files.filter(
-      (_, index) => index !== indexToRemove
-    );
-
-    props.setFiles(updatedFilePaths);
-  };
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
     maxSize,
-    accept: "image/*, video/*, pdf/*",
   });
 
   const bytesToMB = (bytes) => {
@@ -61,17 +39,13 @@ const FileUploader = (props) => {
         )}
       </div>
 
-      {props.files
-        ? props.files.map((filePath, index) => (
-            <div key={index}>
-              <Stack gap={1} sx={{ color: theme.palette.success.main }}>
-                <i className="user-select-none">
-                  <u>تم حديد الملف</u>
-                </i>
-              </Stack>
-            </div>
-          ))
-        : null}
+      {props.files !== undefined ? (
+        <Stack gap={1} sx={{ color: theme.palette.success.main }}>
+          <i className="user-select-none">
+            <u>تم حديد الملف</u>
+          </i>
+        </Stack>
+      ) : null}
 
       {errorMessage && <div style={{ color: "red" }}>{errorMessage}</div>}
     </div>
