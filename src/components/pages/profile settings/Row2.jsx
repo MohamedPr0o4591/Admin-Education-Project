@@ -26,10 +26,20 @@ function Row2(props) {
             }}
           />
 
-          <Button color={"success"} variant="contained">
+          <Button
+            color={"success"}
+            variant="contained"
+            onClick={(_) => props.handleUpdateMedia("facebook")}
+          >
             حفظ
           </Button>
         </Stack>
+
+        <a href={props.profileDetails?.facebookUrl} target="_blank">
+          <span className="user-select-none opacity-50">
+            {props.profileDetails?.facebookUrl}
+          </span>
+        </a>
 
         <Stack direction={"row"} gap={2} alignItems={"center"} mt={2}>
           <input
@@ -45,10 +55,20 @@ function Row2(props) {
             }}
           />
 
-          <Button color={"success"} variant="contained">
+          <Button
+            color={"success"}
+            variant="contained"
+            onClick={(_) => props.handleUpdateMedia("whatsapp")}
+          >
             حفظ
           </Button>
         </Stack>
+
+        <a href={props.profileDetails?.whatsappUrl} target="_blank">
+          <span className="user-select-none opacity-50">
+            {props.profileDetails?.whatsappUrl}
+          </span>
+        </a>
       </Stack>
     </Paper>
   );

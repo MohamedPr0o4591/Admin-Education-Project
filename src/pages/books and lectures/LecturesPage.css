@@ -79,3 +79,11 @@
   background-color: #f1f1f1;
   color: #4a4a4a;
 }
+
+.lectures-page .book-cover {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 50%;
+}

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import { Col } from "react-bootstrap";
@@ -17,6 +17,8 @@ import {
   HighlightOff,
 } from "@mui/icons-material";
 import FileUploader from "../../../pages/course/FileUploader";
+import { useDispatch, useSelector } from "react-redux";
+import { getAllClasses, getGroups } from "../../../Redux/actions/Actions";
 
 export default function Col1(props) {
   const answers = [
@@ -34,6 +36,47 @@ export default function Col1(props) {
     },
   ];
 
+  const handleDateChange = (e) => {
+    const date = e.target.type === "date" ? e.target.valueAsDate : new Date();
+    const time = e.target.type === "time" ? e.target.valueAsDate : new Date();
+    props.setSelectedDateTime(
+      new Date(
+        date.getFullYear(),
+        date.getMonth(),
+        date.getDate(),
+        time.getHours(),
+        time.getMinutes()
+      )
+    );
+  };
+
+  const [allClasses, setAllClasses] = useState([]);
+  const [groupsData, setGroupsData] = useState([]);
+  const [groupDetails, setGroupDetails] = useState([]);
+
+  const dataClasses = useSelector((state) => state.CLASSES.classes);
+  const dataGroups = useSelector((state) => state.GROUPS.groups);
+  const dispatch = useDispatch();
+
+  React.useEffect(() => {
+    dispatch(getAllClasses());
+  }, []);
+
+  React.useEffect(() => {
+    setAllClasses(dataClasses);
+  }, [dataClasses]);
+
+  const handleChangeClass = (id) => {
+    props.setClassDetails({
+      id,
+    });
+    dispatch(getGroups(id));
+  };
+
+  React.useEffect(() => {
+    setGroupsData(dataGroups);
+  }, [dataGroups]);
+
   return (
     <Col xs={12} lg={6} className="col-1">
       <Stack gap={2}>
@@ -41,65 +84,76 @@ export default function Col1(props) {
           <span style={{ color: props.theme.palette.primary.dark }}>
             اولا حدد المستوى التعليمي
           </span>
-
-          <ToggleButtonGroup
-            color="primary"
-            value={props.alignment}
-            exclusive
-            onChange={(_) => props.setAlignment(event.target.value)}
-            aria-label="Platform"
-            sx={{
-              border: "1px solid rgba(255, 255, 255, 0.12);",
-            }}
-          >
-            <ToggleButton className="flex-grow-1" value="الصف الاول الثانوى">
-              الصف الاول الثانوى
-            </ToggleButton>
-            <ToggleButton className="flex-grow-1" value="الصف الثانى الثانوى">
-              الصف الثانى الثانوى
-            </ToggleButton>
-            <ToggleButton className="flex-grow-1" value="الصف الثالث الثانوى">
-              الصف الثالث الثانوى
-            </ToggleButton>
-          </ToggleButtonGroup>
+          {allClasses.length > 0 && (
+            <ToggleButtonGroup
+              color="primary"
+              value={props.alignment}
+              exclusive
+              onChange={(_) => props.setAlignment(event.target.value)}
+              aria-label="Platform"
+              sx={{
+                border: "1px solid rgba(255, 255, 255, 0.12);",
+              }}
+              className="flex-wrap"
+            >
+              {allClasses.map((data, index) => {
+                return (
+                  <ToggleButton
+                    color="success"
+                    key={index}
+                    className="flex-grow-1"
+                    value={data.name}
+                    onClick={(_) => handleChangeClass(data.id)}
+                  >
+                    {data.name}
+                  </ToggleButton>
+                );
+              })}
+            </ToggleButtonGroup>
+          )}
         </Stack>
 
-        <Stack gap={1}>
-          <span style={{ color: props.theme.palette.primary.dark }}>
-            حدد رقم المجموعة
-          </span>
+        {props.alignment !== "" ? (
+          <Stack gap={1}>
+            <span style={{ color: props.theme.palette.primary.dark }}>
+              حدد رقم المجموعة
+            </span>
 
-          <ToggleButtonGroup
-            color="primary"
-            value={props.groupNumber}
-            onChange={props.handleFormatChange}
-            aria-label="text formatting"
-            sx={{
-              border: "1px solid rgba(255, 255, 255, 0.12);",
-            }}
-          >
-            <ToggleButton className="flex-grow-1" value="مجموعة 1">
-              مجموعة 1
-            </ToggleButton>
-            <ToggleButton className="flex-grow-1" value="مجموعة 2">
-              مجموعة 2
-            </ToggleButton>
-            <ToggleButton className="flex-grow-1" value="مجموعة 3">
-              مجموعة 3
-            </ToggleButton>
-            <ToggleButton className="flex-grow-1" value="مجموعة 4">
-              مجموعة 4
-            </ToggleButton>
-            <ToggleButton className="flex-grow-1" value="مجموعة 5">
-              مجموعة 5
-            </ToggleButton>
-            <ToggleButton className="flex-grow-1" value="مجموعة 6">
-              مجموعة 6
-            </ToggleButton>
-          </ToggleButtonGroup>
-        </Stack>
+            {groupsData.length > 0 ? (
+              <ToggleButtonGroup
+                color="success"
+                value={props.groupNumber}
+                onChange={props.handleFormatChange}
+                aria-label="text formatting"
+                sx={{
+                  border: "1px solid rgba(255, 255, 255, 0.12);",
+                }}
+              >
+                {groupsData.map((data, index) => {
+                  return (
+                    <ToggleButton
+                      key={index}
+                      className="flex-grow-1"
+                      value={data.id}
+                    >
+                      {data.name}
+                    </ToggleButton>
+                  );
+                })}
+              </ToggleButtonGroup>
+            ) : (
+              <span className="text-danger">لا يوجد مجموعات</span>
+            )}
+          </Stack>
+        ) : null}
 
-        <Stack gap={1}>
+        <Stack
+          gap={1}
+          sx={{
+            pointerEvents: props.groupNumber.length > 0 ? "auto" : "none",
+            opacity: props.groupNumber.length > 0 ? 1 : 0.5,
+          }}
+        >
           <span style={{ color: props.theme.palette.primary.dark }}>
             حدد نوع الاسئلة
           </span>
@@ -124,15 +178,15 @@ export default function Col1(props) {
         </Stack>
 
         {props.questionType === "FORM" ? (
-          <form onSubmit={props.handleFormSubmit}>
+          <Stack gap={2}>
             <Stack gap={2}>
               <Stack direction={"row"} gap={2}>
                 <input
                   className="flex-grow-1"
                   type="text"
-                  placeholder="إسم المادة"
-                  value={props.materialName}
-                  onChange={(e) => props.setMaterialName(e.target.value)}
+                  placeholder="عنوان الامتحان  (امتحان شامل)"
+                  value={props.examTitle}
+                  onChange={(e) => props.setExamTitle(e.target.value)}
                   style={{
                     background:
                       props.theme.palette.mode === "dark"
@@ -154,36 +208,32 @@ export default function Col1(props) {
                         : "#f1faf1",
                   }}
                 >
-                  <option value="ar">لغة الصفحة : العربية</option>
-                  <option value="en">لغة الصفحة : الإنجليزية</option>
+                  <option value="Arabic">لغة الصفحة : العربية</option>
+                  <option value="English">لغة الصفحة : الإنجليزية</option>
                 </select>
 
-                {props.CreateType === "EXAM" ? (
-                  <select
-                    className="flex-grow-1"
-                    value={props.examTime}
-                    onChange={(e) => props.setExamTime(e.target.value)}
-                    style={{
-                      color: props.theme.palette.text.primary,
-                      background:
-                        props.theme.palette.mode === "dark"
-                          ? "#242424"
-                          : "#f1faf1",
-                    }}
-                  >
-                    <option value="30">مدة الامتحان : نصف ساعة</option>
-                    <option value="60">مدة الامتحان : ساعة واحدة</option>
-                    <option value="90">مدة الامتحان : ساعة ونصف</option>
-                    <option value="120">مدة الامتحان : ساعتان</option>
-                  </select>
-                ) : null}
+                <select
+                  className="flex-grow-1"
+                  value={props.examTime}
+                  onChange={(e) => props.setExamTime(e.target.value)}
+                  style={{
+                    color: props.theme.palette.text.primary,
+                    background:
+                      props.theme.palette.mode === "dark"
+                        ? "#242424"
+                        : "#f1faf1",
+                  }}
+                >
+                  <option value="30">مدة الامتحان : نصف ساعة</option>
+                  <option value="60">مدة الامتحان : ساعة واحدة</option>
+                  <option value="90">مدة الامتحان : ساعة ونصف</option>
+                  <option value="120">مدة الامتحان : ساعتان</option>
+                </select>
               </Stack>
 
               <textarea
                 className="flex-grow-1"
-                placeholder={`وصف ${
-                  props.CreateType === "EXAM" ? "الامتحان" : "الواجب"
-                }`}
+                placeholder="وصف عن الامتحان"
                 value={props.materialDesc}
                 onChange={(e) => props.setMaterialDesc(e.target.value)}
                 rows={"4"}
@@ -473,31 +523,51 @@ export default function Col1(props) {
                 </Stack>
               ) : null}
             </Stack>
-          </form>
+          </Stack>
         ) : props.questionType === "PDF" ? (
           <Stack gap={2}>
-            <Stack direction={"row"} gap={2}>
-              <Box flexGrow={1} />
+            <Stack direction={"row"} gap={2} flexWrap={"wrap"}>
+              <input
+                className="flex-grow-1"
+                type="text"
+                placeholder="عنوان الامتحان  (امتحان شامل)"
+                value={props.examTitle}
+                onChange={(e) => props.setExamTitle(e.target.value)}
+                style={{
+                  background:
+                    props.theme.palette.mode === "dark" ? "#242424" : "#f1faf1",
+                  color: props.theme.palette.text.primary,
+                }}
+              />
 
-              {props.CreateType === "EXAM" ? (
-                <select
-                  className="flex-grow-1"
-                  value={props.examTime}
-                  onChange={(e) => props.setExamTime(e.target.value)}
-                  style={{
-                    color: props.theme.palette.text.primary,
-                    background:
-                      props.theme.palette.mode === "dark"
-                        ? "#242424"
-                        : "#f1faf1",
-                  }}
-                >
-                  <option value="30">مدة الامتحان : نصف ساعة</option>
-                  <option value="60">مدة الامتحان : ساعة واحدة</option>
-                  <option value="90">مدة الامتحان : ساعة ونصف</option>
-                  <option value="120">مدة الامتحان : ساعتان</option>
-                </select>
-              ) : null}
+              <input
+                className="flex-grow-1"
+                type="number"
+                placeholder="مجموع درجات الامتحان"
+                value={props.score}
+                onChange={(e) => props.setScore(e.target.value)}
+                style={{
+                  background:
+                    props.theme.palette.mode === "dark" ? "#242424" : "#f1faf1",
+                  color: props.theme.palette.text.primary,
+                }}
+              />
+
+              <select
+                className="flex-grow-1"
+                value={props.examTime}
+                onChange={(e) => props.setExamTime(e.target.value)}
+                style={{
+                  color: props.theme.palette.text.primary,
+                  background:
+                    props.theme.palette.mode === "dark" ? "#242424" : "#f1faf1",
+                }}
+              >
+                <option value="30">مدة الامتحان : نصف ساعة</option>
+                <option value="60">مدة الامتحان : ساعة واحدة</option>
+                <option value="90">مدة الامتحان : ساعة ونصف</option>
+                <option value="120">مدة الامتحان : ساعتان</option>
+              </select>
             </Stack>
 
             <span style={{ color: props.theme.palette.primary.dark }}>
@@ -510,7 +580,36 @@ export default function Col1(props) {
           </Stack>
         ) : null}
 
-        <Stack direction={"row"} gap={2} alignItems={"center"}>
+        <Stack
+          direction={"row"}
+          gap={2}
+          flexWrap={"wrap"}
+          sx={{
+            pointerEvents: props.groupNumber.length > 0 ? "auto" : "none",
+            opacity: props.groupNumber.length > 0 ? 1 : 0.5,
+          }}
+        >
+          <span style={{ color: props.theme.palette.primary.dark }}>
+            تحديد موعد عرض الامتحان
+          </span>
+
+          <Box flexGrow={1} />
+
+          <div className="d-flex gap-2">
+            <input type="date" onChange={handleDateChange} />
+            <input type="time" onChange={handleDateChange} />
+          </div>
+        </Stack>
+
+        <Stack
+          direction={"row"}
+          gap={2}
+          alignItems={"center"}
+          sx={{
+            pointerEvents: props.groupNumber.length > 0 ? "auto" : "none",
+            opacity: props.groupNumber.length > 0 ? 1 : 0.5,
+          }}
+        >
           <span
             className="finished-question"
             onClick={(_) =>
@@ -523,7 +622,11 @@ export default function Col1(props) {
 
           {props.finished ? (
             <Stack direction={"row"} gap={2}>
-              <Button variant="contained" color="success">
+              <Button
+                variant="contained"
+                color="success"
+                onClick={props.handleSendExam}
+              >
                 نعم انتهيت
               </Button>
 

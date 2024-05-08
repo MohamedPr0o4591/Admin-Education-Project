@@ -110,6 +110,8 @@ function Col1(props) {
     } else if (mood === "delete-unit") {
       handleDeleteUnit(props.unitDetails.id);
       props.setTitle("");
+    } else if (mood === "upload") {
+      props.handleSendData();
     }
 
     setOpen(false);
@@ -149,11 +151,12 @@ function Col1(props) {
 
           {classesData.length > 0 ? (
             <ToggleButtonGroup
-              color="primary"
+              color="success"
               value={props.alignment}
               exclusive
               onChange={props.handleChange}
               aria-label="Platform"
+              className="flex-wrap"
               sx={{
                 border: "1px solid rgba(255, 255, 255, 0.12);",
               }}
@@ -189,31 +192,31 @@ function Col1(props) {
                 <strong className="text-danger fs-4">*</strong> اختر عنوان الفصل
               </span>
 
-              <TextField
-                id="standard-select-currency"
-                select
-                defaultValue=""
-                label="عنوان الفصل"
-                variant="filled"
-                className="flex-grow-1 "
-                onChange={(e) => props.setTitle(e.target.value)}
-              >
-                {unitsData.length > 0
-                  ? unitsData.map((item) => {
-                      return (
-                        <MenuItem
-                          key={item.id}
-                          value={item.name}
-                          onClick={(_) =>
-                            handleSetUnitDetails(item.name, item.id)
-                          }
-                        >
-                          {item.name}
-                        </MenuItem>
-                      );
-                    })
-                  : null}
-              </TextField>
+              {unitsData.length > 0 ? (
+                <TextField
+                  id="standard-select-currency"
+                  select
+                  defaultValue={""}
+                  label="عنوان الفصل"
+                  variant="filled"
+                  className="flex-grow-1 "
+                  onChange={(e) => props.setTitle(e.target.value)}
+                >
+                  {unitsData.map((item, index) => {
+                    return (
+                      <MenuItem
+                        key={index}
+                        value={item.name}
+                        onClick={(_) =>
+                          handleSetUnitDetails(item.name, item.id)
+                        }
+                      >
+                        {item.name}
+                      </MenuItem>
+                    );
+                  })}
+                </TextField>
+              ) : null}
 
               <IconButton
                 color="success"
@@ -339,7 +342,7 @@ function Col1(props) {
         </Stack>
 
         {props.questionType === "FORM" ? (
-          <form onSubmit={props.handleFormSubmit}>
+          <Stack gap={2}>
             <Stack gap={2}>
               <Stack direction={"row"} gap={2}>
                 <Box flexGrow={1} />
@@ -487,21 +490,23 @@ function Col1(props) {
                   </span>
 
                   <Stack direction={"row"} gap={2}>
-                    <TextField
-                      id="standard-select-currency"
-                      select
-                      defaultValue=""
-                      label="اختر الاجابة الصحيحة"
-                      variant="filled"
-                      className="flex-grow-1 "
-                      onChange={(e) => props.setCorrectAns1(e.target.value)}
-                    >
-                      {answers.map((option) => (
-                        <MenuItem key={option.value} value={option.value}>
-                          {option.value}
-                        </MenuItem>
-                      ))}
-                    </TextField>
+                    {answers.length > 0 ? (
+                      <TextField
+                        id="standard-select-currency"
+                        select
+                        defaultValue={""}
+                        label="اختر الاجابة الصحيحة"
+                        variant="filled"
+                        className="flex-grow-1 "
+                        onChange={(e) => props.setCorrectAns1(e.target.value)}
+                      >
+                        {answers.map((option, index) => (
+                          <MenuItem key={index} value={option.value}>
+                            {option.value}
+                          </MenuItem>
+                        ))}
+                      </TextField>
+                    ) : null}
 
                     {/* درجة السؤال */}
 
@@ -620,7 +625,7 @@ function Col1(props) {
                 </Stack>
               ) : null}
             </Stack>
-          </form>
+          </Stack>
         ) : props.questionType === "PDF" ? (
           <Stack gap={2}>
             <Stack
@@ -635,8 +640,8 @@ function Col1(props) {
                 className="flex-grow-1 border-0 py-3"
                 type="number"
                 placeholder="مجموعة نقاط اسئلة الواجب"
-                value={homeWorkPoints}
-                onChange={(e) => setHomeWorkPoints(e.target.value)}
+                value={props.score}
+                onChange={(e) => props.setScore(e.target.value)}
                 style={{
                   background:
                     theme.palette.mode === "dark" ? "#242424" : "#f1faf1",
@@ -648,7 +653,7 @@ function Col1(props) {
             <Box>
               <span style={{ color: theme.palette.primary.dark }}>
                 رفع ملف PDF / صورة لواجب منزلى اذا تواجد عن الدرس المذكور في
-                الشرح (اختيارى)
+                الشرح
               </span>
 
               <FileUploader files={props.hWFile} setFiles={props.setHWFile} />

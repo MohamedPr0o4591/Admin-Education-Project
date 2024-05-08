@@ -1,13 +1,30 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import HeaderLine from "../../components/headerLine/HeaderLine";
 import Box from "@mui/material/Box";
 import { DataGrid } from "@mui/x-data-grid";
-import { rows } from "./Data";
-import { Button, IconButton, Typography, useTheme } from "@mui/material";
+import {
+  AppBar,
+  Button,
+  IconButton,
+  Menu,
+  MenuItem,
+  Stack,
+  Tab,
+  Tabs,
+  Typography,
+  useTheme,
+} from "@mui/material";
 import { Visibility } from "@mui/icons-material";
+import { useDispatch, useSelector } from "react-redux";
+import { getAllStudents, getGroups } from "../../Redux/actions/Actions";
+import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import PropTypes from "prop-types";
 
 function StudentManagementPage() {
   const theme = useTheme();
+
+  const [rows, setRows] = useState([]);
 
   const columns = [
     {
@@ -46,21 +63,24 @@ function StudentManagementPage() {
       align: "center",
       renderCell: (params) => {
         return (
-          <Box
-            sx={{
-              background: params.row.educationLevel.includes("الاول")
-                ? theme.palette.primary.main
-                : params.row.educationLevel.includes("الثانى")
-                ? theme.palette.warning.main
-                : theme.palette.success.main,
-              p: "7px 2px",
-              borderRadius: 0.6 + "rem",
+          <span
+            style={{
+              background:
+                params.row.educationLevel.name.includes("الاول") ||
+                params.row.educationLevel.name.includes("الأول")
+                  ? theme.palette.primary.main
+                  : params.row.educationLevel.name.includes("الثانى") ||
+                    params.row.educationLevel.name.includes("الثاني")
+                  ? theme.palette.warning.main
+                  : theme.palette.success.main,
               color: theme.palette.background.default,
+              padding: "7px 10px",
+              borderRadius: 0.6 + "rem",
               pointerEvents: "none",
             }}
           >
-            {params.row.educationLevel}
-          </Box>
+            {params.row.educationLevel.name}
+          </span>
         );
       },
     },
@@ -73,22 +93,30 @@ function StudentManagementPage() {
     },
     {
       field: "groupNumber",
-      headerName: "رقم المجموعة",
+      headerName: "اسم المجموعة",
       flex: 1,
       headerAlign: "center",
       align: "center",
       renderCell: (params) => {
         return (
-          <Box
+          <Button
+            title="اضغط لتغيير المجموعة"
             sx={{
               border: "1px groove " + theme.palette.primary.main,
               p: "8px 30px",
               borderRadius: 2 + "rem",
               cursor: "pointer",
             }}
+            onClick={(e) =>
+              handleClick(
+                e,
+                params.row.accountManagement,
+                params.row.educationLevel.id
+              )
+            }
           >
-            {params.row.groupNumber}
-          </Box>
+            <span>{params.row.groupNumber.name}</span>
+          </Button>
         );
       },
     },
@@ -98,6 +126,9 @@ function StudentManagementPage() {
       flex: 1,
       headerAlign: "center",
       align: "center",
+      renderCell: (params) => {
+        return <span>{(+params.row.points).toLocaleString()}</span>;
+      },
     },
     {
       field: "accountStatus",
@@ -108,15 +139,18 @@ function StudentManagementPage() {
       renderCell: (params) => {
         return (
           <Box
+            className="user-select-none"
             sx={{
               p: "8px 10px",
-              background: theme.palette.success.main,
+              background: params.row.accountStatus
+                ? theme.palette.success.dark
+                : theme.palette.error.dark,
               borderRadius: 0.6 + "rem",
-              color: theme.palette.background.default,
+              color: "#efef",
               pointerEvents: "none",
             }}
           >
-            مفعل
+            {!params.row.accountStatus ? "غير مفعل" : "مفعل"}
           </Box>
         );
       },
@@ -137,32 +171,128 @@ function StudentManagementPage() {
               cursor: "pointer",
             }}
             variant="contained"
-            color="error"
+            color={params.row.accountStatus ? "error" : "success"}
+            onClick={(_) =>
+              handleChangeAccountStatus(
+                params.row.accountStatus,
+                params.row.accountManagement
+              )
+            }
           >
-            الغاء التفعيل
+            {params.row.accountStatus ? "تعطيل الحساب" : "تفعيل الحساب"}
           </Button>
-        );
-      },
-    },
-    {
-      field: "activities",
-      headerName: "النشاطات",
-      flex: 1,
-      headerAlign: "center",
-      align: "center",
-      renderCell: (params) => {
-        return (
-          <IconButton color="primary">
-            <Visibility />
-          </IconButton>
         );
       },
     },
   ];
 
+  const dataStudents = useSelector((state) => state.STUDENTS.studentsData);
+  const dataGroups = useSelector((state) => state.GROUPS.groups);
+  const dispatch = useDispatch();
+
+  const [studentDetails, setStudentDetails] = useState([]);
+  const [groupsData, setGroupsData] = useState([]);
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event, studentId, classId) => {
+    setStudentDetails({
+      studentId,
+      classId,
+    });
+    dispatch(getGroups(classId));
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = async (id) => {
+    if (id) {
+      try {
+        await axios.patch(
+          `${import.meta.env.VITE_API}teacher/changeStudentGroup/${
+            studentDetails.studentId
+          }`,
+          { groupId: id }
+        );
+
+        dispatch(getAllStudents());
+        toast.success(`تم تغيير المجموعة بنجاح`);
+      } catch (err) {
+        toast.error(`حدث خطأ أثناء التغيير`);
+      }
+    }
+
+    setAnchorEl(null);
+  };
+
+  const handleChangeAccountStatus = async (status, id) => {
+    try {
+      await axios.post(
+        `${import.meta.env.VITE_API}teacher/verifyStudent/${id}`,
+        { verified: !status }
+      );
+
+      dispatch(getAllStudents());
+      toast.success(`تم تغيير حالة الحساب بنجاح`);
+    } catch (err) {
+      toast.error(`حدث خطأ اثناء تغيير حالة الحساب`);
+    }
+  };
+
+  React.useEffect(() => {
+    dispatch(getAllStudents());
+  }, []);
+
+  React.useEffect(() => {
+    if (dataStudents.length > 0) {
+      let allStudents = dataStudents.map((student, index) => {
+        return {
+          id: index + 1,
+          studentName: student.userName,
+          phoneNumber: student.phone,
+          educationLevel: {
+            name: student.ClassSchema,
+            id: student.classId,
+          },
+          groupNumber: {
+            id: student.groupId,
+            name: student.GroupSchema,
+          },
+          points: student.totalPoints,
+          parentPhoneNumber: student.parentPhoneNumber,
+          address: student.address,
+          accountStatus: student.verified,
+          accountManagement: student.id,
+        };
+      });
+
+      setRows(allStudents);
+    }
+  }, [dataStudents]);
+
+  React.useEffect(() => {
+    setGroupsData(dataGroups);
+  }, [dataGroups]);
+
   return (
     <div className="students-management-page ">
       <HeaderLine title="إدارة الطلاب" />
+
+      <ToastContainer position="top-right" />
+
+      <Menu
+        id="basic-menu"
+        anchorEl={anchorEl}
+        open={open}
+        onClose={handleClose}
+        MenuListProps={{
+          "aria-labelledby": "basic-button",
+        }}
+      >
+        {groupsData.map((group, index) => (
+          <MenuItem key={index} onClick={(_) => handleClose(group.id)}>
+            {group.name}
+          </MenuItem>
+        ))}
+      </Menu>
 
       <Box sx={{ height: 75 + "vh", minWidth: "1200px" }}>
         <DataGrid

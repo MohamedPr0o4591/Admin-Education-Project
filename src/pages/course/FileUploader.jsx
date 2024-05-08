@@ -5,7 +5,6 @@ import "./FileUploader.css";
 
 const FileUploader = (props) => {
   const maxSize = 600 * 1024 * 1024; // 600 ميجابايت
-  const [errorMessage, setErrorMessage] = React.useState("");
 
   const onDrop = useCallback(
     (acceptedFiles) => {
@@ -46,8 +45,6 @@ const FileUploader = (props) => {
           </i>
         </Stack>
       ) : null}
-
-      {errorMessage && <div style={{ color: "red" }}>{errorMessage}</div>}
     </div>
   );
 };

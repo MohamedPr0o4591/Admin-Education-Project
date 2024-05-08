@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import List from "@mui/material/List";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
@@ -14,6 +14,9 @@ import { Avatar, Stack } from "@mui/material";
 import { list1, list2, list3, list4 } from "./List";
 import { useNavigate } from "react-router";
 import { grey } from "@mui/material/colors";
+import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { getAllProfileDetails } from "../../Redux/actions/Actions";
 
 const Drawer = styled(MuiDrawer, {
   shouldForwardProp: (prop) => prop !== "open",
@@ -66,8 +69,21 @@ const drawerWidth = 240;
 
 function SideBar(props) {
   const theme = useTheme();
+  const [profileDetails, setProfileDetails] = useState([]);
 
   const navigate = useNavigate();
+  const dataProfile = useSelector((state) => state.PROFILEDETAILS.profile);
+  const dispatch = useDispatch();
+
+  React.useEffect(() => {
+    const token = localStorage.login;
+
+    dispatch(getAllProfileDetails(token));
+  }, []);
+
+  React.useEffect(() => {
+    setProfileDetails(dataProfile);
+  }, [dataProfile]);
 
   return (
     <Drawer variant="permanent" open={props.open}>
@@ -83,8 +99,8 @@ function SideBar(props) {
 
       <Stack gap={2} justifyContent={"center"} alignItems={"center"} my={2}>
         <Avatar
-          alt="Mohamed Mokhtar"
-          src="https://png.pngtree.com/thumb_back/fw800/background/20230523/pngtree-beautiful-and-majestic-natural-scenery-image_2760432.jpg"
+          alt={`${profileDetails?.firstName} ${profileDetails?.lastName}`}
+          src={`${import.meta.env.VITE_API}${profileDetails?.profileImage}`}
           sx={{
             width: props.open ? "95px" : "44px",
             height: props.open ? "95px" : "44px",
@@ -108,7 +124,7 @@ function SideBar(props) {
             transition: "all .228s ease",
           }}
         >
-          Mohamed Mokhtar
+          {`${profileDetails?.firstName} ${profileDetails?.lastName}`}
         </strong>
       </Stack>
       <Divider />

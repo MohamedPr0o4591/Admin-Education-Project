@@ -11,3 +11,12 @@
   border-radius: 0.2rem;
   border-bottom: 3px solid #4a4a4a;
 }
+
+.profile-page .img-reader {
+  width: 150px;
+  height: 150px;
+  pointer-events: none;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 50%;
+}

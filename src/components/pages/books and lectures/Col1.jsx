@@ -16,12 +16,15 @@ export default function Col1(props) {
 
   const [classes, setClasses] = React.useState([]);
 
+  const [imgReader, setImgReader] = React.useState();
+
   const handleUploadImg = (e) => {
     const file = e.target.files[0];
     if (file) {
       const img = new Image();
       img.src = URL.createObjectURL(file);
       img.onload = () => {
+        setImgReader(URL.createObjectURL(file));
         props.setImgFile(file);
       };
     }
@@ -126,36 +129,37 @@ export default function Col1(props) {
           ضع صورة مصغرة للكتاب
         </span>
 
-        <Stack direction={"row"} gap={2} alignItems={"center"} mt={1}>
+        <Stack direction={"row"} gap={2} mt={1}>
           <span className="user-select-none">اضغط لاختيار الصورة المصغرة</span>
           <Box flexGrow={1} />
-          <input
-            type="file"
-            className="d-none"
-            id="upload-cover"
-            onChange={handleUploadImg}
-            accept="image/*" // تحديد أنه يمكن قبول ملفات الصور فقط
-          />
 
-          <label
-            htmlFor="upload-cover"
-            style={{
-              cursor: "pointer",
-              color: theme.palette.primary.dark,
-              background: theme.palette.mode === "dark" ? "#242424" : "#f1faf1",
-              border: `1px solid ${theme.palette.primary.dark}`,
-            }}
-            className="upload-cover w-50"
-          >
-            300 × 300
-          </label>
+          <div className="w-50 d-flex flex-column gap-4 align-items-end">
+            <input
+              type="file"
+              className="d-none"
+              id="upload-cover"
+              onChange={handleUploadImg}
+              accept="image/*" // تحديد أنه يمكن قبول ملفات الصور فقط
+            />
+
+            <label
+              htmlFor="upload-cover"
+              style={{
+                cursor: "pointer",
+                color: theme.palette.primary.dark,
+                background:
+                  theme.palette.mode === "dark" ? "#242424" : "#f1faf1",
+                border: `1px solid ${theme.palette.primary.dark}`,
+              }}
+              className="upload-cover w-100"
+            >
+              300 × 300
+            </label>
+            {imgReader ? (
+              <img className="book-cover" src={imgReader} alt="book cover" />
+            ) : null}
+          </div>
         </Stack>
-
-        {props.imgFile !== undefined ? (
-          <span style={{ color: theme.palette.success.main }}>
-            تم تحديد صورة مصغرة
-          </span>
-        ) : null}
       </Box>
 
       <Box mt={3}>

@@ -23,27 +23,41 @@ export default function Col2(props) {
             maxWidth: 530 + "px",
             px: 2,
             py: 5,
-            textAlign: props.language === "ar" ? "right" : "left",
+            textAlign: props.language === "Arabic" ? "right" : "left",
           }}
         >
           <Stack gap={1}>
-            <h4>{props.alignment}</h4>
-            <Stack direction={"row"} gap={2}>
+            <Stack direction={"row"} gap={1} alignItems={"center"}>
+              <h4>{props.alignment}</h4>
+
               <Box flexGrow={1} />
 
-              {props.CreateType === "EXAM" ? (
-                <span>
-                  {`مدة الامتحان: ${
-                    props.examTime === "30"
-                      ? "نصف ساعة"
-                      : props.examTime === "60"
-                      ? "ساعة واحدة"
-                      : props.examTime === "90"
-                      ? "ساعة ونصف"
-                      : "ساعتان"
-                  }`}
-                </span>
-              ) : null}
+              {props.score !== "" && (
+                <small>
+                  مجموع درجات الاسئلة:{" "}
+                  <span className="text-danger">
+                    {props.score.toLocaleString()}
+                  </span>{" "}
+                  درجة
+                </small>
+              )}
+            </Stack>
+
+            <Stack direction={"row"} gap={2}>
+              <span className="fw-bold">{props.examTitle}</span>
+              <Box flexGrow={1} />
+
+              <span>
+                {`مدة الامتحان: ${
+                  props.examTime === "30"
+                    ? "نصف ساعة"
+                    : props.examTime === "60"
+                    ? "ساعة واحدة"
+                    : props.examTime === "90"
+                    ? "ساعة ونصف"
+                    : "ساعتان"
+                }`}
+              </span>
             </Stack>
 
             <strong className="mt-3 fs-5">{props.materialName}</strong>
@@ -53,7 +67,7 @@ export default function Col2(props) {
               ? props.arrQuestions.map((question, index) => {
                   return (
                     <Box key={index}>
-                      {question.ans3 ? (
+                      {question.options.length > 2 ? (
                         <Stack gap={1}>
                           <Stack
                             direction={"row"}
@@ -70,7 +84,7 @@ export default function Col2(props) {
                               <span
                                 style={{ color: theme.palette.warning.main }}
                               >
-                                {question.questionMark}
+                                {question.questionScore.toLocaleString()}
                               </span>{" "}
                               درجة )
                             </span>
@@ -85,7 +99,7 @@ export default function Col2(props) {
                             </IconButton>
                           </Stack>
                           <Paper elevation={3} sx={{ p: 2 }}>
-                            {question.question}
+                            {question.questionText}
                           </Paper>
                           <Stack direction={"row"} gap={2}>
                             <Paper
@@ -94,16 +108,16 @@ export default function Col2(props) {
                               sx={{
                                 p: 2,
                                 background:
-                                  question.correct === question.ans1
+                                  question.correctAnswer === question.options[0]
                                     ? theme.palette.success.dark
                                     : null,
                                 color:
-                                  question.correct === question.ans1
+                                  question.correctAnswer === question.options[0]
                                     ? "#efef"
                                     : null,
                               }}
                             >
-                              {question.ans1}
+                              {question.options[0]}
                             </Paper>
                             <Paper
                               elevation={3}
@@ -111,16 +125,16 @@ export default function Col2(props) {
                               sx={{
                                 p: 2,
                                 background:
-                                  question.correct === question.ans2
+                                  question.correctAnswer === question.options[1]
                                     ? theme.palette.success.dark
                                     : null,
                                 color:
-                                  question.correct === question.ans2
+                                  question.correctAnswer === question.options[1]
                                     ? "#efef"
                                     : null,
                               }}
                             >
-                              {question.ans2}
+                              {question.options[1]}
                             </Paper>
                           </Stack>
 
@@ -131,16 +145,16 @@ export default function Col2(props) {
                               sx={{
                                 p: 2,
                                 background:
-                                  question.correct === question.ans3
+                                  question.correctAnswer === question.options[2]
                                     ? theme.palette.success.dark
                                     : null,
                                 color:
-                                  question.correct === question.ans3
+                                  question.correctAnswer === question.options[2]
                                     ? "#efef"
                                     : null,
                               }}
                             >
-                              {question.ans3}
+                              {question.options[2]}
                             </Paper>
                             <Paper
                               elevation={3}
@@ -148,16 +162,16 @@ export default function Col2(props) {
                               sx={{
                                 p: 2,
                                 background:
-                                  question.correct === question.ans4
+                                  question.correctAnswer === question.options[3]
                                     ? theme.palette.success.dark
                                     : null,
                                 color:
-                                  question.correct === question.ans4
+                                  question.correctAnswer === question.options[3]
                                     ? "#efef"
                                     : null,
                               }}
                             >
-                              {question.ans4}
+                              {question.options[3]}
                             </Paper>
                           </Stack>
                         </Stack>
@@ -178,7 +192,7 @@ export default function Col2(props) {
                               <span
                                 style={{ color: theme.palette.warning.main }}
                               >
-                                {question.questionMark}
+                                {question.questionScore.toLocaleString()}
                               </span>{" "}
                               درجة )
                             </span>
@@ -202,9 +216,9 @@ export default function Col2(props) {
                               sx={{ p: 2 }}
                               className="flex-grow-1"
                             >
-                              {question.question}
+                              {question.questionText}
                             </Paper>
-                            {question.correct === "true" ? (
+                            {question.correctAnswer === "true" ? (
                               <Stack direction={"row"} gap={1}>
                                 <CheckCircle
                                   style={{

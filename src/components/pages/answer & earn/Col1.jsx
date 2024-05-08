@@ -15,11 +15,25 @@ import {
   ToggleButtonGroup,
   useTheme,
 } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
 import { Col } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
+import { getAllClasses } from "../../../Redux/actions/Actions";
 
 const Col1 = (props) => {
   const theme = useTheme();
+
+  const [classesData, setClassesData] = useState([]);
+  const dataClasses = useSelector((state) => state.CLASSES.classes);
+  const dispatch = useDispatch();
+
+  React.useEffect(() => {
+    dispatch(getAllClasses());
+  }, []);
+
+  React.useEffect(() => {
+    setClassesData(dataClasses);
+  }, [dataClasses]);
 
   const answers = [
     {
@@ -42,27 +56,32 @@ const Col1 = (props) => {
         <span style={{ color: theme.palette.primary.dark }}>
           اولا حدد المستوى التعليمي
         </span>
-
-        <ToggleButtonGroup
-          color="primary"
-          value={props.alignment}
-          exclusive
-          onChange={props.handleChange}
-          aria-label="Platform"
-          sx={{
-            border: "1px solid rgba(255, 255, 255, 0.12);",
-          }}
-        >
-          <ToggleButton className="flex-grow-1" value="الصف الاول الثانوى">
-            الصف الاول الثانوى
-          </ToggleButton>
-          <ToggleButton className="flex-grow-1" value="الصف الثانى الثانوى">
-            الصف الثانى الثانوى
-          </ToggleButton>
-          <ToggleButton className="flex-grow-1" value="الصف الثالث الثانوى">
-            الصف الثالث الثانوى
-          </ToggleButton>
-        </ToggleButtonGroup>
+        {classesData.length > 0 && (
+          <ToggleButtonGroup
+            className="flex-wrap"
+            color="primary"
+            value={props.alignment}
+            exclusive
+            onChange={props.handleChange}
+            aria-label="Platform"
+            sx={{
+              border: "1px solid rgba(255, 255, 255, 0.12);",
+            }}
+          >
+            {classesData.map((item, index) => {
+              return (
+                <ToggleButton
+                  key={index}
+                  className="flex-grow-1"
+                  value={item.name}
+                  onClick={(_) => props.setClassId(item.id)}
+                >
+                  {item.name}
+                </ToggleButton>
+              );
+            })}
+          </ToggleButtonGroup>
+        )}
       </Stack>
 
       <Stack direction={"row"} gap={2} alignItems={"center"} flexWrap={"wrap"}>
@@ -85,8 +104,8 @@ const Col1 = (props) => {
               background: theme.palette.mode === "dark" ? "#242424" : "#f1faf1",
             }}
           >
-            <option value="ar">لغة السؤال : العربية</option>
-            <option value="en">لغة السؤال : الإنجليزية</option>
+            <option value="Arabic">لغة السؤال : العربية</option>
+            <option value="English">لغة السؤال : الإنجليزية</option>
           </select>
 
           <Box flexGrow={1} />
@@ -98,6 +117,10 @@ const Col1 = (props) => {
           onClick={(_) => {
             props.setOpenMenu((prev) => (prev === false ? true : false));
             props.setQuestionForm("");
+          }}
+          sx={{
+            pointerEvents: props.alignment !== "" ? "auto" : "none",
+            opacity: props.alignment !== "" ? "1" : "0.5",
           }}
         >
           أضف سؤالاً
@@ -364,7 +387,7 @@ const Col1 = (props) => {
 
             {props.finished ? (
               <Stack direction={"row"} gap={2}>
-                <Button variant="contained" color="success">
+                <Button variant="contained" color="success" type="submit">
                   نعم انتهيت
                 </Button>
 

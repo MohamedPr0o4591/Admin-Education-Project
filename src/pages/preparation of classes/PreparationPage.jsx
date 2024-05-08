@@ -21,6 +21,8 @@ import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import GroupComponent from "../../components/pages/preparation of classes/GroupComponent";
+import { useDispatch, useSelector } from "react-redux";
+import { getAllClasses, getGroups } from "../../Redux/actions/Actions";
 
 const style = {
   position: "absolute",
@@ -50,6 +52,10 @@ const PreparationPage = () => {
   const [groupDetails, setGroupDetails] = React.useState([]);
   const theme = useTheme();
 
+  const dataClasses = useSelector((state) => state.CLASSES.classes);
+  const dataGroups = useSelector((state) => state.GROUPS.groups);
+  const dispatch = useDispatch();
+
   const handleAddClass = async (e) => {
     e.preventDefault();
     if (classTitle !== "") {
@@ -69,7 +75,8 @@ const PreparationPage = () => {
 
           toast.success("تم إضافة الصف بنجاح");
 
-          renderData();
+          dispatch(getAllClasses());
+
           setClassTitle("");
           setOpen(false);
         } catch (err) {
@@ -126,7 +133,9 @@ const PreparationPage = () => {
 
       setMood("create");
       toast.success("تم تعديل الصف بنجاح");
-      renderData();
+
+      dispatch(getAllClasses());
+
       setClassTitle("");
       setClassDetails([]);
       setGroupDetails([]);
@@ -140,9 +149,12 @@ const PreparationPage = () => {
       try {
         await axios.delete(`${import.meta.env.VITE_API}class/${id}`);
         toast.success("تم حذف الصف بنجاح");
-        renderData();
+
+        dispatch(getAllClasses());
+
         setClassDetails({});
         setGroupDetails([]);
+        setMood("create");
       } catch (err) {
         console.error(err);
       }
@@ -160,28 +172,23 @@ const PreparationPage = () => {
     setOpen2(false);
   };
 
-  const renderData = async (_) => {
-    const res = await axios.get(`${import.meta.env.VITE_API}class`);
-    setClassesData(res.data.classes);
-  };
-
-  const showGroups = async (_) => {
+  const showGroups = (_) => {
     if (classDetails.id) {
-      try {
-        const res = await axios.get(
-          `${import.meta.env.VITE_API}group/class/${classDetails.id}`
-        );
-
-        setGroupDetails(res.data.groups);
-      } catch (err) {
-        console.error(err);
-      }
+      dispatch(getGroups(classDetails.id));
     }
   };
 
   React.useEffect(() => {
-    renderData();
+    setGroupDetails(dataGroups);
+  }, [dataGroups]);
+
+  React.useEffect(() => {
+    dispatch(getAllClasses());
   }, []);
+
+  React.useEffect(() => {
+    setClassesData(dataClasses);
+  }, [dataClasses]);
 
   React.useEffect(() => {
     if (mood !== "edit") {
@@ -291,6 +298,7 @@ const PreparationPage = () => {
                               background: "transparent",
                               boxShadow: `0 0 0.65rem ${theme.palette.primary.main}`,
                               transform: "scale(1.02)",
+                              color: theme.palette.primary.main,
                             },
                           }}
                         >

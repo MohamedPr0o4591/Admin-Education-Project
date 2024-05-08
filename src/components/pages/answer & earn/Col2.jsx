@@ -27,17 +27,31 @@ const Col2 = (props) => {
             maxWidth: 530 + "px",
             px: 2,
             py: 5,
-            textAlign: "right",
+            textAlign: props.language === "Arabic" ? "right" : "left",
           }}
         >
           <Stack gap={1}>
-            <h4 className="border-bottom pb-2">{props.alignment}</h4>
+            <Stack direction={"row"} alignItems={"center"}>
+              <h4 className="border-bottom pb-2">{props.alignment}</h4>
+              <Box flexGrow={1} />
+
+              {props.score !== 0 && props.score !== undefined && (
+                <span
+                  style={{ color: theme.palette.primary.main }}
+                  className="d-flex gap-2"
+                >
+                  مجموع الدرجات:{" "}
+                  <p className="text-danger">{props.score.toLocaleString()}</p>{" "}
+                  درجة
+                </span>
+              )}
+            </Stack>
 
             {props.arrQuestions.length > 0
               ? props.arrQuestions.map((question, index) => {
                   return (
                     <Box key={index}>
-                      {question.ans3 ? (
+                      {question.options.length > 2 ? (
                         <Stack gap={1}>
                           <Stack
                             direction={"row"}
@@ -54,7 +68,7 @@ const Col2 = (props) => {
                               <span
                                 style={{ color: theme.palette.warning.main }}
                               >
-                                {question.questionMark}
+                                {question.questionScore.toLocaleString()}
                               </span>{" "}
                               درجة )
                             </span>
@@ -69,7 +83,7 @@ const Col2 = (props) => {
                             </IconButton>
                           </Stack>
                           <Paper elevation={3} sx={{ p: 2 }}>
-                            {question.question}
+                            {question.questionText}
                           </Paper>
                           <Stack direction={"row"} gap={2} flexWrap={"wrap"}>
                             <Paper
@@ -78,16 +92,16 @@ const Col2 = (props) => {
                               sx={{
                                 p: 2,
                                 background:
-                                  question.correct === question.ans1
+                                  question.correctAnswer === question.options[0]
                                     ? theme.palette.success.dark
                                     : null,
                                 color:
-                                  question.correct === question.ans1
+                                  question.correctAnswer === question.options[0]
                                     ? "#efef"
                                     : null,
                               }}
                             >
-                              {question.ans1}
+                              {question.options[0]}
                             </Paper>
                             <Paper
                               elevation={3}
@@ -95,16 +109,16 @@ const Col2 = (props) => {
                               sx={{
                                 p: 2,
                                 background:
-                                  question.correct === question.ans2
+                                  question.correctAnswer === question.options[1]
                                     ? theme.palette.success.dark
                                     : null,
                                 color:
-                                  question.correct === question.ans2
+                                  question.correctAnswer === question.options[1]
                                     ? "#efef"
                                     : null,
                               }}
                             >
-                              {question.ans2}
+                              {question.options[1]}
                             </Paper>
                           </Stack>
 
@@ -115,16 +129,16 @@ const Col2 = (props) => {
                               sx={{
                                 p: 2,
                                 background:
-                                  question.correct === question.ans3
+                                  question.correctAnswer === question.options[2]
                                     ? theme.palette.success.dark
                                     : null,
                                 color:
-                                  question.correct === question.ans3
+                                  question.correctAnswer === question.options[2]
                                     ? "#efef"
                                     : null,
                               }}
                             >
-                              {question.ans3}
+                              {question.options[2]}
                             </Paper>
                             <Paper
                               elevation={3}
@@ -132,16 +146,16 @@ const Col2 = (props) => {
                               sx={{
                                 p: 2,
                                 background:
-                                  question.correct === question.ans4
+                                  question.correctAnswer === question.options[3]
                                     ? theme.palette.success.dark
                                     : null,
                                 color:
-                                  question.correct === question.ans4
+                                  question.correctAnswer === question.options[3]
                                     ? "#efef"
                                     : null,
                               }}
                             >
-                              {question.ans4}
+                              {question.options[3]}
                             </Paper>
                           </Stack>
                         </Stack>
@@ -162,7 +176,7 @@ const Col2 = (props) => {
                               <span
                                 style={{ color: theme.palette.warning.main }}
                               >
-                                {question.questionMark}
+                                {question.questionScore.toLocaleString()}
                               </span>{" "}
                               درجة )
                             </span>
@@ -186,9 +200,9 @@ const Col2 = (props) => {
                               sx={{ p: 2 }}
                               className="flex-grow-1"
                             >
-                              {question.question}
+                              {question.questionText}
                             </Paper>
-                            {question.correct === "true" ? (
+                            {question.correctAnswer === "true" ? (
                               <Stack direction={"row"} gap={1}>
                                 <CheckCircle
                                   style={{

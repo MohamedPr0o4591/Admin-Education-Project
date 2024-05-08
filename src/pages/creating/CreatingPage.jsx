@@ -6,19 +6,22 @@ import { Box, Button, IconButton, Paper, Stack, useTheme } from "@mui/material";
 import Row1 from "../../components/pages/creating/Row1";
 import Col1 from "../../components/pages/creating/Col1";
 import Col2 from "../../components/pages/creating/Col2";
+import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import { useNavigate } from "react-router";
 
 function CreatingPage() {
-  const [CreateType, setCreateType] = React.useState("EXAM");
   const [alignment, setAlignment] = React.useState("");
+  const [classDetails, setClassDetails] = React.useState([]);
   const [groupNumber, setGroupNumber] = React.useState([]);
   const [questionType, setQuestionType] = React.useState("");
   const [questionForm, setQuestionForm] = React.useState("");
+  const [examTitle, setExamTitle] = React.useState("");
 
-  const [files, setFiles] = React.useState([]);
+  const [files, setFiles] = React.useState();
 
-  const [materialName, setMaterialName] = React.useState("");
   const [materialDesc, setMaterialDesc] = React.useState("");
-  const [language, setLanguage] = React.useState("ar");
+  const [language, setLanguage] = React.useState("Arabic");
 
   const [openMenu, setOpenMenu] = React.useState(false);
 
@@ -30,6 +33,7 @@ function CreatingPage() {
   const [ans4, setAns4] = React.useState("");
   const [correctAns1, setCorrectAns1] = React.useState(ans1);
   const [questionMark, setQuestionMark] = React.useState("");
+  const [score, setScore] = React.useState("");
 
   const [question2, setQuestion2] = React.useState("");
   const [correctAns2, setCorrectAns2] = React.useState("true");
@@ -40,14 +44,90 @@ function CreatingPage() {
 
   const [arrQuestions, setArrQuestions] = React.useState([]);
 
+  const [selectedDateTime, setSelectedDateTime] = React.useState(null);
+
+  const navigate = useNavigate();
+
   const theme = useTheme();
 
   const handleFormatChange = (event, newFormats) => {
     setGroupNumber(newFormats);
   };
 
-  const handleFormSubmit = (e) => {
-    e.preventDefault();
+  const handleSendExam = async (_) => {
+    let flag;
+
+    if (
+      alignment !== "" &&
+      groupNumber.length > 0 &&
+      questionType !== "" &&
+      examTitle !== "" &&
+      selectedDateTime !== null
+    ) {
+      flag = true;
+    } else flag = false;
+
+    if (flag) {
+      try {
+        if (questionType !== "PDF") {
+          await axios.post(
+            `${import.meta.env.VITE_API}exam`,
+            {
+              title: examTitle,
+              examType: "EXAM",
+              questionType: "MCQ",
+              description: materialDesc,
+              language,
+              duration: examTime,
+              startTime: selectedDateTime,
+              score: +score,
+              classId: classDetails.id,
+              groupsId: groupNumber,
+              questions: JSON.parse(localStorage.getItem("question")),
+            },
+            {
+              headers: {
+                "Content-Type": "application/json",
+              },
+            }
+          );
+        } else {
+          const formData = new FormData();
+          formData.append("file", files[0]);
+          formData.append("title", examTitle);
+          formData.append("examType", "EXAM");
+          formData.append("questionType", "PDF");
+          formData.append("duration", examTime);
+          formData.append("startTime", selectedDateTime);
+          formData.append("score", +score);
+          formData.append("classId", classDetails.id);
+          // formData.append("groupsId", groupNumber); // ['a766db6b-571d-4b5c-b594-c625c7168fc9', 'e3dd3c44-2fc4-415c-b757-c63f5f105381', 'fa888b7f-0edc-4524-a86a-35a3b395b983']
+          formData.append("language", "Arabic");
+          formData.append("description", "description");
+
+          groupNumber.forEach((value, index) => {
+            formData.append(`groupsId[${index}]`, value);
+          });
+
+          await axios.post(`${import.meta.env.VITE_API}exam`, formData, {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          });
+        }
+        toast.success(`تم انشاء الامتحان بنجاح`);
+        localStorage.removeItem("question");
+
+        setTimeout(() => {
+          navigate("/admin/exam-management");
+        }, 1000);
+      } catch (err) {
+        toast.error(`حدث خطأ أثناء إنشاء الامتحان`);
+      }
+    } else {
+      toast.error(`يرجى ملء جميع البيانات المطلوبة`);
+      setFinished(false);
+    }
   };
 
   React.useEffect(() => {
@@ -68,21 +148,20 @@ function CreatingPage() {
 
   const handleAddQuestion = (_) => {
     let object;
+
     if (questionForm === "اختيار من متعدد") {
       object = {
-        question: question1,
-        ans1,
-        ans2,
-        ans3,
-        ans4,
-        correct: correctAns1,
-        questionMark,
+        questionText: question1,
+        options: [ans1, ans2, ans3, ans4],
+        correctAnswer: correctAns1,
+        questionScore: +questionMark,
       };
     } else if (questionForm === "اختر الاجابة الصحيحة") {
       object = {
-        question: question2,
-        correct: correctAns2,
-        questionMark,
+        questionText: question2,
+        correctAnswer: correctAns2,
+        questionScore: +questionMark,
+        options: ["true", "false"],
       };
     }
 
@@ -109,11 +188,21 @@ function CreatingPage() {
     setArrQuestions(arr);
   };
 
+  React.useEffect(() => {
+    let total = 0;
+    if (localStorage.question) {
+      let arr = JSON.parse(localStorage.question);
+      for (let i = 0; i < arr.length; i++) {
+        total = +total + +arr[i].questionScore;
+        setScore(total);
+      }
+    }
+  }, [localStorage.question]);
+
   return (
     <div className="create-homework-page">
-      <HeaderLine
-        title={`${CreateType === "HW" ? "إنشاء واجب منزلى" : "إنشاء امتحان"}`}
-      />
+      <HeaderLine title="إنشاء امتحان" />
+      <ToastContainer position="top-right" />
 
       <Row>
         {/* Col1 Start */}
@@ -126,15 +215,12 @@ function CreatingPage() {
           setGroupNumber={setGroupNumber}
           questionType={questionType}
           setQuestionType={setQuestionType}
-          handleFormSubmit={handleFormSubmit}
+          handleSendExam={handleSendExam}
           handleAddQuestion={handleAddQuestion}
-          materialName={materialName}
-          setMaterialName={setMaterialName}
           language={language}
           setLanguage={setLanguage}
           finished={finished}
           setFinished={setFinished}
-          CreateType={CreateType}
           materialDesc={materialDesc}
           setMaterialDesc={setMaterialDesc}
           setOpenMenu={setOpenMenu}
@@ -163,6 +249,12 @@ function CreatingPage() {
           setQuestionMark={setQuestionMark}
           files={files}
           setFiles={setFiles}
+          examTitle={examTitle}
+          setExamTitle={setExamTitle}
+          setSelectedDateTime={setSelectedDateTime}
+          setClassDetails={setClassDetails}
+          score={score}
+          setScore={setScore}
         />
 
         {/* Col2 Start */}
@@ -170,12 +262,12 @@ function CreatingPage() {
           language={language}
           alignment={alignment}
           groupNumber={groupNumber}
-          CreateType={CreateType}
-          materialName={materialName}
           materialDesc={materialDesc}
           arrQuestions={arrQuestions}
           examTime={examTime}
           handleDeleteQuestion={handleDeleteQuestion}
+          score={score}
+          examTitle={examTitle}
         />
       </Row>
     </div>

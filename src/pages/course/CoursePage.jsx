@@ -5,6 +5,9 @@ import "./CoursePage.css";
 import { useTheme } from "@mui/material";
 import Col1 from "../../components/pages/course/Col1";
 import Col2 from "../../components/pages/course/Col2";
+import { useNavigate } from "react-router";
+import { ToastContainer, toast } from "react-toastify";
+import axios from "axios";
 
 function CoursePage() {
   const theme = useTheme();
@@ -27,12 +30,15 @@ function CoursePage() {
   const [ans4, setAns4] = React.useState("");
   const [correctAns1, setCorrectAns1] = React.useState(ans1);
   const [questionMark, setQuestionMark] = React.useState("");
+  const [score, setScore] = React.useState();
 
   const [question2, setQuestion2] = React.useState("");
   const [correctAns2, setCorrectAns2] = React.useState("true");
 
   const [arrQuestions, setArrQuestions] = React.useState([]);
   const [unitDetails, setUnitDetails] = React.useState([]);
+
+  const navigate = useNavigate();
 
   const clearForm = (_) => {
     setQuestion1("");
@@ -54,19 +60,17 @@ function CoursePage() {
     let object;
     if (questionForm === "اختيار من متعدد") {
       object = {
-        question: question1,
-        ans1,
-        ans2,
-        ans3,
-        ans4,
-        correct: correctAns1,
-        questionMark,
+        questionText: question1,
+        options: [ans1, ans2, ans3, ans4],
+        correctAnswer: correctAns1,
+        questionScore: +questionMark,
       };
     } else if (questionForm === "اختر الاجابة الصحيحة") {
       object = {
-        question: question2,
-        correct: correctAns2,
-        questionMark,
+        questionText: question2,
+        correctAnswer: correctAns2,
+        questionScore: +questionMark,
+        options: ["true", "false"],
       };
     }
 
@@ -90,8 +94,60 @@ function CoursePage() {
     setAlignment(newAlignment);
   };
 
-  const handleFormSubmit = (e) => {
-    e.preventDefault();
+  const handleSendData = async (_) => {
+    let flag;
+
+    if (alignment !== null && title !== "" && lessonTitle !== "") {
+      flag = true;
+    } else flag = false;
+
+    if (flag) {
+      try {
+        const formData = new FormData();
+
+        if (questionType != "PDF") {
+          let newArr = JSON.parse(localStorage.question);
+          formData.append("unitId", unitDetails.id);
+          formData.append("title", lessonTitle);
+          formData.append("description", lessonDesc);
+          formData.append("videoUrl", videoLink);
+          formData.append("file", lessonFile[0]);
+          formData.append("questionType", "MCQ");
+          formData.append("score", score);
+
+          newArr.forEach((value, index) => {
+            formData.append(
+              `homeworkQuestions[${index}]`,
+              JSON.stringify(value)
+            );
+          });
+        } else {
+          formData.append("unitId", unitDetails.id);
+          formData.append("title", lessonTitle);
+          formData.append("description", lessonDesc);
+          formData.append("videoUrl", videoLink);
+          formData.append("file", lessonFile[0]);
+          formData.append("questionType", "PDF");
+          formData.append("score", score);
+          formData.append("homeworkFile", hWFile[0]);
+        }
+
+        await axios.post(`${import.meta.env.VITE_API}lesson`, formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
+
+        toast.success("تم إضافة الدرس بنجاح");
+        localStorage.removeItem("question");
+
+        setTimeout(() => {
+          navigate("/admin/course-content");
+        }, 1000);
+      } catch (err) {
+        toast.error("حدث خطأ");
+      }
+    } else toast.warning("برجاء ملء جميع الحقول");
   };
 
   const handleDeleteQuestion = (i) => {
@@ -101,9 +157,21 @@ function CoursePage() {
     setArrQuestions(arr);
   };
 
+  React.useEffect(() => {
+    let total = 0;
+    if (localStorage.question) {
+      let arr = JSON.parse(localStorage.question);
+      for (let i = 0; i < arr.length; i++) {
+        total = +total + +arr[i].questionScore;
+        setScore(total);
+      }
+    }
+  }, [localStorage.question]);
+
   return (
     <div className="course-page">
       <HeaderLine title="شرح المنهج" />
+      <ToastContainer position="top-right" />
 
       <Row>
         <Col1
@@ -123,7 +191,6 @@ function CoursePage() {
           title={title}
           questionType={questionType}
           setQuestionType={setQuestionType}
-          handleFormSubmit={handleFormSubmit}
           language={language}
           setLanguage={setLanguage}
           openMenu={openMenu}
@@ -151,6 +218,9 @@ function CoursePage() {
           handleAddQuestion={handleAddQuestion}
           unitDetails={unitDetails}
           setUnitDetails={setUnitDetails}
+          handleSendData={handleSendData}
+          score={score}
+          setScore={setScore}
         />
 
         {/* Col 2 */}
@@ -164,6 +234,8 @@ function CoursePage() {
           arrQuestions={arrQuestions}
           handleDeleteQuestion={handleDeleteQuestion}
           unitDetails={unitDetails}
+          language={language}
+          score={score}
         />
       </Row>
     </div>
