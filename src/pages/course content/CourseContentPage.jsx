@@ -32,6 +32,7 @@ function CourseContentPage() {
   const dispatch = useDispatch();
 
   const [open, setOpen] = useState(false);
+  const [loadingFetchData, setLoadingFetchData] = useState(false);
   const [lessonDetails, setLessonDetails] = useState([]);
   const [file, setFile] = useState();
   const [mood, setMood] = useState("");
@@ -148,7 +149,7 @@ function CourseContentPage() {
       renderCell: (params) => {
         return (
           <Box className="d-flex gap-2 align-items-center">
-            <p className="m-0 text-white">{params.row.lessonDate}</p>
+            <p className="m-0 ">{params.row.lessonDate}</p>
           </Box>
         );
       },
@@ -226,33 +227,27 @@ function CourseContentPage() {
   }, [dataLessons]);
 
   const handleSubmitAction = async (_) => {
+    setLoadingFetchData(true);
     try {
       if (mood === "delete") {
         await axios.delete(
           `${import.meta.env.VITE_API}lesson/${lessonDetails.id}`
         );
         toast.success("تم حذف الدرس بنجاح");
+        setOpen(false);
         dispatch(getAllLessons());
       } else if (mood === "edit") {
         if (
-          lessonDetails.name !== "" ||
-          lessonDetails.desc !== "" ||
-          lessonDetails.video !== "" ||
-          file !== null
+          lessonDetails.name !== undefined &&
+          lessonDetails.desc !== undefined &&
+          lessonDetails.video !== undefined &&
+          file
         ) {
           const formData = new FormData();
-          if (lessonDetails.title !== "") {
-            formData.append("title", lessonDetails.title);
-          }
-          if (lessonDetails.desc !== "") {
-            formData.append("description", lessonDetails.desc);
-          }
-          if (lessonDetails.video !== "") {
-            formData.append("videoUrl", lessonDetails.video);
-          }
-          if (file) {
-            formData.append("file", file[0]);
-          }
+          formData.append("title", lessonDetails.title);
+          formData.append("description", lessonDetails.desc);
+          formData.append("videoUrl", lessonDetails.video);
+          formData.append("file", file[0]);
 
           await axios.patch(
             `${import.meta.env.VITE_API}lesson/${lessonDetails.id}`,
@@ -266,13 +261,16 @@ function CourseContentPage() {
 
           toast.success("تم حفظ البيانات بنجاح");
           dispatch(getAllLessons());
+
+          setOpen(false);
+          setFile(undefined);
         } else toast.warning("برجاء ملء الحقول التى تريد تغييرها");
       }
-
-      setOpen(false);
     } catch (err) {
       toast.error("حدث خطأ ما");
     }
+
+    setLoadingFetchData(false);
   };
 
   return (
@@ -390,8 +388,13 @@ function CourseContentPage() {
               variant="contained"
               color={mood === "delete" ? "error" : "success"}
               onClick={handleSubmitAction}
+              disabled={loadingFetchData}
             >
-              {mood === "delete" ? "حذف الدرس" : "حفظ التعديلات"}
+              {loadingFetchData
+                ? "جاري التحميل"
+                : mood === "delete"
+                ? "حذف الدرس"
+                : "حفظ التعديلات"}
             </Button>
           </Stack>
         </Stack>

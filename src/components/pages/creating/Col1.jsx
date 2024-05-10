@@ -51,8 +51,8 @@ export default function Col1(props) {
   };
 
   const [allClasses, setAllClasses] = useState([]);
+  const [classDetails, setClassDetails] = useState([]);
   const [groupsData, setGroupsData] = useState([]);
-  const [groupDetails, setGroupDetails] = useState([]);
 
   const dataClasses = useSelector((state) => state.CLASSES.classes);
   const dataGroups = useSelector((state) => state.GROUPS.groups);
@@ -64,6 +64,24 @@ export default function Col1(props) {
 
   React.useEffect(() => {
     setAllClasses(dataClasses);
+    let arr1 = dataClasses.filter(
+      (item) =>
+        item.name.includes("الابتدائى") || item.name.includes("الابتدائي")
+    );
+
+    let arr2 = dataClasses.filter(
+      (item) => item.name.includes("الاعدادى") || item.name.includes("الاعدادي")
+    );
+
+    let arr3 = dataClasses.filter(
+      (item) => item.name.includes("الثانوي") || item.name.includes("الثانوى")
+    );
+
+    setClassDetails({
+      arr1,
+      arr2,
+      arr3,
+    });
   }, [dataClasses]);
 
   const handleChangeClass = (id) => {
@@ -86,29 +104,63 @@ export default function Col1(props) {
           </span>
           {allClasses.length > 0 && (
             <ToggleButtonGroup
-              color="primary"
+              color="success"
               value={props.alignment}
               exclusive
               onChange={(_) => props.setAlignment(event.target.value)}
               aria-label="Platform"
+              className="flex-column"
               sx={{
                 border: "1px solid rgba(255, 255, 255, 0.12);",
               }}
-              className="flex-wrap"
             >
-              {allClasses.map((data, index) => {
-                return (
-                  <ToggleButton
-                    color="success"
-                    key={index}
-                    className="flex-grow-1"
-                    value={data.name}
-                    onClick={(_) => handleChangeClass(data.id)}
-                  >
-                    {data.name}
-                  </ToggleButton>
-                );
-              })}
+              <Stack direction={"row"} flexWrap={"wrap"} alignItems={"center"}>
+                {classDetails.arr1.length > 0 &&
+                  classDetails.arr1.map((item, index) => {
+                    return (
+                      <ToggleButton
+                        className="flex-grow-1"
+                        value={item.name}
+                        key={index}
+                        onClick={(_) => handleChangeClass(item.id)}
+                      >
+                        {item.name}
+                      </ToggleButton>
+                    );
+                  })}
+              </Stack>
+
+              <Stack direction={"row"} flexWrap={"wrap"} alignItems={"center"}>
+                {classDetails.arr2.length > 0 &&
+                  classDetails.arr2.map((item, index) => {
+                    return (
+                      <ToggleButton
+                        className="flex-grow-1"
+                        value={item.name}
+                        key={index}
+                        onClick={(_) => handleChangeClass(item.id)}
+                      >
+                        {item.name}
+                      </ToggleButton>
+                    );
+                  })}
+              </Stack>
+
+              <Stack direction={"row"} flexWrap={"wrap"} alignItems={"center"}>
+                {classDetails.arr3.length > 0 &&
+                  classDetails.arr3.map((item, index) => {
+                    return (
+                      <ToggleButton
+                        className="flex-grow-1"
+                        value={item.name}
+                        key={index}
+                        onClick={(_) => handleChangeClass(item.id)}
+                      >
+                        {item.name}
+                      </ToggleButton>
+                    );
+                  })}
+              </Stack>
             </ToggleButtonGroup>
           )}
         </Stack>
@@ -169,10 +221,10 @@ export default function Col1(props) {
             }}
           >
             <ToggleButton className="flex-grow-1" value="FORM">
-              FORM
+              MCQ
             </ToggleButton>
             <ToggleButton className="flex-grow-1" value="PDF">
-              PDF / صورة
+              PDF
             </ToggleButton>
           </ToggleButtonGroup>
         </Stack>
@@ -595,9 +647,29 @@ export default function Col1(props) {
 
           <Box flexGrow={1} />
 
-          <div className="d-flex gap-2">
-            <input type="date" onChange={handleDateChange} />
-            <input type="time" onChange={handleDateChange} />
+          <div className="d-flex gap-2 w-100">
+            <input
+              className="flex-grow-1"
+              type="date"
+              onChange={handleDateChange}
+              style={{
+                background:
+                  props.theme.palette.mode === "dark" ? "#242424" : "#f1faf1",
+                color: props.theme.palette.text.primary,
+                border: "none",
+              }}
+            />
+            <input
+              className="flex-grow-1"
+              type="time"
+              onChange={handleDateChange}
+              style={{
+                background:
+                  props.theme.palette.mode === "dark" ? "#242424" : "#f1faf1",
+                color: props.theme.palette.text.primary,
+                border: "none",
+              }}
+            />
           </div>
         </Stack>
 

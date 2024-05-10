@@ -99,7 +99,7 @@ export default function Col2(props) {
                 <small>
                   مجموع درجات الاسئلة:{" "}
                   <span className="text-danger">
-                    {props.score.toLocaleString()}
+                    {(+props.score).toLocaleString()}
                   </span>{" "}
                   درجة
                 </small>

@@ -1,11 +1,9 @@
-import { Stack, useTheme } from "@mui/material";
+import { Box, Button, Stack, useTheme } from "@mui/material";
 import React, { useCallback } from "react";
 import { useDropzone } from "react-dropzone";
 import "./FileUploader.css";
 
 const FileUploader = (props) => {
-  const maxSize = 600 * 1024 * 1024; // 600 ميجابايت
-
   const onDrop = useCallback(
     (acceptedFiles) => {
       props.setFiles(acceptedFiles);
@@ -15,12 +13,7 @@ const FileUploader = (props) => {
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
-    maxSize,
   });
-
-  const bytesToMB = (bytes) => {
-    return (bytes / (1024 * 1024)).toFixed(2); // تحويل البايت إلى ميجابايت مع تحديد عدد الأرقام البعدين
-  };
 
   const theme = useTheme();
 
@@ -41,7 +34,26 @@ const FileUploader = (props) => {
       {props.files !== undefined ? (
         <Stack gap={1} sx={{ color: theme.palette.success.main }}>
           <i className="user-select-none">
-            <u>تم حديد الملف</u>
+            {props.files.map((file) => (
+              <div className=" d-flex justify-content-between">
+                <ul style={{ lineHeight: 2 }}>
+                  <li key={file.name}>اسم الملف : {file.name}</li>
+                  <li>
+                    حجم الملف : {(file.size / 1024 / 1024).toFixed(2)} ميجا بايت
+                  </li>
+                </ul>
+
+                <Box>
+                  <Button
+                    variant="contained"
+                    color="error"
+                    onClick={(_) => props.setFiles([])}
+                  >
+                    حذف الملف
+                  </Button>
+                </Box>
+              </div>
+            ))}
           </i>
         </Stack>
       ) : null}

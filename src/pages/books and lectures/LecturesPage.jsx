@@ -15,6 +15,7 @@ export default function LecturesPage() {
   const [rows, setRows] = React.useState([]);
   const [classDetails, setClassDetails] = React.useState([]);
   const [loading, setLoading] = React.useState(false);
+  const [LoadingFetchData, setLoadingFetchData] = React.useState(false);
   const [files, setFiles] = React.useState();
 
   const [bookDesc, setBookDesc] = React.useState("");
@@ -195,14 +196,15 @@ export default function LecturesPage() {
   };
 
   const handleSendData = async () => {
+    setLoadingFetchData(true);
     let flag;
 
     if (
-      classDetails.name !== "" &&
       imgFile !== undefined &&
       files !== undefined &&
       bookDesc !== "" &&
-      bookTitle !== ""
+      bookTitle !== "" &&
+      classDetails.id
     ) {
       flag = true;
     } else flag = false;
@@ -228,18 +230,20 @@ export default function LecturesPage() {
           },
         });
 
+        renderCleaner();
+        setCreateType("show");
+        dispatch(getAllBooks());
+
         toast.success(`تم اضافة الكتاب بنجاح`);
       } catch (err) {
         toast.error(`حدث خطأ ما`);
       }
     } else {
-      alert("يحب ملء البيانات كاملة");
+      toast.error("يحب ملء البيانات كاملة!!!");
     }
 
     setLoading(false);
-    renderCleaner();
-    setCreateType("show");
-    dispatch(getAllBooks());
+    setLoadingFetchData(false);
   };
 
   return (
@@ -281,6 +285,7 @@ export default function LecturesPage() {
             handleSendData={handleSendData}
             setImgFile={setImgFile}
             imgFile={imgFile}
+            LoadingFetchData={LoadingFetchData}
           />
         </Container>
       ) : (
@@ -295,7 +300,8 @@ export default function LecturesPage() {
                 },
               },
             }}
-            rowsPerPageOptions={[5]}
+            rowsPerPageOptions={[10]}
+            pageSizeOptions={[10]}
             disableRowSelectionOnClick
           />
         </Box>

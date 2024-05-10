@@ -14,6 +14,7 @@ export default function LoginPage() {
   const [auth, setAuth] = React.useState({ email: "", pass: "" });
 
   const [active, setActive] = React.useState(false);
+  const [loadingFetchData, setLoadingFetchData] = React.useState(false);
   const [err, setErr] = React.useState("");
 
   React.useEffect(() => {
@@ -34,6 +35,7 @@ export default function LoginPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setActive(true);
+    setLoadingFetchData(true);
 
     try {
       const res = await axios.post(
@@ -54,6 +56,8 @@ export default function LoginPage() {
     } catch (err) {
       setErr(err.response.status);
     }
+
+    setLoadingFetchData(false);
   };
 
   const theme = useTheme();
@@ -96,7 +100,17 @@ export default function LoginPage() {
           <span>كلمة المرور</span>
         </div>
 
-        <input type="submit" value="تسجيل الدخول" />
+        <input
+          type="submit"
+          value={`${
+            loadingFetchData ? "جاري تسجيل الدخول ..." : "تسجيل الدخول"
+          }`}
+          disabled={loadingFetchData}
+          style={{
+            cursor: !loadingFetchData ? "pointer" : "not-allowed",
+            opacity: !loadingFetchData ? 1 : 0.5,
+          }}
+        />
       </form>
     </div>
   );

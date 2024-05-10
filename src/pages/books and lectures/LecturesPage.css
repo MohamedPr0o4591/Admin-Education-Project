@@ -87,3 +87,15 @@
   object-position: center;
   border-radius: 50%;
 }
+
+.lectures-page .delete-action {
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  transition: all 0.3s ease;
+}
+
+.lectures-page .box-img:hover > .delete-action {
+  opacity: 1;
+}

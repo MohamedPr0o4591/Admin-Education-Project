@@ -47,10 +47,10 @@ function Col1(props) {
 
   const theme = useTheme();
   const [classesData, setClassesData] = useState([]);
+  const [classDetails, setClassDetails] = useState([]);
   const [unitsData, setUnitsData] = useState([]);
   const [classId, setClassId] = useState("");
   const [unitName, setUnitName] = useState("");
-  const [homeWorkPoints, setHomeWorkPoints] = useState("");
 
   const [mood, setMood] = useState("");
 
@@ -68,6 +68,24 @@ function Col1(props) {
 
   React.useEffect(() => {
     setClassesData(dataClasses);
+    let arr1 = dataClasses.filter(
+      (item) =>
+        item.name.includes("الابتدائى") || item.name.includes("الابتدائي")
+    );
+
+    let arr2 = dataClasses.filter(
+      (item) => item.name.includes("الاعدادى") || item.name.includes("الاعدادي")
+    );
+
+    let arr3 = dataClasses.filter(
+      (item) => item.name.includes("الثانوي") || item.name.includes("الثانوى")
+    );
+
+    setClassDetails({
+      arr1,
+      arr2,
+      arr3,
+    });
   }, [dataClasses]);
 
   React.useEffect(() => {
@@ -75,6 +93,7 @@ function Col1(props) {
   }, [dataUnits]);
 
   const handleAddUnit = async (id, name) => {
+    props.setLoadingFetchData(true);
     try {
       await axios.post(`${import.meta.env.VITE_API}unit`, {
         name: name,
@@ -89,9 +108,13 @@ function Col1(props) {
     } catch (err) {
       console.log(err);
     }
+
+    props.setLoadingFetchData(false);
   };
 
   const handleDeleteUnit = async (id) => {
+    props.setLoadingFetchData(true);
+
     try {
       await axios.delete(`${import.meta.env.VITE_API}unit/${id}`);
 
@@ -101,6 +124,7 @@ function Col1(props) {
     } catch (err) {
       console.error(err);
     }
+    props.setLoadingFetchData(false);
   };
 
   const handleClick = (_) => {
@@ -156,26 +180,67 @@ function Col1(props) {
               exclusive
               onChange={props.handleChange}
               aria-label="Platform"
-              className="flex-wrap"
+              className="flex-column"
               sx={{
                 border: "1px solid rgba(255, 255, 255, 0.12);",
               }}
             >
-              {classesData.map((item, index) => {
-                return (
-                  <ToggleButton
-                    className="flex-grow-1"
-                    value={item.name}
-                    key={index}
-                    onClick={() => {
-                      setClassId(item.id);
-                      props.setUnitDetails([]);
-                    }}
-                  >
-                    {item.name}
-                  </ToggleButton>
-                );
-              })}
+              <Stack direction={"row"} flexWrap={"wrap"} alignItems={"center"}>
+                {classDetails.arr1.length > 0 &&
+                  classDetails.arr1.map((item, index) => {
+                    return (
+                      <ToggleButton
+                        className="flex-grow-1"
+                        value={item.name}
+                        key={index}
+                        onClick={() => {
+                          setClassId(item.id);
+                          props.setUnitDetails([]);
+                        }}
+                      >
+                        {item.name}
+                      </ToggleButton>
+                    );
+                  })}
+              </Stack>
+
+              <Stack direction={"row"} flexWrap={"wrap"} alignItems={"center"}>
+                {classDetails.arr2.length > 0 &&
+                  classDetails.arr2.map((item, index) => {
+                    return (
+                      <ToggleButton
+                        className="flex-grow-1"
+                        value={item.name}
+                        key={index}
+                        onClick={() => {
+                          setClassId(item.id);
+                          props.setUnitDetails([]);
+                        }}
+                      >
+                        {item.name}
+                      </ToggleButton>
+                    );
+                  })}
+              </Stack>
+
+              <Stack direction={"row"} flexWrap={"wrap"} alignItems={"center"}>
+                {classDetails.arr3.length > 0 &&
+                  classDetails.arr3.map((item, index) => {
+                    return (
+                      <ToggleButton
+                        className="flex-grow-1"
+                        value={item.name}
+                        key={index}
+                        onClick={() => {
+                          setClassId(item.id);
+                          props.setUnitDetails([]);
+                        }}
+                      >
+                        {item.name}
+                      </ToggleButton>
+                    );
+                  })}
+              </Stack>
             </ToggleButtonGroup>
           ) : null}
         </Stack>
@@ -333,10 +398,10 @@ function Col1(props) {
             }}
           >
             <ToggleButton className="flex-grow-1" value="FORM">
-              FORM
+              MCQ
             </ToggleButton>
             <ToggleButton className="flex-grow-1" value="PDF">
-              PDF / صورة
+              PDF
             </ToggleButton>
           </ToggleButtonGroup>
         </Stack>
@@ -729,8 +794,11 @@ function Col1(props) {
               variant="contained"
               color={mood === "delete-unit" ? "error" : "success"}
               onClick={handleClick}
+              disabled={props.loadingFetchData}
             >
-              {mood === "upload"
+              {props.loadingFetchData
+                ? "جاري التحميل ..."
+                : mood === "upload"
                 ? "رفع الدرس"
                 : mood === "create"
                 ? "اضافة فصل جديد"

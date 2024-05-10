@@ -22,6 +22,8 @@ function CoursePage() {
   const [lessonFile, setLessonFile] = React.useState();
   const [language, setLanguage] = React.useState("ar");
   const [openMenu, setOpenMenu] = React.useState(false);
+  const [loadingFetchData, setLoadingFetchData] = React.useState(false);
+
   const [questionForm, setQuestionForm] = React.useState("");
   const [question1, setQuestion1] = React.useState("");
   const [ans1, setAns1] = React.useState("");
@@ -96,6 +98,7 @@ function CoursePage() {
 
   const handleSendData = async (_) => {
     let flag;
+    setLoadingFetchData(true);
 
     if (alignment !== null && title !== "" && lessonTitle !== "") {
       flag = true;
@@ -148,6 +151,8 @@ function CoursePage() {
         toast.error("حدث خطأ");
       }
     } else toast.warning("برجاء ملء جميع الحقول");
+
+    setLoadingFetchData(false);
   };
 
   const handleDeleteQuestion = (i) => {
@@ -221,6 +226,8 @@ function CoursePage() {
           handleSendData={handleSendData}
           score={score}
           setScore={setScore}
+          loadingFetchData={loadingFetchData}
+          setLoadingFetchData={setLoadingFetchData}
         />
 
         {/* Col 2 */}

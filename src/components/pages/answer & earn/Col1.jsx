@@ -24,6 +24,7 @@ const Col1 = (props) => {
   const theme = useTheme();
 
   const [classesData, setClassesData] = useState([]);
+  const [classDetails, setClassDetails] = useState([]);
   const dataClasses = useSelector((state) => state.CLASSES.classes);
   const dispatch = useDispatch();
 
@@ -33,6 +34,25 @@ const Col1 = (props) => {
 
   React.useEffect(() => {
     setClassesData(dataClasses);
+
+    let arr1 = dataClasses.filter(
+      (item) =>
+        item.name.includes("الابتدائى") || item.name.includes("الابتدائي")
+    );
+
+    let arr2 = dataClasses.filter(
+      (item) => item.name.includes("الاعدادى") || item.name.includes("الاعدادي")
+    );
+
+    let arr3 = dataClasses.filter(
+      (item) => item.name.includes("الثانوي") || item.name.includes("الثانوى")
+    );
+
+    setClassDetails({
+      arr1,
+      arr2,
+      arr3,
+    });
   }, [dataClasses]);
 
   const answers = [
@@ -58,7 +78,7 @@ const Col1 = (props) => {
         </span>
         {classesData.length > 0 && (
           <ToggleButtonGroup
-            className="flex-wrap"
+            className="flex-column"
             color="primary"
             value={props.alignment}
             exclusive
@@ -68,18 +88,53 @@ const Col1 = (props) => {
               border: "1px solid rgba(255, 255, 255, 0.12);",
             }}
           >
-            {classesData.map((item, index) => {
-              return (
-                <ToggleButton
-                  key={index}
-                  className="flex-grow-1"
-                  value={item.name}
-                  onClick={(_) => props.setClassId(item.id)}
-                >
-                  {item.name}
-                </ToggleButton>
-              );
-            })}
+            <Stack direction={"row"} flexWrap={"wrap"} alignItems={"center"}>
+              {classDetails.arr1.length > 0 &&
+                classDetails.arr1.map((item, index) => {
+                  return (
+                    <ToggleButton
+                      key={index}
+                      className="flex-grow-1"
+                      value={item.name}
+                      onClick={(_) => props.setClassId(item.id)}
+                    >
+                      {item.name}
+                    </ToggleButton>
+                  );
+                })}
+            </Stack>
+
+            <Stack direction={"row"} flexWrap={"wrap"} alignItems={"center"}>
+              {classDetails.arr2.length > 0 &&
+                classDetails.arr2.map((item, index) => {
+                  return (
+                    <ToggleButton
+                      key={index}
+                      className="flex-grow-1"
+                      value={item.name}
+                      onClick={(_) => props.setClassId(item.id)}
+                    >
+                      {item.name}
+                    </ToggleButton>
+                  );
+                })}
+            </Stack>
+
+            <Stack direction={"row"} flexWrap={"wrap"} alignItems={"center"}>
+              {classDetails.arr3.length > 0 &&
+                classDetails.arr3.map((item, index) => {
+                  return (
+                    <ToggleButton
+                      key={index}
+                      className="flex-grow-1"
+                      value={item.name}
+                      onClick={(_) => props.setClassId(item.id)}
+                    >
+                      {item.name}
+                    </ToggleButton>
+                  );
+                })}
+            </Stack>
           </ToggleButtonGroup>
         )}
       </Stack>
@@ -89,7 +144,7 @@ const Col1 = (props) => {
         <Box flexGrow={1} />
 
         <span className="text-uppercase fw-bold text-decoration-underline user-select-none">
-          form
+          mcq
         </span>
       </Stack>
 
