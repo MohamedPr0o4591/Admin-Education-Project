@@ -64,7 +64,7 @@ function HomePageContent() {
             </div>
           )}
 
-          {staticsDetails.arr2.length > 0 && (
+          {staticsDetails.arr2?.length > 0 && (
             <div className="d-flex flex-column gap-4">
               <span className="fs-3 text-primary">الصفوف الاعدادية</span>
               <Stack
@@ -88,7 +88,7 @@ function HomePageContent() {
             </div>
           )}
 
-          {staticsDetails.arr3.length > 0 && (
+          {staticsDetails.arr3?.length > 0 && (
             <div className="d-flex flex-column gap-4">
               <span className="fs-3 text-primary">الصفوف الثانوية</span>
               <Stack
