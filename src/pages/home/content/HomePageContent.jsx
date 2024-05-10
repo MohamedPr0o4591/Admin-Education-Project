@@ -36,7 +36,7 @@ function HomePageContent() {
 
   return (
     <div className="home-page-content">
-      <HeaderLine title="عدد الطلاب" />
+      <HeaderLine title="جميع الاحصائيات" />
 
       {statisticsData.length > 0 ? (
         <div className="d-flex flex-column gap-4">
