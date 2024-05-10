@@ -56,16 +56,17 @@ export default function Col1(props) {
 
   React.useEffect(() => {
     setAllClasses(dataClasses);
-    let arr1 = dataClasses.filter((item) =>
-      item.name.includes("الابتدائى" || "الابتدائي")
+    let arr1 = dataClasses.filter(
+      (item) =>
+        item.name.includes("الابتدائى") || item.name.includes("الابتدائي")
     );
 
-    let arr2 = dataClasses.filter((item) =>
-      item.name.includes("الاعدادى" || "الاعدادي")
+    let arr2 = dataClasses.filter(
+      (item) => item.name.includes("الاعدادى") || item.name.includes("الاعدادي")
     );
 
-    let arr3 = dataClasses.filter((item) =>
-      item.name.includes("الثانوى" || "الثانوي")
+    let arr3 = dataClasses.filter(
+      (item) => item.name.includes("الثانوى") || item.name.includes("الثانوي")
     );
 
     setClassDetails({

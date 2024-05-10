@@ -15,16 +15,17 @@ function HomePageContent() {
   }, []);
 
   React.useEffect(() => {
-    let arr1 = statisticsData.filter((item) =>
-      item.name.includes("الابتدائى" || "الابتدائي")
+    let arr1 = statisticsData.filter(
+      (item) =>
+        item.name.includes("الابتدائى") || item.name.includes("الابتدائي")
     );
 
-    let arr2 = statisticsData.filter((item) =>
-      item.name.includes("الاعدادى" || "الاعدادي")
+    let arr2 = statisticsData.filter(
+      (item) => item.name.includes("الاعدادى") || item.name.includes("الاعدادي")
     );
 
-    let arr3 = statisticsData.filter((item) =>
-      item.name.includes("الثانوى" || "الثانوي")
+    let arr3 = statisticsData.filter(
+      (item) => item.name.includes("الثانوى") || item.name.includes("الثانوي")
     );
 
     setStaticsDetails({

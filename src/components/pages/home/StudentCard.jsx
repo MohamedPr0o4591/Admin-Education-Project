@@ -38,11 +38,17 @@ export default function StudentCard(props) {
         >
           <i>
             #
-            {props.level.includes("الاول", "الأول")
+            {props.level.includes("الاول") || props.level.includes("الأول")
               ? 1
-              : props.level.includes("الثانى", "الثاني")
+              : props.level.includes("الثانى") || props.level.includes("الثاني")
               ? 2
-              : 3}
+              : props.level.includes("الثالث")
+              ? 3
+              : props.level.includes("الرابع")
+              ? 4
+              : props.level.includes("الخامس")
+              ? 5
+              : 6}
           </i>
         </span>
 
