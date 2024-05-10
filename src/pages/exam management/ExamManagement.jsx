@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getAllExams } from "./../../Redux/actions/Actions";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
+import moment from "moment";
 
 export default function ExamManagement() {
   const theme = useTheme();
@@ -20,6 +21,36 @@ export default function ExamManagement() {
       headerAlign: "center",
       align: "center",
     },
+    {
+      field: "level",
+      headerName: "المستوى التعليمى",
+      flex: 1,
+      headerAlign: "center",
+      align: "center",
+      renderCell: (params) => {
+        return (
+          <span
+            style={{
+              background:
+                params.row.level.includes("الاول") ||
+                params.row.level.includes("الأول")
+                  ? theme.palette.primary.main
+                  : params.row.level.includes("الثانى") ||
+                    params.row.level.includes("الثاني")
+                  ? theme.palette.warning.main
+                  : theme.palette.success.main,
+              color: theme.palette.background.default,
+              padding: "7px 10px",
+              borderRadius: 0.6 + "rem",
+              pointerEvents: "none",
+            }}
+          >
+            {params.row.level}
+          </span>
+        );
+      },
+    },
+    ,
     {
       field: "examTitle",
       headerName: "عنوان الامتحان",
@@ -107,17 +138,45 @@ export default function ExamManagement() {
       headerAlign: "center",
       align: "center",
       renderCell: (params) => {
+        const currentDate = new Date();
+        let inactiveDate = new Date(
+          params.row.status.startTime.toLocaleString("en-US", {
+            weekday: "short",
+            year: "numeric",
+            month: "short",
+            day: "numeric",
+            hour: "numeric",
+            minute: "numeric",
+            second: "numeric",
+            timeZoneName: "short",
+            timeZone: "Europe/Istanbul", // تغيير المنطقة الزمنية حسب الحاجة
+          })
+        );
+
+        console.log(currentDate, inactiveDate, currentDate > inactiveDate);
+
         return (
           <Box
             className="user-select-none"
             sx={{
-              color: "#000",
-              background: theme.palette.success.light,
+              color: theme.palette.primary.contrastText,
+              background:
+                currentDate < inactiveDate && theme.palette.success.main,
               padding: "5px 10px",
               borderRadius: 0.6 + "rem",
             }}
           >
-            <span>نشط ..</span>
+            {currentDate > inactiveDate ? (
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={(_) => setAlignment("results")}
+              >
+                عرض النتائج
+              </Button>
+            ) : (
+              <span>نشط ..</span>
+            )}
           </Box>
         );
       },
@@ -175,6 +234,11 @@ export default function ExamManagement() {
           name: dataExams[i].questionType,
           file: dataExams[i].file,
         },
+        status: {
+          startTime: dataExams[i].startTime,
+          duration: dataExams[i].duration,
+        },
+        level: dataExams[i].class.name,
       });
     }
 

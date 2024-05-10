@@ -2,6 +2,7 @@ import axios from "axios";
 import {
   ALLBOOKS,
   ALLCLASSES,
+  ALLSTATISTICS,
   GETALLEXAMS,
   GETALLGROUPS,
   GETALLLESSONS,
@@ -93,6 +94,17 @@ export const getAllLessons = (_) => {
     dispatch({
       type: GETALLLESSONS,
       data: res.data.Lessons,
+    });
+  };
+};
+
+export const getAllStatistics = (_) => {
+  return async (dispatch) => {
+    let res = await axios.get(`${import.meta.env.VITE_API}statistics`);
+
+    dispatch({
+      type: ALLSTATISTICS,
+      data: res.data.classes,
     });
   };
 };

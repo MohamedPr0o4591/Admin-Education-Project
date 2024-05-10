@@ -19,6 +19,8 @@ import {
 import FileUploader from "../../../pages/course/FileUploader";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllClasses, getGroups } from "../../../Redux/actions/Actions";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 export default function Col1(props) {
   const answers = [
@@ -36,18 +38,8 @@ export default function Col1(props) {
     },
   ];
 
-  const handleDateChange = (e) => {
-    const date = e.target.type === "date" ? e.target.valueAsDate : new Date();
-    const time = e.target.type === "time" ? e.target.valueAsDate : new Date();
-    props.setSelectedDateTime(
-      new Date(
-        date.getFullYear(),
-        date.getMonth(),
-        date.getDate(),
-        time.getHours(),
-        time.getMinutes()
-      )
-    );
+  const handleDateChange = (data) => {
+    props.setSelectedDateTime(data);
   };
 
   const [allClasses, setAllClasses] = useState([]);
@@ -64,17 +56,16 @@ export default function Col1(props) {
 
   React.useEffect(() => {
     setAllClasses(dataClasses);
-    let arr1 = dataClasses.filter(
-      (item) =>
-        item.name.includes("الابتدائى") || item.name.includes("الابتدائي")
+    let arr1 = dataClasses.filter((item) =>
+      item.name.includes("الابتدائى" || "الابتدائي")
     );
 
-    let arr2 = dataClasses.filter(
-      (item) => item.name.includes("الاعدادى") || item.name.includes("الاعدادي")
+    let arr2 = dataClasses.filter((item) =>
+      item.name.includes("الاعدادى" || "الاعدادي")
     );
 
-    let arr3 = dataClasses.filter(
-      (item) => item.name.includes("الثانوي") || item.name.includes("الثانوى")
+    let arr3 = dataClasses.filter((item) =>
+      item.name.includes("الثانوى" || "الثانوي")
     );
 
     setClassDetails({
@@ -648,27 +639,18 @@ export default function Col1(props) {
           <Box flexGrow={1} />
 
           <div className="d-flex gap-2 w-100">
-            <input
-              className="flex-grow-1"
-              type="date"
+            <Box flexGrow={1} />
+
+            <DatePicker
+              selected={props.selectedDateTime}
               onChange={handleDateChange}
-              style={{
-                background:
-                  props.theme.palette.mode === "dark" ? "#242424" : "#f1faf1",
-                color: props.theme.palette.text.primary,
-                border: "none",
-              }}
-            />
-            <input
-              className="flex-grow-1"
-              type="time"
-              onChange={handleDateChange}
-              style={{
-                background:
-                  props.theme.palette.mode === "dark" ? "#242424" : "#f1faf1",
-                color: props.theme.palette.text.primary,
-                border: "none",
-              }}
+              showTimeSelect
+              dateFormat="MMMM d, yyyy h:mm aa"
+              className={
+                props.theme.palette.mode === "dark"
+                  ? "dark-theme"
+                  : "light-theme"
+              }
             />
           </div>
         </Stack>

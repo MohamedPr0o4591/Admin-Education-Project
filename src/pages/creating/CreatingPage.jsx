@@ -44,7 +44,7 @@ function CreatingPage() {
 
   const [arrQuestions, setArrQuestions] = React.useState([]);
 
-  const [selectedDateTime, setSelectedDateTime] = React.useState(null);
+  const [selectedDateTime, setSelectedDateTime] = React.useState(new Date());
 
   const navigate = useNavigate();
 
@@ -252,6 +252,7 @@ function CreatingPage() {
           examTitle={examTitle}
           setExamTitle={setExamTitle}
           setSelectedDateTime={setSelectedDateTime}
+          selectedDateTime={selectedDateTime}
           setClassDetails={setClassDetails}
           score={score}
           setScore={setScore}

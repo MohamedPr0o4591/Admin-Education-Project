@@ -13,15 +13,18 @@ export default function StudentCard(props) {
       sx={{
         minWidth: 475,
         flexGrow: 1,
-        backgroundColor: props.level.includes("الاول")
-          ? theme.palette.primary.main
-          : props.level.includes("الثانى")
-          ? theme.palette.warning.main
-          : theme.palette.success.main,
+        backgroundColor: "transparent",
+        borderTop: "1rem solid " + theme.palette.primary.main,
+        borderBottom: "1rem solid " + theme.palette.primary.main,
+        borderRadius: 0.6 + "rem",
+        transition: "all 0.228s ease-out",
+        "&:hover": {
+          transform: "scale(1.01)",
+        },
       }}
     >
       <CardContent
-        sx={{ color: theme.palette.primary.contrastText }}
+        sx={{ color: theme.palette.text.primary }}
         className="position-relative"
       >
         <span
@@ -29,66 +32,93 @@ export default function StudentCard(props) {
             position: "absolute",
             left: 35 + "px",
             fontSize: 6 + "rem",
+            top: -0.1 + "rem",
           }}
           className="opacity-25 user-select-none"
         >
           <i>
             #
-            {props.level.includes("الاول")
+            {props.level.includes("الاول", "الأول")
               ? 1
-              : props.level.includes("الثانى")
+              : props.level.includes("الثانى", "الثاني")
               ? 2
               : 3}
           </i>
         </span>
 
         <h5 className="user-select-none">
-          <u>الصف {props.level} الثانوى</u>
+          <u className="text-center w-100 d-block fs-2 opacity-50">
+            {props.level}
+          </u>
         </h5>
 
-        <Stack direction={"row"} gap={5} alignItems={"center"}>
-          <span>عدد الطلاب: </span>
+        <Stack gap={2} direction={"row"} mt={4} flexWrap={"wrap"}>
+          <Stack
+            gap={2}
+            sx={{
+              boxShadow: "0 0 10px 0 rgba(0,0,0,0.3)",
+              p: 2,
+              borderRadius: 0.6 + "rem",
+              flex: 1,
+              transition: "all 0.228s ease-out",
+              "&:hover": {
+                transform: "scale(1.04)",
+              },
+            }}
+            alignItems={"center"}
+          >
+            <p className="m-0  fs-4 ">عدد الطلاب:</p>
 
-          <span className="user-select-none">
-            <i style={{ color: theme.palette.secondary.main }} className="fs-5">
-              <b>{(12000).toLocaleString()}</b>
-            </i>{" "}
-            طالب
-          </span>
-        </Stack>
+            <div className="fs-2 opacity-75 text-center user-select-none text-primary d-flex flex-column">
+              <span>{props.students}</span>
+              <span>طالب</span>
+            </div>
+          </Stack>
 
-        <Stack direction={"row"} gap={5} alignItems={"center"}>
-          <span>اجمالى الدخل الشهري: </span>
+          <Stack
+            gap={2}
+            sx={{
+              boxShadow: "0 0 10px 0 rgba(0,0,0,0.3)",
+              p: 2,
+              borderRadius: 0.6 + "rem",
+              flex: 1,
+              transition: "all 0.228s ease-out",
+              "&:hover": {
+                transform: "scale(1.04)",
+              },
+            }}
+            alignItems={"center"}
+          >
+            <p className="m-0  fs-4 ">عدد المجاميع:</p>
 
-          <span className="user-select-none">
-            <i style={{ color: theme.palette.secondary.main }} className="fs-5">
-              <b>{(12000 * 1500).toLocaleString()}</b>
-            </i>{" "}
-            جنيهاً
-          </span>
-        </Stack>
+            <div className="fs-2 opacity-75 text-center user-select-none text-primary d-flex flex-column">
+              <span>{props.groups}</span>
+              <span>مجموعة</span>
+            </div>
+          </Stack>
+          <Stack
+            gap={2}
+            sx={{
+              boxShadow: "0 0 10px 0 rgba(0,0,0,0.3)",
+              p: 2,
+              borderRadius: 0.6 + "rem",
+              flex: 1,
+              transition: "all 0.228s ease-out",
+              "&:hover": {
+                transform: "scale(1.04)",
+              },
+            }}
+            alignItems={"center"}
+          >
+            <p className="m-0  fs-4 ">عدد الفصول:</p>
 
-        <Stack direction={"row"} gap={5} alignItems={"center"}>
-          <span>متوسط الدخل الشهري: </span>
-
-          <span className="user-select-none">
-            <i style={{ color: theme.palette.secondary.main }} className="fs-5">
-              <b>{((12000 * 1500) / 12000).toLocaleString()}</b>
-            </i>{" "}
-            جنيهاً
-          </span>
+            <div className="fs-2 opacity-75 text-center user-select-none text-primary d-flex flex-column">
+              <span>{props.units}</span>
+              <span>فصل</span>
+            </div>
+          </Stack>
         </Stack>
       </CardContent>
-
-      <Stack direction={"row"} gap={2} alignItems={"center"}>
-        <Box flexGrow={1} />
-
-        <CardActions>
-          <Button size="small" variant="contained">
-            أضف الدخل الشهرى
-          </Button>
-        </CardActions>
-      </Stack>
     </Card>
   );
 }

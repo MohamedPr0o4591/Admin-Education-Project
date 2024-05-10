@@ -66,11 +66,11 @@ function StudentManagementPage() {
           <span
             style={{
               background:
-                params.row.educationLevel.name.includes("الاول") ||
-                params.row.educationLevel.name.includes("الأول")
+                params?.row?.educationLevel?.name?.includes("الاول") ||
+                params?.row?.educationLevel?.name?.includes("الأول")
                   ? theme.palette.primary.main
-                  : params.row.educationLevel.name.includes("الثانى") ||
-                    params.row.educationLevel.name.includes("الثاني")
+                  : params?.row?.educationLevel?.name?.includes("الثانى") ||
+                    params?.row?.educationLevel?.name?.includes("الثاني")
                   ? theme.palette.warning.main
                   : theme.palette.success.main,
               color: theme.palette.background.default,
@@ -79,7 +79,7 @@ function StudentManagementPage() {
               pointerEvents: "none",
             }}
           >
-            {params.row.educationLevel.name}
+            {params.row.educationLevel?.name}
           </span>
         );
       },
@@ -216,7 +216,7 @@ function StudentManagementPage() {
         dispatch(getAllStudents());
         toast.success(`تم تغيير المجموعة بنجاح`);
       } catch (err) {
-        toast.error(`حدث خطأ أثناء التغيير`);
+        console.error(err);
       }
     }
 
@@ -249,12 +249,12 @@ function StudentManagementPage() {
           studentName: student.userName,
           phoneNumber: student.phone,
           educationLevel: {
-            name: student.ClassSchema,
+            name: student.class.name,
             id: student.classId,
           },
           groupNumber: {
             id: student.groupId,
-            name: student.GroupSchema,
+            name: student.group.name,
           },
           points: student.totalPoints,
           parentPhoneNumber: student.parentPhoneNumber,

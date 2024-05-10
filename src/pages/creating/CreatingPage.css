@@ -48,3 +48,13 @@
 .create-homework-page input[type="time"]::-webkit-calendar-picker-indicator {
   filter: invert(25%);
 }
+
+.create-homework-page .dark-theme {
+  background: #242424;
+  color: #fff; /* لون النص في الوضع الداكن */
+}
+
+.create-homework-page .light-theme {
+  background: #f1faf1;
+  color: #000; /* لون النص في الوضع الفاتح */
+}

@@ -7,6 +7,7 @@ import { profileDetailsReducer } from "./ProfileDetails";
 import { StudentsReducer } from "./Students";
 import { examReducer } from "./Exam";
 import { lessonsReducer } from "./Lessons";
+import { statisticsReducer } from "./Statistics";
 
 export const rootReducers = combineReducers({
   BOOKS: booksReducer,
@@ -17,4 +18,5 @@ export const rootReducers = combineReducers({
   STUDENTS: StudentsReducer,
   GETALLEXAMS: examReducer,
   GETALLLESSONS: lessonsReducer,
+  STATISTICS: statisticsReducer,
 });
