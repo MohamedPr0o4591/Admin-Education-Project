@@ -3,6 +3,7 @@ import {
   ALLBOOKS,
   ALLCLASSES,
   ALLSTATISTICS,
+  EXAMRESULT,
   GETALLEXAMS,
   GETALLGROUPS,
   GETALLLESSONS,
@@ -105,6 +106,19 @@ export const getAllStatistics = (_) => {
     dispatch({
       type: ALLSTATISTICS,
       data: res.data.classes,
+    });
+  };
+};
+
+export const getExamResult = (id) => {
+  return async (dispatch) => {
+    let res = await axios.get(
+      `${import.meta.env.VITE_API}teacher/${id}/results`
+    );
+
+    dispatch({
+      type: EXAMRESULT,
+      resultData: res.data.results,
     });
   };
 };

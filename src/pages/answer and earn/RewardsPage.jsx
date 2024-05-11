@@ -71,6 +71,7 @@ const RewardsPage = () => {
         toast.success("تم انشاء الاسئلة ونشرها بنجاح");
         setFinished(false);
         localStorage.removeItem("question");
+        setArrQuestions([]);
         clearForm();
       } catch (err) {
         toast.error("حدث خطأ");

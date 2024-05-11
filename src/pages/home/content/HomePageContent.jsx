@@ -43,7 +43,7 @@ function HomePageContent() {
         <div className="d-flex flex-column gap-4">
           {staticsDetails.arr1?.length > 0 && (
             <div className="d-flex flex-column gap-4">
-              <span className="fs-3 text-primary">الصفوف الابتدائبة</span>
+              <span className="fs-3 text-primary">الصفوف الابتدائية</span>
               <Stack
                 direction={"row"}
                 gap={2}
@@ -114,7 +114,7 @@ function HomePageContent() {
           )}
         </div>
       ) : (
-        <span>لا توجد بيانات</span>
+        <span className="fs-3">لا توجد بيانات</span>
       )}
     </div>
   );

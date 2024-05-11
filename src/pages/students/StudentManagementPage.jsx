@@ -1,25 +1,20 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import HeaderLine from "../../components/headerLine/HeaderLine";
 import Box from "@mui/material/Box";
 import { DataGrid } from "@mui/x-data-grid";
 import {
-  AppBar,
   Button,
   IconButton,
   Menu,
   MenuItem,
   Stack,
-  Tab,
-  Tabs,
-  Typography,
   useTheme,
 } from "@mui/material";
-import { Visibility } from "@mui/icons-material";
+import { DeleteRounded, Visibility } from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllStudents, getGroups } from "../../Redux/actions/Actions";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
-import PropTypes from "prop-types";
 
 function StudentManagementPage() {
   const theme = useTheme();
@@ -184,6 +179,20 @@ function StudentManagementPage() {
         );
       },
     },
+    {
+      field: "deleteAction",
+      headerName: "حذف",
+      width: 44,
+      headerAlign: "center",
+      align: "center",
+      renderCell: (params) => {
+        return (
+          <IconButton color="error" title="حذف الطالب">
+            <DeleteRounded />
+          </IconButton>
+        );
+      },
+    },
   ];
 
   const dataStudents = useSelector((state) => state.STUDENTS.studentsData);
@@ -249,12 +258,12 @@ function StudentManagementPage() {
           studentName: student.userName,
           phoneNumber: student.phone,
           educationLevel: {
-            name: student.class.name,
+            name: student.ClassSchema,
             id: student.classId,
           },
           groupNumber: {
+            name: student.GroupSchema,
             id: student.groupId,
-            name: student.group.name,
           },
           points: student.totalPoints,
           parentPhoneNumber: student.parentPhoneNumber,
@@ -301,11 +310,11 @@ function StudentManagementPage() {
           initialState={{
             pagination: {
               paginationModel: {
-                pageSize: 5,
+                pageSize: 10,
               },
             },
           }}
-          pageSizeOptions={[5]}
+          pageSizeOptions={[10]}
         />
       </Box>
     </div>

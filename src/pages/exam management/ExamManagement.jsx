@@ -5,7 +5,7 @@ import { Delete, Visibility } from "@mui/icons-material";
 import { DataGrid } from "@mui/x-data-grid";
 import Row1 from "../../components/pages/exam management/Row1";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllExams } from "./../../Redux/actions/Actions";
+import { getAllExams, getExamResult } from "./../../Redux/actions/Actions";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import moment from "moment";
@@ -153,7 +153,10 @@ export default function ExamManagement() {
           })
         );
 
-        console.log(currentDate, inactiveDate, currentDate > inactiveDate);
+        let afterDate = new Date(inactiveDate);
+        afterDate.setMinutes(
+          afterDate.getMinutes() + +params.row.status.duration
+        );
 
         return (
           <Box
@@ -161,22 +164,40 @@ export default function ExamManagement() {
             sx={{
               color: theme.palette.primary.contrastText,
               background:
-                currentDate < inactiveDate && theme.palette.success.main,
+                currentDate > inactiveDate && currentDate < afterDate
+                  ? theme.palette.success.main
+                  : currentDate < inactiveDate
+                  ? theme.palette.warning.main
+                  : "none",
               padding: "5px 10px",
               borderRadius: 0.6 + "rem",
             }}
+            title={`موعد عرض الامتحان ${inactiveDate.toLocaleString()} ... موعد الانتهاء ${afterDate.toLocaleString()}`}
           >
-            {currentDate > inactiveDate ? (
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={(_) => setAlignment("results")}
-              >
-                عرض النتائج
-              </Button>
-            ) : (
+            {currentDate > afterDate ? (
+              params.row.type.name === "MCQ" ? (
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={(_) => showResults(params.row.action)}
+                >
+                  عرض النتائج
+                </Button>
+              ) : (
+                <span
+                  style={{
+                    background: theme.palette.error.main,
+                  }}
+                  className="p-2 rounded"
+                >
+                  تم انتهاء مدة الامتحان
+                </span>
+              )
+            ) : currentDate < inactiveDate ? (
+              <span>لم يتم عرض الامتحان</span>
+            ) : currentDate > inactiveDate && currentDate < afterDate ? (
               <span>نشط ..</span>
-            )}
+            ) : null}
           </Box>
         );
       },
@@ -200,10 +221,106 @@ export default function ExamManagement() {
     },
   ];
 
+  const column2 = [
+    {
+      field: "id",
+      headerName: "ID",
+      width: 44,
+      headerAlign: "center",
+      align: "center",
+    },
+    {
+      field: "studentName",
+      headerName: "اسم الطالب",
+      flex: 1,
+      headerAlign: "center",
+      align: "center",
+    },
+    {
+      field: "levelEducation",
+      headerName: "المستوى التعليمى",
+      flex: 1,
+      headerAlign: "center",
+      align: "center",
+    },
+    {
+      field: "groupName",
+      headerName: "اسم المجموعة",
+      flex: 1,
+      headerAlign: "center",
+      align: "center",
+    },
+    {
+      field: "phoneNum",
+      headerName: "رقم الهاتف",
+      flex: 1,
+      headerAlign: "center",
+      align: "center",
+    },
+    {
+      field: "parentPhoneNum",
+      headerName: "رقم ولي الامر",
+      flex: 1,
+      headerAlign: "center",
+      align: "center",
+    },
+    {
+      field: "studentPoints",
+      headerName: "نتيجة الطالب",
+      flex: 1,
+      headerAlign: "center",
+      align: "center",
+      renderCell: (params) => {
+        return <span className="fs-5">{params.row.studentPoints}</span>;
+      },
+    },
+    {
+      field: "allResult",
+      headerName: "النتيجة الكلية",
+      flex: 1,
+      headerAlign: "center",
+      align: "center",
+      renderCell: (params) => {
+        return (
+          <span className="fs-5">
+            {params.row.studentPoints} / {params.row.allResult}
+          </span>
+        );
+      },
+    },
+  ];
+
   const [alignment, setAlignment] = React.useState("management");
   const [rows, setRows] = React.useState([]);
+  const [rows2, setRows2] = React.useState([]);
   const dataExams = useSelector((state) => state.GETALLEXAMS.exams);
+  const examResultData = useSelector((state) => state.GETEXAMRESULT.examResult);
   const dispatch = useDispatch();
+
+  const showResults = (id) => {
+    setAlignment("results");
+
+    dispatch(getExamResult(id));
+  };
+
+  React.useEffect(() => {
+    let newArr = [];
+
+    for (let i = 0; i < examResultData.length; i++) {
+      newArr.push({
+        id: i + 1,
+        studentName: examResultData[i].student.userName,
+        levelEducation: examResultData[i].student.classId,
+        groupName: examResultData[i].student.groupId,
+        phoneNum: examResultData[i].student.phone,
+        parentPhoneNum: examResultData[i].student.parentPhoneNumber,
+        studentPoints: examResultData[i].exam.questions[0].questionScore,
+        allResult: examResultData[i].exam.score,
+      });
+    }
+
+    setRows2(newArr);
+  }, [examResultData]);
 
   React.useEffect(() => {
     dispatch(getAllExams());
@@ -253,22 +370,20 @@ export default function ExamManagement() {
       <Row1 alignment={alignment} setAlignment={setAlignment} />
 
       <Box sx={{ height: 75 + "vh", width: "100%", mt: 2 }}>
-        {alignment === "management" ? (
-          <DataGrid
-            rows={rows}
-            columns={column}
-            initialState={{
-              pagination: {
-                paginationModel: {
-                  pageSize: 10,
-                },
+        <DataGrid
+          rows={alignment === "results" ? rows2 : rows}
+          columns={alignment === "results" ? column2 : column}
+          initialState={{
+            pagination: {
+              paginationModel: {
+                pageSize: 10,
               },
-            }}
-            rowsPerPageOptions={[10]}
-            pageSizeOptions={[10]}
-            disableRowSelectionOnClick
-          />
-        ) : null}
+            },
+          }}
+          rowsPerPageOptions={[10]}
+          pageSizeOptions={[10]}
+          disableRowSelectionOnClick
+        />
       </Box>
     </div>
   );

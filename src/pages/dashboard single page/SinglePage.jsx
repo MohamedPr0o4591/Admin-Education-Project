@@ -11,8 +11,19 @@ import {
   WhatsApp,
 } from "@mui/icons-material";
 import image from "../../assets/photo.png";
+import { useDispatch, useSelector } from "react-redux";
+import { getAllProfileDetails } from "../../Redux/actions/Actions";
 
 const SinglePage = () => {
+  const teacherDetails = useSelector((state) => state.PROFILEDETAILS.profile);
+  const dispatch = useDispatch();
+
+  React.useEffect(() => {
+    let token = localStorage.login;
+
+    dispatch(getAllProfileDetails(token));
+  }, []);
+
   return (
     <div className="single-page">
       <div className="inner-page" />
@@ -49,7 +60,11 @@ const SinglePage = () => {
 
           <ul className="m-0 mt-3 p-0 list-unstyled d-flex gap-2 flex-wrap list-social">
             <li>
-              <a href="#" id="facebook">
+              <a
+                href={teacherDetails.facebookUrl}
+                target="_blank"
+                id="facebook"
+              >
                 <Stack direction={"row"} gap={2} alignItems={"center"}>
                   <FacebookOutlined />
                   <span>صفحتنا على فيس بوك</span>
@@ -58,7 +73,11 @@ const SinglePage = () => {
             </li>
 
             <li>
-              <a href="#" id="whatsapp">
+              <a
+                href={teacherDetails.whatsappUrl}
+                target="_blank"
+                id="whatsapp"
+              >
                 <Stack direction={"row"} gap={2} alignItems={"center"}>
                   <WhatsApp />
                   <span>واتساب</span>

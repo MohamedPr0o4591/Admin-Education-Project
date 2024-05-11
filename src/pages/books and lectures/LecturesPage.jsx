@@ -5,11 +5,12 @@ import { Container, Row } from "react-bootstrap";
 import Col1 from "../../components/pages/books and lectures/Col1";
 import Row1 from "../../components/pages/books and lectures/Row1";
 import { DataGrid } from "@mui/x-data-grid";
-import { Box, Button, useTheme } from "@mui/material";
+import { Box, Button, IconButton, useTheme } from "@mui/material";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllBooks } from "../../Redux/actions/Actions.jsx";
+import { DeleteRounded } from "@mui/icons-material";
 
 export default function LecturesPage() {
   const [rows, setRows] = React.useState([]);
@@ -169,18 +170,18 @@ export default function LecturesPage() {
     {
       field: "delete",
       headerName: "حذف",
-      width: 120,
+      width: 44,
       headerAlign: "center",
       align: "center",
       renderCell: (params) => {
         return (
-          <Button
+          <IconButton
             color="error"
             variant="contained"
             onClick={(_) => handleDeleteBook(params.row.delete)}
           >
-            حذف
-          </Button>
+            <DeleteRounded />
+          </IconButton>
         );
       },
     },
