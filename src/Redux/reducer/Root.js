@@ -4,10 +4,11 @@ import { classReducer } from "./Classes";
 import { unitsReducer } from "./Units";
 import { groupsReducer } from "./Groups";
 import { profileDetailsReducer } from "./ProfileDetails";
-import { StudentsReducer } from "./Students";
+import { StudentsReducer, getPendingResult } from "./Students";
 import { examReducer, examResultReducer } from "./Exam";
 import { lessonsReducer } from "./Lessons";
 import { statisticsReducer } from "./Statistics";
+import { notificationsReducer } from "./Notifications";
 
 export const rootReducers = combineReducers({
   BOOKS: booksReducer,
@@ -20,4 +21,6 @@ export const rootReducers = combineReducers({
   GETEXAMRESULT: examResultReducer,
   GETALLLESSONS: lessonsReducer,
   STATISTICS: statisticsReducer,
+  NOTIFICATIONS: notificationsReducer,
+  GETPENDINGSTUDENTRESULT: getPendingResult,
 });

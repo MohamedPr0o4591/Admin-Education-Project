@@ -9,7 +9,9 @@ import {
   GETALLLESSONS,
   GETALLPROFILEDETAILS,
   GETALLSTUDENTS,
+  GETNOTI,
   GETUNITS,
+  PENDINGRESULT,
 } from "../types/AllTypes";
 
 export const getAllBooks = (_) => {
@@ -119,6 +121,32 @@ export const getExamResult = (id) => {
     dispatch({
       type: EXAMRESULT,
       resultData: res.data.results,
+    });
+  };
+};
+
+export const getAllNoti = (teacherId) => {
+  return async (dispatch) => {
+    let res = await axios.get(
+      `${import.meta.env.VITE_API}notifications/${teacherId}/teacher`
+    );
+
+    dispatch({
+      type: GETNOTI,
+      data: res.data.notifications,
+    });
+  };
+};
+
+export const getAllStudentResult = (_) => {
+  return async (dispatch) => {
+    let res = await axios.get(
+      `${import.meta.env.VITE_API}teacher/getPendingHomeWork`
+    );
+
+    dispatch({
+      type: PENDINGRESULT,
+      data: res.data.results,
     });
   };
 };

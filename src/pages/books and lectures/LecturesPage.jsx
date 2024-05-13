@@ -55,11 +55,11 @@ export default function LecturesPage() {
   const handleDeleteBook = async (id) => {
     try {
       await axios.delete(`${import.meta.env.VITE_API}book/${id}`);
-      toast.success("تم حذف الكتاب بنجاح");
 
+      toast.success("تم حذف الكتاب بنجاح");
       dispatch(getAllBooks());
     } catch (err) {
-      console.error(err);
+      toast.error("حدث خطأ اثناء حذف الكتاب");
     }
   };
 
@@ -232,7 +232,9 @@ export default function LecturesPage() {
         });
 
         renderCleaner();
-        setCreateType("show");
+        setTimeout(() => {
+          setCreateType("show");
+        }, 3000);
         dispatch(getAllBooks());
 
         toast.success(`تم اضافة الكتاب بنجاح`);
@@ -249,7 +251,6 @@ export default function LecturesPage() {
 
   return (
     <div className="lectures-page">
-      <ToastContainer position="top-right" />
       {loading ? (
         <div className="loading">
           <div
@@ -267,6 +268,8 @@ export default function LecturesPage() {
           createType === "add" ? "اضافة كتاب / مذكرة" : "عرض الكتب / المذكرات"
         }
       />
+
+      <ToastContainer position="top-right" />
 
       <Row1 createType={createType} setCreateType={setCreateType} />
 

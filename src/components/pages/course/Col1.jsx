@@ -245,7 +245,7 @@ function Col1(props) {
           ) : null}
         </Stack>
 
-        {props.alignment !== null ? (
+        {props.alignment !== null && props.alignment !== "" ? (
           <Stack gap={2}>
             <Stack
               direction={"row"}

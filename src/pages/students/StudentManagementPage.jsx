@@ -7,15 +7,28 @@ import {
   IconButton,
   Menu,
   MenuItem,
+  Modal,
   Stack,
   useTheme,
 } from "@mui/material";
-import { DeleteRounded, Visibility } from "@mui/icons-material";
+import { CloseRounded, DeleteRounded, Visibility } from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllStudents, getGroups } from "../../Redux/actions/Actions";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 
+const style = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 520,
+  bgcolor: "background.paper",
+  border: "2px solid rgba(0 ,0 ,0 ,.2)",
+  boxShadow: "0 0 0.4rem rgb(103 138 201 / 70%)",
+  p: "0.4rem 0.8rem",
+  borderRadius: "0.4rem",
+};
 function StudentManagementPage() {
   const theme = useTheme();
 
@@ -187,7 +200,16 @@ function StudentManagementPage() {
       align: "center",
       renderCell: (params) => {
         return (
-          <IconButton color="error" title="حذف الطالب">
+          <IconButton
+            color="error"
+            title="حذف الطالب"
+            onClick={(_) =>
+              handleOpenModal(
+                params.row.accountManagement,
+                params.row.studentName
+              )
+            }
+          >
             <DeleteRounded />
           </IconButton>
         );
@@ -200,6 +222,7 @@ function StudentManagementPage() {
   const dispatch = useDispatch();
 
   const [studentDetails, setStudentDetails] = useState([]);
+  const [openModal, setOpenModal] = React.useState(false);
   const [groupsData, setGroupsData] = useState([]);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
@@ -244,6 +267,29 @@ function StudentManagementPage() {
     } catch (err) {
       toast.error(`حدث خطأ اثناء تغيير حالة الحساب`);
     }
+  };
+
+  const deleteStudent = async (id) => {
+    try {
+      await axios.delete(`${import.meta.env.VITE_API}student/${id}`);
+
+      toast.success(`تم حذف الطالب بنجاح`);
+      dispatch(getAllStudents());
+    } catch (err) {
+      toast.error(`حدث خطأ اثناء حذف الطالب`);
+    }
+
+    setOpenModal(false);
+  };
+
+  const handleOpenModal = (studentId, studentName) => {
+    setStudentDetails({
+      ...studentDetails,
+      studentId,
+      studentName,
+    });
+
+    setOpenModal(true);
   };
 
   React.useEffect(() => {
@@ -302,6 +348,42 @@ function StudentManagementPage() {
           </MenuItem>
         ))}
       </Menu>
+
+      <Modal
+        open={openModal}
+        onClose={(_) => setOpenModal(false)}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <Stack direction={"row"} gap={2}>
+            <Box flexGrow={1} />
+
+            <IconButton
+              color="inherit"
+              onClick={(_) => setOpenModal(false)}
+              aria-label="close"
+            >
+              <CloseRounded />
+            </IconButton>
+          </Stack>
+          <span className="d-flex gap-2">
+            هل انت متأكد من حذف{" "}
+            <p className="fw-bold text-danger">{studentDetails.studentName}</p>؟
+          </span>
+          <Stack direction={"row"} gap={2}>
+            <Box flexGrow={1} />
+
+            <Button
+              variant="contained"
+              color="error"
+              onClick={(_) => deleteStudent(studentDetails.studentId)}
+            >
+              حذف
+            </Button>
+          </Stack>
+        </Box>
+      </Modal>
 
       <Box sx={{ height: 75 + "vh", minWidth: "1200px" }}>
         <DataGrid

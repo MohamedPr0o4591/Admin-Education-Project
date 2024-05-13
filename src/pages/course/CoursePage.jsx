@@ -12,7 +12,7 @@ import axios from "axios";
 function CoursePage() {
   const theme = useTheme();
 
-  const [alignment, setAlignment] = React.useState(null);
+  const [alignment, setAlignment] = React.useState("");
   const [questionType, setQuestionType] = React.useState("");
   const [title, setTitle] = React.useState("");
   const [lessonTitle, setLessonTitle] = React.useState("");
@@ -32,7 +32,7 @@ function CoursePage() {
   const [ans4, setAns4] = React.useState("");
   const [correctAns1, setCorrectAns1] = React.useState(ans1);
   const [questionMark, setQuestionMark] = React.useState("");
-  const [score, setScore] = React.useState();
+  const [score, setScore] = React.useState("");
 
   const [question2, setQuestion2] = React.useState("");
   const [correctAns2, setCorrectAns2] = React.useState("true");
@@ -100,7 +100,7 @@ function CoursePage() {
     let flag;
     setLoadingFetchData(true);
 
-    if (alignment !== null && title !== "" && lessonTitle !== "") {
+    if (alignment !== "" && title !== "" && lessonTitle !== "") {
       flag = true;
     } else flag = false;
 
@@ -108,31 +108,31 @@ function CoursePage() {
       try {
         const formData = new FormData();
 
-        if (questionType != "PDF") {
-          let newArr = JSON.parse(localStorage.question);
-          formData.append("unitId", unitDetails.id);
-          formData.append("title", lessonTitle);
-          formData.append("description", lessonDesc);
-          formData.append("videoUrl", videoLink);
-          formData.append("file", lessonFile[0]);
-          formData.append("questionType", "MCQ");
-          formData.append("score", score);
+        formData.append("unitId", unitDetails.id);
+        formData.append("title", lessonTitle);
+        formData.append("description", lessonDesc);
+        formData.append("videoUrl", videoLink);
+        formData.append("score", +score);
 
-          newArr.forEach((value, index) => {
-            formData.append(
-              `homeworkQuestions[${index}]`,
-              JSON.stringify(value)
-            );
-          });
-        } else {
-          formData.append("unitId", unitDetails.id);
-          formData.append("title", lessonTitle);
-          formData.append("description", lessonDesc);
-          formData.append("videoUrl", videoLink);
+        if (lessonFile && lessonFile.length > 0) {
           formData.append("file", lessonFile[0]);
-          formData.append("questionType", "PDF");
-          formData.append("score", score);
+        }
+
+        if (questionType !== "PDF") {
+          if (localStorage.question) {
+            let newArr = JSON.parse(localStorage.question);
+
+            newArr.forEach((value, index) => {
+              formData.append(
+                `homeworkQuestions[${index}]`,
+                JSON.stringify(value)
+              );
+            });
+          }
+          formData.append("questionType", "MCQ");
+        } else {
           formData.append("homeworkFile", hWFile[0]);
+          formData.append("questionType", "PDF");
         }
 
         await axios.post(`${import.meta.env.VITE_API}lesson`, formData, {
@@ -142,13 +142,15 @@ function CoursePage() {
         });
 
         toast.success("تم إضافة الدرس بنجاح");
-        localStorage.removeItem("question");
+        if (localStorage.question) {
+          localStorage.removeItem("question");
+        }
 
         setTimeout(() => {
           navigate("/admin/course-content");
         }, 1000);
       } catch (err) {
-        toast.error("حدث خطأ");
+        toast.error("حدث خطأ ما");
       }
     } else toast.warning("برجاء ملء جميع الحقول");
 

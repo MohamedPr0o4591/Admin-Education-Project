@@ -61,7 +61,7 @@ const SinglePage = () => {
           <ul className="m-0 mt-3 p-0 list-unstyled d-flex gap-2 flex-wrap list-social">
             <li>
               <a
-                href={teacherDetails.facebookUrl}
+                href={"https://www.facebook.com/lmohamedlmokhtarl/"}
                 target="_blank"
                 id="facebook"
               >
@@ -74,7 +74,7 @@ const SinglePage = () => {
 
             <li>
               <a
-                href={teacherDetails.whatsappUrl}
+                href={"https://wa.me/+201022585956"}
                 target="_blank"
                 id="whatsapp"
               >

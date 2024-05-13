@@ -17,3 +17,7 @@ export const GETALLLESSONS = "GETALLLESSONS";
 export const ALLSTATISTICS = "ALLSTATISTICS";
 
 export const EXAMRESULT = "EXAMRESULT";
+
+export const GETNOTI = "GETNOTI"
+
+export const PENDINGRESULT = "PENDINGRESULT"

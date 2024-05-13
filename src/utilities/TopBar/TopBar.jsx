@@ -2,21 +2,26 @@ import React from "react";
 import Toolbar from "@mui/material/Toolbar";
 import MenuIcon from "@mui/icons-material/Menu";
 import MuiAppBar from "@mui/material/AppBar";
-import { styled, alpha } from "@mui/material/styles";
+import { styled } from "@mui/material/styles";
 import IconButton from "@mui/material/IconButton";
-import { Box, Stack, useTheme } from "@mui/material";
-import InputBase from "@mui/material/InputBase";
+import { Badge, Box, Paper, Stack, useTheme } from "@mui/material";
 import {
   DarkModeRounded,
   LightModeOutlined,
   LogoutOutlined,
   LogoutRounded,
+  NotificationImportantRounded,
   NotificationsOutlined,
   NotificationsRounded,
   Person2Outlined,
   Person2Rounded,
 } from "@mui/icons-material";
 import { useNavigate } from "react-router";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import { useDispatch, useSelector } from "react-redux";
+import { getAllNoti, getAllProfileDetails } from "../../Redux/actions/Actions";
+import axios from "axios";
 
 const drawerWidth = 240;
 
@@ -38,48 +43,6 @@ const AppBar = styled(MuiAppBar, {
   }),
 }));
 
-const Search = styled("div")(({ theme }) => ({
-  position: "relative",
-  borderRadius: theme.shape.borderRadius,
-  backgroundColor: alpha(theme.palette.common.white, 0.15),
-  "&:hover": {
-    backgroundColor: alpha(theme.palette.common.white, 0.25),
-  },
-  marginLeft: 0,
-  width: "100%",
-  [theme.breakpoints.up("sm")]: {
-    marginLeft: theme.spacing(1),
-    width: "auto",
-  },
-}));
-
-const SearchIconWrapper = styled("div")(({ theme }) => ({
-  padding: theme.spacing(0, 2),
-  height: "100%",
-  position: "absolute",
-  pointerEvents: "none",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-}));
-
-const StyledInputBase = styled(InputBase)(({ theme }) => ({
-  color: "inherit",
-  width: "100%",
-  "& .MuiInputBase-input": {
-    padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
-    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-    transition: theme.transitions.create("width"),
-    [theme.breakpoints.up("sm")]: {
-      width: "12ch",
-      "&:focus": {
-        width: "20ch",
-      },
-    },
-  },
-}));
-
 function TopBar(props) {
   const theme = useTheme();
 
@@ -98,12 +61,118 @@ function TopBar(props) {
     navigate("/login");
   };
 
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const teacherDetails = useSelector((state) => state.PROFILEDETAILS.profile);
+  const allNotifications = useSelector(
+    (state) => state.NOTIFICATIONS.notifications
+  );
+
+  const dispatch = useDispatch();
+
+  const open = Boolean(anchorEl);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  React.useEffect(() => {
+    let token = localStorage.login;
+
+    dispatch(getAllProfileDetails(token));
+  }, []);
+
+  React.useEffect(() => {
+    if (Object.keys(teacherDetails).length > 0) {
+      dispatch(getAllNoti(teacherDetails.id));
+    }
+  }, [teacherDetails]);
+
+  const handleReadNotification = async (id, type) => {
+    handleClose();
+
+    try {
+      await axios.patch(`${import.meta.env.VITE_API}notifications/${id}`);
+
+      if (type === "register" || type === "verification") {
+        navigate("/admin/students-management");
+      } else if (type === "exam_submission" || type === "homework_submission") {
+        navigate("/admin/homework-management");
+      }
+
+      dispatch(getAllNoti(teacherDetails.id));
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   return (
     <AppBar
       position="fixed"
       open={props.open}
       sx={{ backgroundColor: theme.palette.background.mainDefault }}
     >
+      <Menu
+        id="basic-menu"
+        anchorEl={anchorEl}
+        open={open}
+        onClose={handleClose}
+        MenuListProps={{
+          "aria-labelledby": "basic-button",
+        }}
+        PaperProps={{
+          sx: {
+            width: 400 + "px",
+            padding: 10 + "px",
+            height: "auto",
+            maxHeight: 320 + "px",
+            overflowY: "auto",
+          },
+        }}
+      >
+        <div>
+          {allNotifications?.length > 0 ? (
+            <span className="p-4 user-select-none">
+              <NotificationImportantRounded /> جميع الاشعارات الغير مقروءة
+            </span>
+          ) : (
+            <span className="text-center w-100 d-block fw-bold">
+              لا توجد اشعارات غير مقروءة
+            </span>
+          )}
+        </div>
+
+        <Stack gap={1} mt={2}>
+          {allNotifications?.length > 0 &&
+            allNotifications?.map((notification, index) => {
+              return (
+                <Paper key={index} className="rounded">
+                  <MenuItem
+                    onClick={(_) =>
+                      handleReadNotification(
+                        notification.id,
+                        notification.notificationType
+                      )
+                    }
+                    className="rounded"
+                  >
+                    <Stack gap={2} overflow={"hidden"}>
+                      <span className="user-select-none fs-6">
+                        {notification.title}
+                      </span>
+
+                      <div>
+                        <span>{notification.message}</span>
+                      </div>
+                    </Stack>
+                  </MenuItem>
+                </Paper>
+              );
+            })}
+        </Stack>
+      </Menu>
+
       <Toolbar>
         <IconButton
           color="inherit"
@@ -134,12 +203,19 @@ function TopBar(props) {
             )}
           </IconButton>
 
-          <IconButton color="inherit" title="الاشعارات">
-            {theme.palette.mode === "dark" ? (
-              <NotificationsOutlined />
-            ) : (
-              <NotificationsRounded />
-            )}
+          <IconButton
+            color="inherit"
+            title="الاشعارات"
+            onClick={handleClick}
+            className="position-relative"
+          >
+            <Badge color="error" badgeContent={allNotifications.length}>
+              {theme.palette.mode === "dark" ? (
+                <NotificationsOutlined />
+              ) : (
+                <NotificationsRounded />
+              )}
+            </Badge>
           </IconButton>
 
           <IconButton

@@ -242,6 +242,28 @@ export default function ExamManagement() {
       flex: 1,
       headerAlign: "center",
       align: "center",
+      renderCell: (params) => {
+        return (
+          <span
+            style={{
+              background:
+                params?.row?.levelEducation?.includes("الاول") ||
+                params?.row?.levelEducation?.includes("الأول")
+                  ? theme.palette.primary.main
+                  : params?.row?.levelEducation?.includes("الثانى") ||
+                    params?.row?.levelEducation?.includes("الثاني")
+                  ? theme.palette.warning.main
+                  : theme.palette.success.main,
+              color: theme.palette.background.default,
+              padding: "7px 10px",
+              borderRadius: 0.6 + "rem",
+              pointerEvents: "none",
+            }}
+          >
+            {params.row.levelEducation}
+          </span>
+        );
+      },
     },
     {
       field: "groupName",
@@ -249,6 +271,20 @@ export default function ExamManagement() {
       flex: 1,
       headerAlign: "center",
       align: "center",
+      renderCell: (params) => {
+        return (
+          <Box
+            sx={{
+              border: "1px groove " + theme.palette.primary.main,
+              p: "8px 30px",
+              borderRadius: 2 + "rem",
+              pointerEvents: "none",
+            }}
+          >
+            <span>{params.row.groupName}</span>
+          </Box>
+        );
+      },
     },
     {
       field: "phoneNum",
@@ -271,7 +307,17 @@ export default function ExamManagement() {
       headerAlign: "center",
       align: "center",
       renderCell: (params) => {
-        return <span className="fs-5">{params.row.studentPoints}</span>;
+        return (
+          <p
+            className={`m-0 fs-5 ${
+              +params.row.studentPoints === +params.row.allResult
+                ? "text-success"
+                : "text-danger"
+            }`}
+          >
+            {params.row.studentPoints}
+          </p>
+        );
       },
     },
     {
@@ -282,8 +328,17 @@ export default function ExamManagement() {
       align: "center",
       renderCell: (params) => {
         return (
-          <span className="fs-5">
-            {params.row.studentPoints} / {params.row.allResult}
+          <span className="fs-5 d-flex gap-2">
+            <p
+              className={`m-0 ${
+                +params.row.studentPoints === +params.row.allResult
+                  ? "text-success"
+                  : "text-danger"
+              }`}
+            >
+              {params.row.studentPoints}
+            </p>{" "}
+            / {params.row.allResult}
           </span>
         );
       },
@@ -310,8 +365,8 @@ export default function ExamManagement() {
       newArr.push({
         id: i + 1,
         studentName: examResultData[i].student.userName,
-        levelEducation: examResultData[i].student.classId,
-        groupName: examResultData[i].student.groupId,
+        levelEducation: examResultData[i].student.class.name,
+        groupName: examResultData[i].student.group.name,
         phoneNum: examResultData[i].student.phone,
         parentPhoneNum: examResultData[i].student.parentPhoneNumber,
         studentPoints: examResultData[i].exam.questions[0].questionScore,
