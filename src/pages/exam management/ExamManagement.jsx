@@ -346,6 +346,7 @@ export default function ExamManagement() {
   ];
 
   const [alignment, setAlignment] = React.useState("management");
+  const [examsData, setExamsData] = React.useState([]);
   const [rows, setRows] = React.useState([]);
   const [rows2, setRows2] = React.useState([]);
   const dataExams = useSelector((state) => state.GETALLEXAMS.exams);
@@ -393,24 +394,30 @@ export default function ExamManagement() {
   };
 
   React.useEffect(() => {
+    let examArr = [];
     let newArr = [];
-    for (let i = 0; i < dataExams.length; i++) {
+
+    if (dataExams?.length > 1) {
+      examArr = dataExams.filter((exam) => exam.examType === "EXAM");
+    }
+
+    for (let i = 0; i < examArr.length; i++) {
       newArr.push({
         id: i + 1,
-        examTitle: dataExams[i].title,
-        examDuration: dataExams[i].duration,
-        score: dataExams[i].score,
-        date: dataExams[i].createdAt,
-        action: dataExams[i].id,
+        examTitle: examArr[i].title,
+        examDuration: examArr[i].duration,
+        score: examArr[i].score,
+        date: examArr[i].createdAt,
+        action: examArr[i].id,
         type: {
-          name: dataExams[i].questionType,
-          file: dataExams[i].file,
+          name: examArr[i].questionType,
+          file: examArr[i].file,
         },
         status: {
-          startTime: dataExams[i].startTime,
-          duration: dataExams[i].duration,
+          startTime: examArr[i].startTime,
+          duration: examArr[i].duration,
         },
-        level: dataExams[i].class.name,
+        level: examArr[i].class.name,
       });
     }
 
