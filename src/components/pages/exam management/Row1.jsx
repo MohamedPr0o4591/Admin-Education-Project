@@ -26,6 +26,10 @@ function Row1(props) {
           إدارة جميع الامتحانات
         </ToggleButton>
 
+        <ToggleButton className="flex-grow-1" value="competition-management">
+          إدارة المسابقات
+        </ToggleButton>
+
         <ToggleButton className="flex-grow-1" value="results" disabled>
           نتائج الامتحان
         </ToggleButton>

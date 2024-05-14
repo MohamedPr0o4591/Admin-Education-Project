@@ -345,10 +345,186 @@ export default function ExamManagement() {
     },
   ];
 
+  const column3 = [
+    {
+      field: "id",
+      headerName: "ID",
+      width: 44,
+      headerAlign: "center",
+      align: "center",
+    },
+    {
+      field: "level",
+      headerName: "المستوى التعليمى",
+      flex: 1,
+      headerAlign: "center",
+      align: "center",
+      renderCell: (params) => {
+        return (
+          <span
+            style={{
+              background:
+                params.row.level.includes("الاول") ||
+                params.row.level.includes("الأول")
+                  ? theme.palette.primary.main
+                  : params.row.level.includes("الثانى") ||
+                    params.row.level.includes("الثاني")
+                  ? theme.palette.warning.main
+                  : theme.palette.success.main,
+              color: theme.palette.background.default,
+              padding: "7px 10px",
+              borderRadius: 0.6 + "rem",
+              pointerEvents: "none",
+            }}
+          >
+            {params.row.level}
+          </span>
+        );
+      },
+    },
+    {
+      field: "examDuration",
+      headerName: "مدة الامتحان",
+      flex: 1,
+      headerAlign: "center",
+      align: "center",
+      renderCell: (params) => {
+        return (
+          <div className="d-flex gap-2 align-items-center ">
+            <span className="text-danger">{params.row.examDuration}</span>
+            <p className="m-0 ">ساعة</p>
+          </div>
+        );
+      },
+    },
+    {
+      field: "score",
+      headerName: "مجموع درجات الامتحان",
+      flex: 1,
+      headerAlign: "center",
+      align: "center",
+      renderCell: (params) => {
+        return (
+          <Box className="d-flex gap-2 align-items-center ">
+            <p className="text-danger m-0">
+              {(+params.row.score).toLocaleString()}
+            </p>
+            <span> درجة</span>
+          </Box>
+        );
+      },
+    },
+    {
+      field: "date",
+      headerName: "تاريخ الانشاء",
+      flex: 1,
+      headerAlign: "center",
+      align: "center",
+      renderCell: (params) => {
+        return <span>{params.row.date.split("T")[0]}</span>;
+      },
+    },
+    {
+      field: "examType",
+      headerName: "نوع الامتحان",
+      flex: 1,
+      headerAlign: "center",
+      align: "center",
+    },
+    {
+      field: "examStatus",
+      headerName: "حالة الامتحان",
+      flex: 1,
+      headerAlign: "center",
+      align: "center",
+      renderCell: (params) => {
+        const currentDate = new Date();
+        let inactiveDate = new Date(
+          params.row.status.startTime.toLocaleString("en-US", {
+            weekday: "short",
+            year: "numeric",
+            month: "short",
+            day: "numeric",
+            hour: "numeric",
+            minute: "numeric",
+            second: "numeric",
+            timeZoneName: "short",
+            timeZone: "Europe/Istanbul", // تغيير المنطقة الزمنية حسب الحاجة
+          })
+        );
+
+        let afterDate = new Date(inactiveDate);
+        afterDate.setMinutes(
+          afterDate.getMinutes() + +params.row.status.duration
+        );
+
+        return (
+          <Box
+            className="user-select-none"
+            sx={{
+              color: theme.palette.primary.contrastText,
+              background:
+                currentDate > inactiveDate && currentDate < afterDate
+                  ? theme.palette.success.main
+                  : currentDate < inactiveDate
+                  ? theme.palette.warning.main
+                  : "none",
+              padding: "5px 10px",
+              borderRadius: 0.6 + "rem",
+            }}
+            title={`موعد عرض الامتحان ${inactiveDate.toLocaleString()} ... موعد الانتهاء ${afterDate.toLocaleString()}`}
+          >
+            {currentDate > afterDate ? (
+              params.row.type.name === "MCQ" ? (
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={(_) => showResults(params.row.action)}
+                >
+                  عرض النتائج
+                </Button>
+              ) : (
+                <span
+                  style={{
+                    background: theme.palette.error.main,
+                  }}
+                  className="p-2 rounded"
+                >
+                  تم انتهاء مدة الامتحان
+                </span>
+              )
+            ) : currentDate < inactiveDate ? (
+              <span>لم يتم عرض الامتحان</span>
+            ) : currentDate > inactiveDate && currentDate < afterDate ? (
+              <span>نشط ..</span>
+            ) : null}
+          </Box>
+        );
+      },
+    },
+    {
+      field: "action",
+      headerName: "حذف",
+      renderCell: (params) => {
+        return (
+          <IconButton
+            sx={{ color: theme.palette.error.main }}
+            onClick={(_) => handleDelete(params.row.action)}
+          >
+            <Delete />
+          </IconButton>
+        );
+      },
+      width: 70,
+      headerAlign: "center",
+      align: "center",
+    },
+  ];
+
   const [alignment, setAlignment] = React.useState("management");
-  const [examsData, setExamsData] = React.useState([]);
   const [rows, setRows] = React.useState([]);
   const [rows2, setRows2] = React.useState([]);
+  const [rows3, setRows3] = React.useState([]);
   const dataExams = useSelector((state) => state.GETALLEXAMS.exams);
   const examResultData = useSelector((state) => state.GETEXAMRESULT.examResult);
   const dispatch = useDispatch();
@@ -395,10 +571,15 @@ export default function ExamManagement() {
 
   React.useEffect(() => {
     let examArr = [];
+    let competitionArr = [];
     let newArr = [];
+    let newArr2 = [];
 
     if (dataExams?.length > 1) {
       examArr = dataExams.filter((exam) => exam.examType === "EXAM");
+      competitionArr = dataExams.filter(
+        (exam) => exam.examType === "COMPETITION"
+      );
     }
 
     for (let i = 0; i < examArr.length; i++) {
@@ -421,7 +602,24 @@ export default function ExamManagement() {
       });
     }
 
+    for (let i = 0; i < competitionArr.length; i++) {
+      newArr2.push({
+        id: i + 1,
+        examDuration: "24",
+        score: competitionArr[i].score,
+        date: competitionArr[i].createdAt,
+        action: competitionArr[i].id,
+        status: {
+          startTime: competitionArr[i].startTime,
+          duration: competitionArr[i].duration,
+        },
+        level: competitionArr[i].class.name,
+        examType: "مسابقات",
+      });
+    }
+
     setRows(newArr);
+    setRows3(newArr2);
   }, [dataExams]);
 
   return (
@@ -433,8 +631,20 @@ export default function ExamManagement() {
 
       <Box sx={{ height: 75 + "vh", width: "100%", mt: 2 }}>
         <DataGrid
-          rows={alignment === "results" ? rows2 : rows}
-          columns={alignment === "results" ? column2 : column}
+          rows={
+            alignment === "results"
+              ? rows2
+              : alignment === "competition-management"
+              ? rows3
+              : rows
+          }
+          columns={
+            alignment === "results"
+              ? column2
+              : alignment === "competition-management"
+              ? column3
+              : column
+          }
           initialState={{
             pagination: {
               paginationModel: {
