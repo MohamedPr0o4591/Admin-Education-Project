@@ -206,24 +206,26 @@ function CourseContentPage() {
   React.useEffect(() => {
     let newArr = [];
 
-    for (let i = 0; i < dataLessons.length; i++) {
-      newArr.push({
-        id: i + 1,
-        educationLevel: dataLessons[i].unit.class.name,
-        chapterTitle: dataLessons[i].unit.name,
-        lessonTitle: dataLessons[i].title,
-        lessonDesc: dataLessons[i].description,
-        lessonDate: dataLessons[i].updatedAt.split("T")[0],
-        homeWork: {
-          type: dataLessons[i].questionType,
-          file: dataLessons[i].homeworkFile,
-        },
-        score: dataLessons[i].score,
-        action: dataLessons[i].id,
-      });
-    }
+    if (dataLessons.length > 0) {
+      for (let i = 0; i < dataLessons.length; i++) {
+        newArr.push({
+          id: i + 1,
+          educationLevel: dataLessons[i].unit.class.name,
+          chapterTitle: dataLessons[i].unit.name,
+          lessonTitle: dataLessons[i].title,
+          lessonDesc: dataLessons[i].description,
+          lessonDate: dataLessons[i].updatedAt.split("T")[0],
+          homeWork: {
+            type: dataLessons[i].questionType,
+            file: dataLessons[i].homeworkFile,
+          },
+          score: dataLessons[i].score,
+          action: dataLessons[i].id,
+        });
+      }
 
-    setRows(newArr);
+      setRows(newArr);
+    } else setRows([]);
   }, [dataLessons]);
 
   const handleSubmitAction = async (_) => {
@@ -310,7 +312,7 @@ function CourseContentPage() {
 
           {mood === "delete" ? (
             <Box className="d-flex gap-3">
-              <span> هل متاحد من حذف </span>
+              <span> هل متأكد من حذف </span>
               <p className="text-danger">{lessonDetails.name}</p>
             </Box>
           ) : mood === "edit" ? (

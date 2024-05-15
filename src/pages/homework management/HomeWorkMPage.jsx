@@ -97,7 +97,11 @@ export default function HomeWorkMPage() {
           file: studentData?.hwData[i]?.Lesson?.homeworkFile,
         });
       }
-    } else if (studentData?.examData?.length > 0) {
+
+      setRows1(newArr);
+    } else setRows1([]);
+
+    if (studentData?.examData?.length > 0) {
       for (let i = 0; i < studentData?.examData?.length; i++) {
         newArr2.push({
           id: i + 1,
@@ -115,10 +119,8 @@ export default function HomeWorkMPage() {
           file: studentData?.examData[i]?.Exam?.file,
         });
       }
-    }
-
-    setRows1(newArr);
-    setRows2(newArr2);
+      setRows2(newArr2);
+    } else setRows2([]);
   }, [studentData]);
 
   const handleAddPoints = (studentName, examScore, id, level, length) => {
@@ -153,11 +155,8 @@ export default function HomeWorkMPage() {
         toast.success("تمت العملية بنجاح");
         handleClose();
         setAddPoints("");
-        if (studentArr.arrayLength === 1) {
-          location.reload();
-        } else {
-          dispatch(getAllStudentResult());
-        }
+
+        dispatch(getAllStudentResult());
       } catch (err) {
         toast.error("حدث خطأ");
       }

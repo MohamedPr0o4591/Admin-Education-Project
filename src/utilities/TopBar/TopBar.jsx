@@ -22,6 +22,7 @@ import MenuItem from "@mui/material/MenuItem";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllNoti, getAllProfileDetails } from "../../Redux/actions/Actions";
 import axios from "axios";
+import "./TopBar.css";
 
 const drawerWidth = 240;
 
@@ -62,6 +63,7 @@ function TopBar(props) {
   };
 
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const [notificationsId, setNotificationsId] = React.useState([]);
   const teacherDetails = useSelector((state) => state.PROFILEDETAILS.profile);
   const allNotifications = useSelector(
     (state) => state.NOTIFICATIONS.notifications
@@ -84,26 +86,49 @@ function TopBar(props) {
   }, []);
 
   React.useEffect(() => {
+    if (allNotifications?.length > 0) {
+      setNotificationsId(allNotifications?.map((item) => item.id));
+    }
+  }, [allNotifications]);
+
+  React.useEffect(() => {
     if (Object.keys(teacherDetails).length > 0) {
       dispatch(getAllNoti(teacherDetails.id));
     }
   }, [teacherDetails]);
 
-  const handleReadNotification = async (id, type) => {
+  const handleReadNotification = async (id, type, readAll) => {
     handleClose();
 
-    try {
-      await axios.patch(`${import.meta.env.VITE_API}notifications/${id}`);
+    if (readAll) {
+      try {
+        for (let i = 0; i < notificationsId.length; i++) {
+          await axios.patch(
+            `${import.meta.env.VITE_API}notifications/${notificationsId[i]}`
+          );
 
-      if (type === "register" || type === "verification") {
-        navigate("/admin/students-management");
-      } else if (type === "exam_submission" || type === "homework_submission") {
-        navigate("/admin/homework-management");
+          dispatch(getAllNoti(teacherDetails.id));
+        }
+      } catch (err) {
+        console.error(err);
       }
+    } else {
+      try {
+        await axios.patch(`${import.meta.env.VITE_API}notifications/${id}`);
 
-      dispatch(getAllNoti(teacherDetails.id));
-    } catch (err) {
-      console.error(err);
+        if (type === "register" || type === "verification") {
+          navigate("/admin/students-management");
+        } else if (
+          type === "exam_submission" ||
+          type === "homework_submission"
+        ) {
+          navigate("/admin/homework-management");
+        }
+
+        dispatch(getAllNoti(teacherDetails.id));
+      } catch (err) {
+        console.error(err);
+      }
     }
   };
 
@@ -112,6 +137,7 @@ function TopBar(props) {
       position="fixed"
       open={props.open}
       sx={{ backgroundColor: theme.palette.background.mainDefault }}
+      className="top-bar"
     >
       <Menu
         id="basic-menu"
@@ -143,6 +169,17 @@ function TopBar(props) {
           )}
         </div>
 
+        {allNotifications?.length > 0 && (
+          <Stack direction={"row"} gap={1} justifyContent={"flex-end"}>
+            <span
+              className="read-all"
+              onClick={(_) => handleReadNotification("", "", true)}
+            >
+              قراءة الكل
+            </span>
+          </Stack>
+        )}
+
         <Stack gap={1} mt={2}>
           {allNotifications?.length > 0 &&
             allNotifications?.map((notification, index) => {
@@ -152,7 +189,8 @@ function TopBar(props) {
                     onClick={(_) =>
                       handleReadNotification(
                         notification.id,
-                        notification.notificationType
+                        notification.notificationType,
+                        false
                       )
                     }
                     className="rounded"

@@ -36,18 +36,20 @@ export default function LecturesPage() {
   }, []);
 
   React.useEffect(() => {
-    let allBooks = dataBooks.map((item, index) => ({
-      id: index + 1,
-      bookTitle: item.title,
-      bookDesc: item.description,
-      level: item.class.name,
-      date: item.createdAt.split("T")[0],
-      delete: item.id,
-      cover: `${import.meta.env.VITE_API}${item.cover}`,
-      pdf: `${import.meta.env.VITE_API}${item.file}`,
-    }));
+    if (dataBooks.length > 0) {
+      let allBooks = dataBooks.map((item, index) => ({
+        id: index + 1,
+        bookTitle: item.title,
+        bookDesc: item.description,
+        level: item.class.name,
+        date: item.createdAt.split("T")[0],
+        delete: item.id,
+        cover: `${import.meta.env.VITE_API}${item.cover}`,
+        pdf: `${import.meta.env.VITE_API}${item.file}`,
+      }));
 
-    setRows(allBooks);
+      setRows(allBooks);
+    } else setRows([]);
   }, [dataBooks]);
 
   const theme = useTheme();

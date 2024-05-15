@@ -8,7 +8,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { getAllExams, getExamResult } from "./../../Redux/actions/Actions";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
-import moment from "moment";
 
 export default function ExamManagement() {
   const theme = useTheme();
@@ -175,7 +174,7 @@ export default function ExamManagement() {
             title={`موعد عرض الامتحان ${inactiveDate.toLocaleString()} ... موعد الانتهاء ${afterDate.toLocaleString()}`}
           >
             {currentDate > afterDate ? (
-              params.row.type.name === "MCQ" ? (
+              params?.row?.type?.name === "MCQ" ? (
                 <Button
                   variant="contained"
                   color="primary"
@@ -475,7 +474,7 @@ export default function ExamManagement() {
             title={`موعد عرض الامتحان ${inactiveDate.toLocaleString()} ... موعد الانتهاء ${afterDate.toLocaleString()}`}
           >
             {currentDate > afterDate ? (
-              params.row.type.name === "MCQ" ? (
+              params?.row?.type?.name === "MCQ" ? (
                 <Button
                   variant="contained"
                   color="primary"
@@ -538,20 +537,22 @@ export default function ExamManagement() {
   React.useEffect(() => {
     let newArr = [];
 
-    for (let i = 0; i < examResultData.length; i++) {
-      newArr.push({
-        id: i + 1,
-        studentName: examResultData[i].student.userName,
-        levelEducation: examResultData[i].student.class.name,
-        groupName: examResultData[i].student.group.name,
-        phoneNum: examResultData[i].student.phone,
-        parentPhoneNum: examResultData[i].student.parentPhoneNumber,
-        studentPoints: examResultData[i].exam.questions[0].questionScore,
-        allResult: examResultData[i].exam.score,
-      });
-    }
+    if (examResultData?.length > 0) {
+      for (let i = 0; i < examResultData.length; i++) {
+        newArr.push({
+          id: i + 1,
+          studentName: examResultData[i].student.userName,
+          levelEducation: examResultData[i].student.class.name,
+          groupName: examResultData[i].student.group.name,
+          phoneNum: examResultData[i].student.phone,
+          parentPhoneNum: examResultData[i].student.parentPhoneNumber,
+          studentPoints: examResultData[i].exam.questions[0].questionScore,
+          allResult: examResultData[i].exam.score,
+        });
+      }
 
-    setRows2(newArr);
+      setRows2(newArr);
+    } else setRows2([]);
   }, [examResultData]);
 
   React.useEffect(() => {
@@ -582,44 +583,49 @@ export default function ExamManagement() {
       );
     }
 
-    for (let i = 0; i < examArr.length; i++) {
-      newArr.push({
-        id: i + 1,
-        examTitle: examArr[i].title,
-        examDuration: examArr[i].duration,
-        score: examArr[i].score,
-        date: examArr[i].createdAt,
-        action: examArr[i].id,
-        type: {
-          name: examArr[i].questionType,
-          file: examArr[i].file,
-        },
-        status: {
-          startTime: examArr[i].startTime,
-          duration: examArr[i].duration,
-        },
-        level: examArr[i].class.name,
-      });
-    }
+    if (examArr?.length > 0) {
+      for (let i = 0; i < examArr.length; i++) {
+        newArr.push({
+          id: i + 1,
+          examTitle: examArr[i].title,
+          examDuration: examArr[i].duration,
+          score: examArr[i].score,
+          date: examArr[i].createdAt,
+          action: examArr[i].id,
+          type: {
+            name: examArr[i].questionType,
+            file: examArr[i].file,
+          },
+          status: {
+            startTime: examArr[i].startTime,
+            duration: examArr[i].duration,
+          },
+          level: examArr[i].class.name,
+        });
+      }
 
-    for (let i = 0; i < competitionArr.length; i++) {
-      newArr2.push({
-        id: i + 1,
-        examDuration: "24",
-        score: competitionArr[i].score,
-        date: competitionArr[i].createdAt,
-        action: competitionArr[i].id,
-        status: {
-          startTime: competitionArr[i].startTime,
-          duration: competitionArr[i].duration,
-        },
-        level: competitionArr[i].class.name,
-        examType: "مسابقات",
-      });
-    }
+      setRows(newArr);
+    } else setRows([]);
 
-    setRows(newArr);
-    setRows3(newArr2);
+    if (competitionArr?.length > 0) {
+      for (let i = 0; i < competitionArr.length; i++) {
+        newArr2.push({
+          id: i + 1,
+          examDuration: "24",
+          score: competitionArr[i].score,
+          date: competitionArr[i].createdAt,
+          action: competitionArr[i].id,
+          status: {
+            startTime: competitionArr[i].startTime,
+            duration: competitionArr[i].duration,
+          },
+          level: competitionArr[i].class.name,
+          examType: "مسابقات",
+        });
+      }
+
+      setRows3(newArr2);
+    } else setRows3([]);
   }, [dataExams]);
 
   return (

@@ -320,6 +320,8 @@ function StudentManagementPage() {
       });
 
       setRows(allStudents);
+    } else {
+      setRows([]);
     }
   }, [dataStudents]);
 

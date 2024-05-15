@@ -1,0 +1,16 @@
+.read-all {
+  cursor: pointer;
+  font-size: 0.9rem;
+  user-select: none;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.read-all:hover {
+  border-bottom: 1px solid;
+  color: #ff6c37;
+}
+
+.read-all:active {
+  color: #7e381f;
+}
