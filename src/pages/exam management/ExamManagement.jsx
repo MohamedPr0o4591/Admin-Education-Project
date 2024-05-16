@@ -1,13 +1,14 @@
 import React from "react";
 import HeaderLine from "../../components/headerLine/HeaderLine";
 import { Box, Button, IconButton, useTheme } from "@mui/material";
-import { Delete, Visibility } from "@mui/icons-material";
+import { Delete } from "@mui/icons-material";
 import { DataGrid } from "@mui/x-data-grid";
 import Row1 from "../../components/pages/exam management/Row1";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllExams, getExamResult } from "./../../Redux/actions/Actions";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
+import { formatDateAndTime } from "./FormatDateAndTime";
 
 export default function ExamManagement() {
   const theme = useTheme();
@@ -138,24 +139,7 @@ export default function ExamManagement() {
       align: "center",
       renderCell: (params) => {
         const currentDate = new Date();
-        let inactiveDate = new Date(
-          params.row.status.startTime.toLocaleString("en-US", {
-            weekday: "short",
-            year: "numeric",
-            month: "short",
-            day: "numeric",
-            hour: "numeric",
-            minute: "numeric",
-            second: "numeric",
-            timeZoneName: "short",
-            timeZone: "Europe/Istanbul", // تغيير المنطقة الزمنية حسب الحاجة
-          })
-        );
-
-        let afterDate = new Date(inactiveDate);
-        afterDate.setMinutes(
-          afterDate.getMinutes() + +params.row.status.duration
-        );
+        let inactiveDate = formatDateAndTime(params.row.status.startTime);
 
         return (
           <Box
@@ -163,17 +147,17 @@ export default function ExamManagement() {
             sx={{
               color: theme.palette.primary.contrastText,
               background:
-                currentDate > inactiveDate && currentDate < afterDate
+                params.row.status.status === "active"
                   ? theme.palette.success.main
-                  : currentDate < inactiveDate
+                  : params.row.status.status === "inactive"
                   ? theme.palette.warning.main
                   : "none",
               padding: "5px 10px",
               borderRadius: 0.6 + "rem",
             }}
-            title={`موعد عرض الامتحان ${inactiveDate.toLocaleString()} ... موعد الانتهاء ${afterDate.toLocaleString()}`}
+            title={`موعد عرض الامتحان ${inactiveDate.date} - ${inactiveDate.timeForRtl}`}
           >
-            {currentDate > afterDate ? (
+            {params.row.status.status === "finished" ? (
               params?.row?.type?.name === "MCQ" ? (
                 <Button
                   variant="contained"
@@ -192,9 +176,9 @@ export default function ExamManagement() {
                   تم انتهاء مدة الامتحان
                 </span>
               )
-            ) : currentDate < inactiveDate ? (
+            ) : params.row.status.status === "inactive" ? (
               <span>لم يتم عرض الامتحان</span>
-            ) : currentDate > inactiveDate && currentDate < afterDate ? (
+            ) : params.row.status.status === "active" ? (
               <span>نشط ..</span>
             ) : null}
           </Box>
@@ -301,7 +285,7 @@ export default function ExamManagement() {
     },
     {
       field: "studentPoints",
-      headerName: "نتيجة الطالب",
+      headerName: "تقدير الطالب",
       flex: 1,
       headerAlign: "center",
       align: "center",
@@ -309,12 +293,38 @@ export default function ExamManagement() {
         return (
           <p
             className={`m-0 fs-5 ${
-              +params.row.studentPoints === +params.row.allResult
-                ? "text-success"
+              (+params.row.studentPoints / +params.row.allResult) * 100 < 50
+                ? "text-danger"
+                : (+params.row.studentPoints / +params.row.allResult) * 100 >=
+                    50 &&
+                  (+params.row.studentPoints / +params.row.allResult) * 100 < 65
+                ? "text-warning"
+                : (+params.row.studentPoints / +params.row.allResult) * 100 >=
+                    65 &&
+                  (+params.row.studentPoints / +params.row.allResult) * 100 < 75
+                ? "text-primary fw-lighter"
+                : (+params.row.studentPoints / +params.row.allResult) * 100 >=
+                    75 &&
+                  (+params.row.studentPoints / +params.row.allResult) * 100 < 85
+                ? "text-primary fw-bolder"
                 : "text-danger"
             }`}
           >
-            {params.row.studentPoints}
+            {(+params.row.studentPoints / +params.row.allResult) * 100 < 50
+              ? "راسب"
+              : (+params.row.studentPoints / +params.row.allResult) * 100 >=
+                  50 &&
+                (+params.row.studentPoints / +params.row.allResult) * 100 < 65
+              ? "مقبول"
+              : (+params.row.studentPoints / +params.row.allResult) * 100 >=
+                  65 &&
+                (+params.row.studentPoints / +params.row.allResult) * 100 < 75
+              ? "جيد"
+              : (+params.row.studentPoints / +params.row.allResult) * 100 >=
+                  75 &&
+                (+params.row.studentPoints / +params.row.allResult) * 100 < 85
+              ? "جيد جدا"
+              : "ممتاز"}
           </p>
         );
       },
@@ -329,9 +339,24 @@ export default function ExamManagement() {
         return (
           <span className="fs-5 d-flex gap-2">
             <p
-              className={`m-0 ${
-                +params.row.studentPoints === +params.row.allResult
-                  ? "text-success"
+              className={`m-0 fs-5 ${
+                (+params.row.studentPoints / +params.row.allResult) * 100 < 50
+                  ? "text-danger"
+                  : (+params.row.studentPoints / +params.row.allResult) * 100 >=
+                      50 &&
+                    (+params.row.studentPoints / +params.row.allResult) * 100 <
+                      65
+                  ? "text-warning"
+                  : (+params.row.studentPoints / +params.row.allResult) * 100 >=
+                      65 &&
+                    (+params.row.studentPoints / +params.row.allResult) * 100 <
+                      75
+                  ? "text-primary fw-lighter"
+                  : (+params.row.studentPoints / +params.row.allResult) * 100 >=
+                      75 &&
+                    (+params.row.studentPoints / +params.row.allResult) * 100 <
+                      85
+                  ? "text-primary fw-bolder"
                   : "text-danger"
               }`}
             >
@@ -437,25 +462,7 @@ export default function ExamManagement() {
       headerAlign: "center",
       align: "center",
       renderCell: (params) => {
-        const currentDate = new Date();
-        let inactiveDate = new Date(
-          params.row.status.startTime.toLocaleString("en-US", {
-            weekday: "short",
-            year: "numeric",
-            month: "short",
-            day: "numeric",
-            hour: "numeric",
-            minute: "numeric",
-            second: "numeric",
-            timeZoneName: "short",
-            timeZone: "Europe/Istanbul", // تغيير المنطقة الزمنية حسب الحاجة
-          })
-        );
-
-        let afterDate = new Date(inactiveDate);
-        afterDate.setMinutes(
-          afterDate.getMinutes() + +params.row.status.duration
-        );
+        let inactiveDate = formatDateAndTime(params.row.status.startTime);
 
         return (
           <Box
@@ -463,17 +470,17 @@ export default function ExamManagement() {
             sx={{
               color: theme.palette.primary.contrastText,
               background:
-                currentDate > inactiveDate && currentDate < afterDate
+                params.row.status.status === "active"
                   ? theme.palette.success.main
-                  : currentDate < inactiveDate
+                  : params.row.status.status === "inactive"
                   ? theme.palette.warning.main
                   : "none",
               padding: "5px 10px",
               borderRadius: 0.6 + "rem",
             }}
-            title={`موعد عرض الامتحان ${inactiveDate.toLocaleString()} ... موعد الانتهاء ${afterDate.toLocaleString()}`}
+            title={`موعد عرض الامتحان ${inactiveDate.date} - ${inactiveDate.timeForRtl}`}
           >
-            {currentDate > afterDate ? (
+            {params?.row?.status?.status === "finished" ? (
               params?.row?.type?.name === "MCQ" ? (
                 <Button
                   variant="contained"
@@ -492,9 +499,9 @@ export default function ExamManagement() {
                   تم انتهاء مدة الامتحان
                 </span>
               )
-            ) : currentDate < inactiveDate ? (
+            ) : params.row.status.status === "inactive" ? (
               <span>لم يتم عرض الامتحان</span>
-            ) : currentDate > inactiveDate && currentDate < afterDate ? (
+            ) : params.row.status.status === "active" ? (
               <span>نشط ..</span>
             ) : null}
           </Box>
@@ -599,6 +606,7 @@ export default function ExamManagement() {
           status: {
             startTime: examArr[i].startTime,
             duration: examArr[i].duration,
+            status: examArr[i].status,
           },
           level: examArr[i].class.name,
         });
@@ -618,6 +626,7 @@ export default function ExamManagement() {
           status: {
             startTime: competitionArr[i].startTime,
             duration: competitionArr[i].duration,
+            status: competitionArr[i].status,
           },
           level: competitionArr[i].class.name,
           examType: "مسابقات",

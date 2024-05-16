@@ -80,6 +80,8 @@ export default function HomeWorkMPage() {
     let newArr = [];
     let newArr2 = [];
 
+    console.log(studentData.hwData);
+
     if (studentData?.hwData?.length > 0) {
       for (let i = 0; i < studentData?.hwData?.length; i++) {
         newArr.push({
@@ -153,16 +155,13 @@ export default function HomeWorkMPage() {
         );
 
         toast.success("تمت العملية بنجاح");
-        handleClose();
-        setAddPoints("");
-
         dispatch(getAllStudentResult());
+        setAddPoints("");
+        handleClose();
       } catch (err) {
         toast.error("حدث خطأ");
       }
-    } else {
-      toast.error("النقاط المدخلة اكبر من المجموع");
-    }
+    } else toast.error("النقاط المدخلة اكبر من المجموع");
   };
 
   const columns = [

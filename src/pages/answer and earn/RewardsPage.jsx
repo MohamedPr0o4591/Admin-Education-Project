@@ -151,7 +151,7 @@ const RewardsPage = () => {
 
   return (
     <div className="bonus-page">
-      <HeaderLine title="المكافآت" />
+      <HeaderLine title="المسابقات" />
       <ToastContainer position="top-right" />
 
       <Row>

@@ -3,11 +3,13 @@ import HeaderLine from "../../components/headerLine/HeaderLine";
 import Box from "@mui/material/Box";
 import { DataGrid } from "@mui/x-data-grid";
 import {
+  Alert,
   Button,
   IconButton,
   Menu,
   MenuItem,
   Modal,
+  Snackbar,
   Stack,
   useTheme,
 } from "@mui/material";
@@ -30,6 +32,28 @@ const style = {
   borderRadius: "0.4rem",
 };
 function StudentManagementPage() {
+  const getColorForSeverity = (severity) => {
+    switch (severity) {
+      case "success":
+        return "#4caf50"; // green
+      case "error":
+        return "#f44336"; // red
+      case "warning":
+        return "#ff9800"; // orange
+      case "info":
+        return "#2196f3"; // blue
+      default:
+        return "#000"; // black
+    }
+  };
+
+  const initialToast = {
+    status: "",
+    message: "",
+    open: false,
+  };
+
+  const [toastDetails, setToastDetails] = useState(initialToast);
   const theme = useTheme();
 
   const [rows, setRows] = useState([]);
@@ -246,7 +270,12 @@ function StudentManagementPage() {
         );
 
         dispatch(getAllStudents());
-        toast.success(`تم تغيير المجموعة بنجاح`);
+
+        setToastDetails({
+          status: "success",
+          message: "تم تغيير المجموعة بنجاح",
+          open: true,
+        });
       } catch (err) {
         console.error(err);
       }
@@ -263,9 +292,17 @@ function StudentManagementPage() {
       );
 
       dispatch(getAllStudents());
-      toast.success(`تم تغيير حالة الحساب بنجاح`);
+      setToastDetails({
+        status: "success",
+        message: "تم تغيير حالة الحساب بنجاح",
+        open: true,
+      });
     } catch (err) {
-      toast.error(`حدث خطأ اثناء تغيير حالة الحساب`);
+      setToastDetails({
+        status: "error",
+        message: "حدث خطأ اثناء تغيير حالة الحساب",
+        open: true,
+      });
     }
   };
 
@@ -273,10 +310,18 @@ function StudentManagementPage() {
     try {
       await axios.delete(`${import.meta.env.VITE_API}student/${id}`);
 
-      toast.success(`تم حذف الطالب بنجاح`);
+      setToastDetails({
+        status: "success",
+        message: "تم حذف الطالب بنجاح",
+        open: true,
+      });
       dispatch(getAllStudents());
     } catch (err) {
-      toast.error(`حدث خطأ اثناء حذف الطالب`);
+      setToastDetails({
+        status: "error",
+        message: "حدث خطأ اثناء حذف الطالب",
+        open: true,
+      });
     }
 
     setOpenModal(false);
@@ -333,7 +378,23 @@ function StudentManagementPage() {
     <div className="students-management-page ">
       <HeaderLine title="إدارة الطلاب" />
 
-      <ToastContainer position="top-right" />
+      <Snackbar
+        open={toastDetails.open}
+        autoHideDuration={5000}
+        onClose={(_) => setToastDetails({ ...toastDetails, open: false })}
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+      >
+        <Alert
+          onClose={(_) => setToastDetails({ ...toastDetails, open: false })}
+          severity={toastDetails.status}
+          style={{
+            backgroundColor: getColorForSeverity(toastDetails.status),
+            padding: "10px 50px",
+          }}
+        >
+          {toastDetails.message}
+        </Alert>
+      </Snackbar>
 
       <Menu
         id="basic-menu"

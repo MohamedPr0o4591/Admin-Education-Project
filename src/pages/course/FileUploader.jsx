@@ -1,10 +1,31 @@
-import { Box, Button, Stack, useTheme } from "@mui/material";
+import { Alert, Box, Button, Snackbar, Stack, useTheme } from "@mui/material";
 import React, { useCallback, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import "./FileUploader.css";
-import { ToastContainer, toast } from "react-toastify";
 
 const FileUploader = (props) => {
+  const getColorForSeverity = (severity) => {
+    switch (severity) {
+      case "success":
+        return "#4caf50"; // green
+      case "error":
+        return "#f44336"; // red
+      case "warning":
+        return "#ff9800"; // orange
+      case "info":
+        return "#2196f3"; // blue
+      default:
+        return "#000"; // black
+    }
+  };
+
+  const initialToast = {
+    status: "",
+    message: "",
+    open: false,
+  };
+
+  const [toastDetails, setToastDetails] = useState(initialToast);
   const [error, setError] = useState(false);
 
   React.useEffect(() => {
@@ -22,7 +43,11 @@ const FileUploader = (props) => {
         (file) => file.type === "application/pdf"
       );
       if (pdfFiles.length === 0) {
-        toast.error("من فضلك ارفق الكتاب من نوع PDF فقط");
+        setToastDetails({
+          status: "error",
+          message: "من فضلك ارفق الكتاب من نوع PDF فقط",
+          open: true,
+        });
         setError(true);
         return;
       }
@@ -77,18 +102,23 @@ const FileUploader = (props) => {
         </Stack>
       ) : null}
 
-      <ToastContainer
-        position="top-right"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="colored"
-      />
+      <Snackbar
+        open={toastDetails.open}
+        autoHideDuration={5000}
+        onClose={(_) => setToastDetails({ ...toastDetails, open: false })}
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+      >
+        <Alert
+          onClose={(_) => setToastDetails({ ...toastDetails, open: false })}
+          severity={toastDetails.status}
+          style={{
+            backgroundColor: getColorForSeverity(toastDetails.status),
+            padding: "10px 50px",
+          }}
+        >
+          {toastDetails.message}
+        </Alert>
+      </Snackbar>
     </div>
   );
 };

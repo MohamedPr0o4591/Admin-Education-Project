@@ -1,13 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import { Col } from "react-bootstrap";
 import {
+  Alert,
   Box,
   Button,
   IconButton,
   MenuItem,
   Modal,
+  Snackbar,
   Stack,
   TextField,
   useTheme,
@@ -21,11 +23,9 @@ import {
   CheckCircleOutline,
   CloseRounded,
   DeleteRounded,
-  EditRounded,
   HighlightOff,
 } from "@mui/icons-material";
 import axios from "axios";
-import { ToastContainer, toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllClasses, getUnits } from "../../../Redux/actions/Actions";
 
@@ -43,6 +43,28 @@ function Col1(props) {
     borderRadius: "0.4rem",
   };
 
+  const getColorForSeverity = (severity) => {
+    switch (severity) {
+      case "success":
+        return "#4caf50"; // green
+      case "error":
+        return "#f44336"; // red
+      case "warning":
+        return "#ff9800"; // orange
+      case "info":
+        return "#2196f3"; // blue
+      default:
+        return "#000"; // black
+    }
+  };
+
+  const initialToast = {
+    status: "",
+    message: "",
+    open: false,
+  };
+
+  const [toastDetails, setToastDetails] = useState(initialToast);
   const [open, setOpen] = React.useState(false);
 
   const theme = useTheme();
@@ -100,7 +122,12 @@ function Col1(props) {
         classId: id,
       });
 
-      toast.success("تم أضافة الوحدة بنجاح");
+      setToastDetails({
+        status: "success",
+        message: "تم أضافة الوحدة بنجاح",
+        open: true,
+      });
+
       dispatch(getUnits(classId));
 
       setOpen(false);
@@ -118,7 +145,12 @@ function Col1(props) {
     try {
       await axios.delete(`${import.meta.env.VITE_API}unit/${id}`);
 
-      toast.success("تم حذف الوحدة بنجاح");
+      setToastDetails({
+        status: "success",
+        message: "تم حذف الوحدة بنجاح",
+        open: true,
+      });
+
       dispatch(getUnits(classId));
       props.setUnitDetails([]);
     } catch (err) {
@@ -165,7 +197,25 @@ function Col1(props) {
 
   return (
     <Col xs={12} lg={6} className="col-1">
-      <ToastContainer position="top-right" />
+
+      <Snackbar
+        open={toastDetails.open}
+        autoHideDuration={5000}
+        onClose={(_) => setToastDetails({ ...toastDetails, open: false })}
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+      >
+        <Alert
+          onClose={(_) => setToastDetails({ ...toastDetails, open: false })}
+          severity={toastDetails.status}
+          style={{
+            backgroundColor: getColorForSeverity(toastDetails.status),
+            padding: "10px 50px",
+          }}
+        >
+          {toastDetails.message}
+        </Alert>
+      </Snackbar>
+
       <Stack gap={2}>
         <Stack gap={1}>
           <span style={{ color: theme.palette.primary.dark }}>
