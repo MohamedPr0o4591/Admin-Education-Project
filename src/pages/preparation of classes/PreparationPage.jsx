@@ -18,8 +18,7 @@ import {
   InfoRounded,
 } from "@mui/icons-material";
 import axios from "axios";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { toast } from "react-toastify";
 import GroupComponent from "../../components/pages/preparation of classes/GroupComponent";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllClasses, getGroups } from "../../Redux/actions/Actions";
@@ -202,8 +201,6 @@ const PreparationPage = () => {
 
   return (
     <div className="preparation-page">
-      <ToastContainer position="top-right" />
-
       <HeaderLine title="الصفوف الدراسية" />
       <Container>
         <Stack gap={4}>

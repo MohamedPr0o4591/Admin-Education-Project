@@ -16,7 +16,7 @@ import Backdrop from "@mui/material/Backdrop";
 import { Close } from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllStudentResult } from "../../Redux/actions/Actions";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import axios from "axios";
 
 const style = {
@@ -294,8 +294,6 @@ export default function HomeWorkMPage() {
   return (
     <div className="home-work-management">
       <HeaderLine title="إدارة الواجبات المنزلية" />
-
-      <ToastContainer position="top-right" />
 
       <Row1 alignment={alignment} setAlignment={setAlignment} />
 

@@ -7,7 +7,7 @@ import Row1 from "../../components/pages/exam management/Row1";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllExams, getExamResult } from "./../../Redux/actions/Actions";
 import axios from "axios";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import { formatDateAndTime } from "./FormatDateAndTime";
 
 export default function ExamManagement() {
@@ -640,7 +640,6 @@ export default function ExamManagement() {
   return (
     <div className="ExamManagement-page">
       <HeaderLine title="ادارة الامتحانات" />
-      <ToastContainer position="top-right" />
 
       <Row1 alignment={alignment} setAlignment={setAlignment} />
 

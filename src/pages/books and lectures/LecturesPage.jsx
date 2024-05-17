@@ -7,7 +7,7 @@ import Row1 from "../../components/pages/books and lectures/Row1";
 import { DataGrid } from "@mui/x-data-grid";
 import { Box, Button, IconButton, useTheme } from "@mui/material";
 import axios from "axios";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllBooks } from "../../Redux/actions/Actions.jsx";
 import { DeleteRounded } from "@mui/icons-material";
@@ -270,8 +270,6 @@ export default function LecturesPage() {
           createType === "add" ? "اضافة كتاب / مذكرة" : "عرض الكتب / المذكرات"
         }
       />
-
-      <ToastContainer position="top-right" />
 
       <Row1 createType={createType} setCreateType={setCreateType} />
 

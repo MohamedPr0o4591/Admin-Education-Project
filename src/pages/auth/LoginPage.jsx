@@ -4,8 +4,7 @@ import { useNavigate } from "react-router";
 import axios from "axios";
 import { Paper, useTheme } from "@mui/material";
 import { CheckRounded, ErrorRounded } from "@mui/icons-material";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { toast } from "react-toastify";
 
 export default function LoginPage() {
   const notify = () => toast(`تم تسجيل الدخول بنجاح`);
@@ -64,7 +63,6 @@ export default function LoginPage() {
 
   return (
     <div className="login-page">
-      <ToastContainer />
       <form onSubmit={handleSubmit}>
         <h2>تسجيل الدخول</h2>
 

@@ -6,7 +6,7 @@ import { useTheme } from "@mui/material";
 import Col1 from "../../components/pages/course/Col1";
 import Col2 from "../../components/pages/course/Col2";
 import { useNavigate } from "react-router";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import axios from "axios";
 
 function CoursePage() {
@@ -178,7 +178,6 @@ function CoursePage() {
   return (
     <div className="course-page">
       <HeaderLine title="شرح المنهج" />
-      <ToastContainer position="top-right" />
 
       <Row>
         <Col1

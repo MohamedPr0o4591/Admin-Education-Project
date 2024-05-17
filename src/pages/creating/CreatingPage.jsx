@@ -7,7 +7,7 @@ import Row1 from "../../components/pages/creating/Row1";
 import Col1 from "../../components/pages/creating/Col1";
 import Col2 from "../../components/pages/creating/Col2";
 import axios from "axios";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import { useNavigate } from "react-router";
 
 function CreatingPage() {
@@ -202,7 +202,6 @@ function CreatingPage() {
   return (
     <div className="create-homework-page">
       <HeaderLine title="إنشاء امتحان" />
-      <ToastContainer position="top-right" />
 
       <Row>
         {/* Col1 Start */}

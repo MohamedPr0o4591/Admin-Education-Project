@@ -9,7 +9,7 @@ import { getAllLessons } from "../../Redux/actions/Actions";
 import "./CourseContentPage.css";
 import FileUploader from "../course/FileUploader";
 import axios from "axios";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 
 function CourseContentPage() {
   const style = {
@@ -278,7 +278,6 @@ function CourseContentPage() {
   return (
     <div className="course-content-page">
       <HeaderLine title="فهرس المشروحات" />
-      <ToastContainer position="top-right" />
 
       <Box sx={{ height: 75 + "vh", width: "100%" }}>
         <DataGrid

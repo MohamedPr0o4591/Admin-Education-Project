@@ -4,7 +4,7 @@ import { Row } from "react-bootstrap";
 import Col1 from "../../components/pages/answer & earn/Col1";
 import "./RewardsPage.css";
 import Col2 from "../../components/pages/answer & earn/Col2";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import axios from "axios";
 import { v4 as uuidv4 } from "uuid";
 
@@ -152,7 +152,6 @@ const RewardsPage = () => {
   return (
     <div className="bonus-page">
       <HeaderLine title="المسابقات" />
-      <ToastContainer position="top-right" />
 
       <Row>
         <Col1
