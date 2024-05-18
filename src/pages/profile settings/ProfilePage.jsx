@@ -8,7 +8,7 @@ import Row2 from "../../components/pages/profile settings/Row2";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllProfileDetails } from "../../Redux/actions/Actions";
 import axios from "axios";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 
 export default function ProfilePage() {
   const [firstName, setFirstName] = React.useState("");
@@ -131,8 +131,6 @@ export default function ProfilePage() {
   return (
     <Container className="profile-page">
       <HeaderLine title="إعدادات الملف الشخصي" />
-
-      <ToastContainer position="top-right" />
 
       <Row1
         handleChangeDetails={handleChangeDetails}

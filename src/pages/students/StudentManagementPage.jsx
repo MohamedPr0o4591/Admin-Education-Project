@@ -17,7 +17,7 @@ import { CloseRounded, DeleteRounded, Visibility } from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllStudents, getGroups } from "../../Redux/actions/Actions";
 import axios from "axios";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 
 const style = {
   position: "absolute",

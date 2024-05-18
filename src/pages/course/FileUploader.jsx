@@ -1,4 +1,4 @@
-import { Alert, Box, Button, Snackbar, Stack, useTheme } from "@mui/material";
+import { Alert, Snackbar, Stack, useTheme } from "@mui/material";
 import React, { useCallback, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import "./FileUploader.css";

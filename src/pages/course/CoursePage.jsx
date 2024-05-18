@@ -6,7 +6,7 @@ import { useTheme } from "@mui/material";
 import Col1 from "../../components/pages/course/Col1";
 import Col2 from "../../components/pages/course/Col2";
 import { useNavigate } from "react-router";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import axios from "axios";
 
 function CoursePage() {
@@ -33,6 +33,7 @@ function CoursePage() {
   const [correctAns1, setCorrectAns1] = React.useState(ans1);
   const [questionMark, setQuestionMark] = React.useState("");
   const [score, setScore] = React.useState("");
+  const [lessonExpireDate, setLessonExpireDate] = React.useState("");
 
   const [question2, setQuestion2] = React.useState("");
   const [correctAns2, setCorrectAns2] = React.useState("true");
@@ -100,7 +101,16 @@ function CoursePage() {
     let flag;
     setLoadingFetchData(true);
 
-    if (alignment !== "" && title !== "" && lessonTitle !== "") {
+    if (
+      alignment !== "" &&
+      title !== "" &&
+      lessonTitle !== "" &&
+      score !== "" &&
+      lessonExpireDate !== "" &&
+      questionType !== "" &&
+      videoLink !== "" &&
+      (questionType !== "PDF" || (questionType === "PDF" && hWFile))
+    ) {
       flag = true;
     } else flag = false;
 
@@ -178,7 +188,6 @@ function CoursePage() {
   return (
     <div className="course-page">
       <HeaderLine title="شرح المنهج" />
-      <ToastContainer position="top-right" />
 
       <Row>
         <Col1
@@ -230,6 +239,8 @@ function CoursePage() {
           setScore={setScore}
           loadingFetchData={loadingFetchData}
           setLoadingFetchData={setLoadingFetchData}
+          lessonExpireDate={lessonExpireDate}
+          setLessonExpireDate={setLessonExpireDate}
         />
 
         {/* Col 2 */}

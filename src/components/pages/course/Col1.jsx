@@ -30,6 +30,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getAllClasses, getUnits } from "../../../Redux/actions/Actions";
 
 function Col1(props) {
+  const correctDate = new Date().toLocaleDateString();
   const style = {
     position: "absolute",
     top: "50%",
@@ -197,7 +198,6 @@ function Col1(props) {
 
   return (
     <Col xs={12} lg={6} className="col-1">
-
       <Snackbar
         open={toastDetails.open}
         autoHideDuration={5000}
@@ -415,6 +415,34 @@ function Col1(props) {
               background: theme.palette.mode === "dark" ? "#242424" : "#f1faf1",
               color: theme.palette.text.primary,
               direction: "ltr",
+            }}
+          />
+        </Stack>
+
+        <Stack direction="row" gap={2} alignItems={"center"} flexWrap={"wrap"}>
+          <span
+            className="d-flex align-items-center gap-1"
+            style={{ color: theme.palette.primary.dark }}
+          >
+            <strong className="text-danger fs-4 ">*</strong> فترة عرض الدرس
+          </span>
+
+          <span>من :</span>
+
+          <p className="m-0 border-bottom user-select-none">{correctDate}</p>
+
+          <span>الي :</span>
+
+          <input
+            type="date"
+            title="موعد انتهاء الدرس"
+            className="flex-grow-1"
+            value={props.lessonExpireDate}
+            onChange={(e) => props.setLessonExpireDate(e.target.value)}
+            style={{
+              background: theme.palette.mode === "dark" ? "#242424" : "#f1faf1",
+              color: theme.palette.text.primary,
+              cursor: "pointer",
             }}
           />
         </Stack>

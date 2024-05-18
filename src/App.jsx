@@ -17,20 +17,49 @@ import { Box } from "@mui/material";
 import RewardsPage from "./pages/answer and earn/RewardsPage";
 import PreparationPage from "./pages/preparation of classes/PreparationPage";
 import SinglePage from "./pages/dashboard single page/SinglePage";
+import { ToastContainer } from "react-toastify";
 
 export default function App() {
   const [mode, setMode] = React.useState(
     localStorage.theme ? localStorage.theme : "dark"
   );
+  const [mousePosition, setMousePosition] = React.useState({ x: 0, y: 0 });
+  const circleSize = 100;
+
+  React.useEffect(() => {
+    const handleMouseMove = (e) => {
+      setMousePosition({ x: e.clientX, y: e.clientY });
+    };
+
+    window.addEventListener("mousemove", handleMouseMove);
+
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+    };
+  }, []);
 
   const theme = React.useMemo(() => createTheme(getDesignTokens(mode)), [mode]);
 
   return (
     <ThemeProvider theme={theme}>
+      <ToastContainer theme="colored" position="top-right" />
+
       <Box
         sx={{ width: 100 + "vw", height: 100 + "vh", overflow: "auto" }}
         className="App"
       >
+        <div
+          className="circle"
+          style={{
+            width: circleSize,
+            height: circleSize,
+            left: mousePosition.x - circleSize / 2,
+            top: mousePosition.y - circleSize / 2,
+          }}
+        >
+          <div className="mouse" />
+        </div>
+
         <Routes>
           <Route path="/" element={<SinglePage />} />
           <Route
