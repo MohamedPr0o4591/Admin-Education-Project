@@ -136,6 +136,8 @@
   right: 0;
   user-select: none;
   background: #ffffff;
+  padding: 10px 0;
+  z-index: 2;
 }
 
 @keyframes professionRotate {
