@@ -564,6 +564,7 @@ export default function ExamManagement() {
 
   React.useEffect(() => {
     dispatch(getAllExams());
+    document.title = "إدارة الامتحانات الفورية";
   }, []);
 
   const handleDelete = async (id) => {

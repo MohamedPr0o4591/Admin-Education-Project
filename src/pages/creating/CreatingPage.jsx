@@ -131,6 +131,7 @@ function CreatingPage() {
 
   React.useEffect(() => {
     localStorage.removeItem("question");
+    document.title = "الامتحانات الفورية";
   }, []);
 
   const clearForm = (_) => {

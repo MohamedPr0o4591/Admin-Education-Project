@@ -147,6 +147,7 @@ const RewardsPage = () => {
 
   React.useEffect(() => {
     localStorage.removeItem("question");
+    document.title = "المسابقات الفورية";
   }, []);
 
   return (

@@ -201,6 +201,7 @@ function CourseContentPage() {
 
   React.useEffect(() => {
     dispatch(getAllLessons());
+    document.title = "فهرس المشروحات";
   }, []);
 
   React.useEffect(() => {

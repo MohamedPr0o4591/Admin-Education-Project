@@ -57,6 +57,7 @@ function CoursePage() {
 
   React.useEffect(() => {
     localStorage.removeItem("question");
+    document.title = "إدارة الدروس والواجبات";
   }, []);
 
   const handleAddQuestion = (_) => {

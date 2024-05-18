@@ -32,6 +32,7 @@ export default function LecturesPage() {
   const dataBooks = useSelector((state) => state.BOOKS.books);
 
   React.useEffect(() => {
+    document.title = "إدارة الكتب الدراسية";
     dispatch(getAllBooks());
   }, []);
 

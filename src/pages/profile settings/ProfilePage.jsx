@@ -31,6 +31,7 @@ export default function ProfilePage() {
 
   React.useEffect(() => {
     let token = localStorage.login;
+    document.title = "الملف الشخصي";
 
     dispatch(getAllProfileDetails(token));
   }, []);

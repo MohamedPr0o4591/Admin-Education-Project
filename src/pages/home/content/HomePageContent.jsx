@@ -12,6 +12,7 @@ function HomePageContent() {
 
   React.useEffect(() => {
     dispatch(getAllStatistics());
+    document.title = "الصفحة الرئيسية";
   }, []);
 
   React.useEffect(() => {

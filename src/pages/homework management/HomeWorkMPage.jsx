@@ -60,6 +60,7 @@ export default function HomeWorkMPage() {
 
   React.useEffect(() => {
     dispatch(getAllStudentResult());
+    document.title = "إدارة ملفات PDF";
   }, []);
 
   React.useEffect(() => {
@@ -293,7 +294,13 @@ export default function HomeWorkMPage() {
 
   return (
     <div className="home-work-management">
-      <HeaderLine title="إدارة الواجبات المنزلية" />
+      <HeaderLine
+        title={
+          alignment === "pending-hw"
+            ? "إدارة الواجبات المنزلية"
+            : "إدارة الامتحانات"
+        }
+      />
 
       <Row1 alignment={alignment} setAlignment={setAlignment} />
 

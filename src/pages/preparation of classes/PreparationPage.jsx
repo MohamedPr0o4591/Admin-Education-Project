@@ -183,6 +183,7 @@ const PreparationPage = () => {
 
   React.useEffect(() => {
     dispatch(getAllClasses());
+    document.title = "إعداد الصفوف الدراسية";
   }, []);
 
   React.useEffect(() => {

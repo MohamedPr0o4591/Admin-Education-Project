@@ -340,6 +340,7 @@ function StudentManagementPage() {
 
   React.useEffect(() => {
     dispatch(getAllStudents());
+    document.title = "إدارة الطلاب";
   }, []);
 
   React.useEffect(() => {
