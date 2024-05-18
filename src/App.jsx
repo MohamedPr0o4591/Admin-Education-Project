@@ -18,6 +18,7 @@ import RewardsPage from "./pages/answer and earn/RewardsPage";
 import PreparationPage from "./pages/preparation of classes/PreparationPage";
 import SinglePage from "./pages/dashboard single page/SinglePage";
 import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function App() {
   const [mode, setMode] = React.useState(
@@ -42,7 +43,17 @@ export default function App() {
 
   return (
     <ThemeProvider theme={theme}>
-      <ToastContainer theme="colored" position="top-right" />
+      <ToastContainer
+        theme="colored"
+        position="top-right"
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
 
       <Box
         sx={{ width: 100 + "vw", height: 100 + "vh", overflow: "auto" }}

@@ -3,12 +3,11 @@ import "./LoginPage.css";
 import { useNavigate } from "react-router";
 import axios from "axios";
 import { Paper, useTheme } from "@mui/material";
-import { CheckRounded, ErrorRounded } from "@mui/icons-material";
+import { ErrorRounded } from "@mui/icons-material";
 import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 
 export default function LoginPage() {
-  const notify = () => toast(`تم تسجيل الدخول بنجاح`);
+  const notify = () => toast.success(`تم تسجيل الدخول بنجاح`);
   const navigate = useNavigate();
 
   const [auth, setAuth] = React.useState({ email: "", pass: "" });
@@ -87,6 +86,7 @@ export default function LoginPage() {
             onChange={handleChangeInput}
           />
           <span>الحساب الالكترونى</span>
+          <i />
         </div>
         <div className="input-box">
           <input
@@ -97,6 +97,7 @@ export default function LoginPage() {
             onChange={handleChangeInput}
           />
           <span>كلمة المرور</span>
+          <i />
         </div>
 
         <input

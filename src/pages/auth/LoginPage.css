@@ -33,36 +33,55 @@
 
 .login-page form .input-box input {
   position: relative;
+  font-weight: 400;
   width: 100%;
+  border: none;
   outline: none;
-  border-color: #efef;
-  color: #efefef;
+  color: #000;
   border-radius: 5px;
   padding: 10px 20px;
   direction: ltr;
   transition: all 0.228s ease;
   background: transparent;
+  letter-spacing: 0.1rem;
+  z-index: 1;
+}
+.login-page form .input-box i {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: #efefef;
+  border-radius: 0.4rem;
+  pointer-events: none;
+  transition: all 0.228s ease;
 }
 
 .login-page form .input-box input ~ span {
   position: absolute;
   top: 50%;
-  color: #efefef;
+  color: #efef;
   left: 10px;
   transform: translateY(-50%);
   font-size: 1rem;
   transition: all 0.228s ease;
   pointer-events: none;
+  z-index: 1;
 }
 
 .login-page form .input-box input:focus ~ span,
 .login-page form .input-box input:valid ~ span {
   font-size: 0.85rem;
   left: 5px;
-  top: 0;
+  top: -10px;
   color: #efefef;
   padding: 0 5px;
-  background: #2f2f2f;
+}
+
+.login-page form .input-box input:focus ~ i,
+.login-page form .input-box input:valid ~ i {
+  height: 100%;
 }
 
 .login-page form input[type="submit"] {

@@ -19,7 +19,6 @@ import {
 } from "@mui/icons-material";
 import axios from "axios";
 import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import GroupComponent from "../../components/pages/preparation of classes/GroupComponent";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllClasses, getGroups } from "../../Redux/actions/Actions";
