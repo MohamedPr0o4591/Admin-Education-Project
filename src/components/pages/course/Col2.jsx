@@ -50,34 +50,36 @@ export default function Col2(props) {
               >
                 {props.alignment}
               </span>
-              <p className="lessonTitle fs-4 fw-bold mt-3">
-                {props.lessonTitle}
-              </p>
+              <Box sx={{ height: "100%", overflow: "auto" }}>
+                <p className="lessonTitle fs-4 fw-bold mt-3">
+                  {props.lessonTitle}
+                </p>
 
-              <div
-                className="content d-flex justify-content-center overflow-hidden align-items-center"
-                style={{ borderRadius: 0.6 + "rem", height: 315 + "px" }}
-              >
-                {props.videoLink !== "" ? (
-                  <iframe
-                    width="560"
-                    height={100 + "%"}
-                    src={`https://www.youtube.com/embed/${props.videoLink}`}
-                    title="YouTube video player"
-                    frameBorder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    referrerPolicy="strict-origin-when-cross-origin"
-                    allowFullScreen
-                  />
-                ) : (
-                  <span className="text-danger fw-bolder">
-                    ادخل معرف فيديو الشرح
-                  </span>
-                )}
-              </div>
-              <span className="lessonDesc mt-2 d-block">
-                {props.lessonDesc}
-              </span>
+                <div
+                  className="content d-flex justify-content-center overflow-hidden align-items-center"
+                  style={{ borderRadius: 0.6 + "rem", height: 315 + "px" }}
+                >
+                  {props.videoLink !== "" ? (
+                    <iframe
+                      width="560"
+                      height={100 + "%"}
+                      src={`https://www.youtube.com/embed/${props.videoLink}`}
+                      title="YouTube video player"
+                      frameBorder="0"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                      referrerPolicy="strict-origin-when-cross-origin"
+                      allowFullScreen
+                    />
+                  ) : (
+                    <span className="text-danger fw-bolder">
+                      ادخل معرف فيديو الشرح
+                    </span>
+                  )}
+                </div>
+                <span className="lessonDesc mt-2 d-block">
+                  {props.lessonDesc}
+                </span>
+              </Box>
             </Box>
           </Stack>
         </Paper>

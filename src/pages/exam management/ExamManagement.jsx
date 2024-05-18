@@ -584,7 +584,7 @@ export default function ExamManagement() {
     let newArr = [];
     let newArr2 = [];
 
-    if (dataExams?.length > 1) {
+    if (dataExams?.length > 0) {
       examArr = dataExams.filter((exam) => exam.examType === "EXAM");
       competitionArr = dataExams.filter(
         (exam) => exam.examType === "COMPETITION"
