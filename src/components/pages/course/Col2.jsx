@@ -54,25 +54,30 @@ export default function Col2(props) {
                 {props.lessonTitle}
               </p>
 
-              <div className="content d-flex justify-content-center">
-                <OndemandVideoRounded
-                  sx={{
-                    fontSize: 20 + "rem",
-                    color: props.theme.palette.primary.main,
-                  }}
-                />
-                {/* <iframe
-                  width="560"
-                  height="315"
-                  src="https://www.youtube.com/embed/_J7ue6WxOk0?si=oZPAqaMPjxdLh37g"
-                  title="YouTube video player"
-                  frameBorder="0"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                  referrerPolicy="strict-origin-when-cross-origin"
-                  allowFullScreen
-                /> */}
+              <div
+                className="content d-flex justify-content-center overflow-hidden align-items-center"
+                style={{ borderRadius: 0.6 + "rem", height: 315 + "px" }}
+              >
+                {props.videoLink !== "" ? (
+                  <iframe
+                    width="560"
+                    height={100 + "%"}
+                    src={`https://www.youtube.com/embed/${props.videoLink}`}
+                    title="YouTube video player"
+                    frameBorder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    referrerPolicy="strict-origin-when-cross-origin"
+                    allowFullScreen
+                  />
+                ) : (
+                  <span className="text-danger fw-bolder">
+                    ادخل معرف فيديو الشرح
+                  </span>
+                )}
               </div>
-              <span className="lessonDesc">{props.lessonDesc}</span>
+              <span className="lessonDesc mt-2 d-block">
+                {props.lessonDesc}
+              </span>
             </Box>
           </Stack>
         </Paper>

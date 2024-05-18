@@ -256,6 +256,7 @@ function CoursePage() {
           unitDetails={unitDetails}
           language={language}
           score={score}
+          videoLink={videoLink}
         />
       </Row>
     </div>
