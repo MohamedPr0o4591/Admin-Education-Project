@@ -500,8 +500,8 @@ function Col1(props) {
                       theme.palette.mode === "dark" ? "#242424" : "#f1faf1",
                   }}
                 >
-                  <option value="ar">لغة الصفحة : العربية</option>
-                  <option value="en">لغة الصفحة : الإنجليزية</option>
+                  <option value="Arabic">لغة الصفحة : العربية</option>
+                  <option value="English">لغة الصفحة : الإنجليزية</option>
                 </select>
               </Stack>
 

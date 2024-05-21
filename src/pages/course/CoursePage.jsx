@@ -20,7 +20,7 @@ function CoursePage() {
   const [videoLink, setVideoLink] = React.useState("");
   const [hWFile, setHWFile] = React.useState();
   const [lessonFile, setLessonFile] = React.useState();
-  const [language, setLanguage] = React.useState("ar");
+  const [language, setLanguage] = React.useState("Arabic");
   const [openMenu, setOpenMenu] = React.useState(false);
   const [loadingFetchData, setLoadingFetchData] = React.useState(false);
 
@@ -124,6 +124,7 @@ function CoursePage() {
         formData.append("description", lessonDesc);
         formData.append("videoUrl", videoLink);
         formData.append("score", +score);
+        formData.append("endShowingDate", lessonExpireDate);
 
         if (lessonFile && lessonFile.length > 0) {
           formData.append("file", lessonFile[0]);
@@ -141,6 +142,7 @@ function CoursePage() {
             });
           }
           formData.append("questionType", "MCQ");
+          formData.append("language", language);
         } else {
           formData.append("homeworkFile", hWFile[0]);
           formData.append("questionType", "PDF");

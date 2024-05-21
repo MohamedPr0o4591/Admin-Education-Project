@@ -213,8 +213,8 @@
 
 @media (min-width: 320px) and (max-width: 1200px) {
   .single-page {
-    overflow: hidden;
-    height: auto;
+    overflow: auto;
+    height: 100%;
   }
 
   .single-page .profession-container .overlay,

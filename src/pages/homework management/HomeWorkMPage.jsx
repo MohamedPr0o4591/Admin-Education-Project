@@ -81,8 +81,6 @@ export default function HomeWorkMPage() {
     let newArr = [];
     let newArr2 = [];
 
-    console.log(studentData.hwData);
-
     if (studentData?.hwData?.length > 0) {
       for (let i = 0; i < studentData?.hwData?.length; i++) {
         newArr.push({
